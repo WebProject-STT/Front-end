@@ -22,8 +22,8 @@ function LogIn() {
 			<input type="password" name="password" placeholder={Words.ENTER_PASSWORD} value={password} onChange={onChange}></input>
 			<button>{Words.LOGIN}</button>
 			<button>{Words.SOCIAL_LOGIN}</button>
-			<a>{Words.ASK_MEMBER}</a>
-			{/* <Link to="/join">{Words.JOIN}</Link> */}
+			<span>{Words.ASK_MEMBER}</span>
+			<Link to="/join">{Words.JOIN}</Link>
 		</div>
 	);
 }

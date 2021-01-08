@@ -5,6 +5,7 @@ import PrivateRoute from './common/PrivateRoute';
 import Home from './components/Home';
 import Header from './components/Header';
 import Login from './components/Login';
+import Join from './components/Join';
 import Category from './components/Category';
 import { UserProvider } from './contexts/UserContext';
 import { HeaderProvider } from './contexts/HeaderContext';
@@ -25,6 +26,7 @@ function App() {
 			<Header />
 			<PrivateRoute path="/" exact component={Home} />
 			<Route path="/login" component={Login} />
+			<Route path="/join" component={Join} />
 			<Route path="/category" component={Category} />
 		</AppProvider>
 	);

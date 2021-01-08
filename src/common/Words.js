@@ -1,5 +1,8 @@
 const Words = {
 	GREETING: '님, 안녕하세요',
+	ID: '아이디',
+	PASSWORD: '비밀번호',
+	EMAIL: '이메일',
 	LOGIN: '로그인',
 	SOCIAL_LOGIN: '소셜 로그인',
 	LOGOUT: '로그아웃',
