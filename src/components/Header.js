@@ -1,11 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Words from '../common/Words';
-import { useUserState } from '../common/UserContext';
+import { useUserState } from '../contexts/UserContext';
+import { useHeaderState } from '../contexts/HeaderContext';
 import '../styles/Header.scss';
 
 function Header() {
 	const { userName } = useUserState();
+	const { headerVisibility } = useHeaderState();
+	if (!headerVisibility) return null;
 	return (
 		<div className="Header">
 			{userName ? (
@@ -14,11 +17,11 @@ function Header() {
 						{userName}
 						{Words.GREETING}
 					</a>
-					{/* 버튼 클릭시 App 리렌더링하는 방법밖에 모르겠음..그래도 되나? */}
-					<button>{Words.SIGNOUT}</button>
+					{/* 메인페이지로 이동하고 로그인정보 없애면 됨 */}
+					<button>{Words.LOGOUT}</button>
 				</>
 			) : (
-				<Link to="/login">{Words.SIGNIN}</Link>
+				<Link to="/login">{Words.LOGIN}</Link>
 			)}
 		</div>
 	);

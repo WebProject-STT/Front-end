@@ -1,8 +1,12 @@
 const Words = {
 	GREETING: '님, 안녕하세요',
-	SIGNIN: '로그인',
-	SIGNOUT: '로그아웃',
-	SIGNUP: '회원가입',
+	LOGIN: '로그인',
+	SOCIAL_LOGIN: '소셜 로그인',
+	LOGOUT: '로그아웃',
+	JOIN: '회원가입',
+	ASK_MEMBER: '아직 회원이 아니신가요?',
+	ENTER_ID: '아이디를 입력하세요',
+	ENTER_PASSWORD: '비밀번호를 입력하세요',
 };
 
 export default Words;
