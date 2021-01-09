@@ -20,11 +20,11 @@ function Join() {
 			<b>{Words.JOIN}</b>
 			<br />
 			<span>{Words.ID}</span>
-			<input name="id" value={id} onChange={onChange}></input>
+			<input name="id" value={id} onChange={onChange} />
 			<span>{Words.PASSWORD}</span>
-			<input type="password" name="password" value={password} onChange={onChange}></input>
+			<input type="password" name="password" value={password} onChange={onChange} />
 			<span>{Words.EMAIL}</span>
-			<input name="email" value={email} onChange={onChange}></input>
+			<input name="email" value={email} onChange={onChange} />
 			<Link to="/login">
 				<button>회원가입</button>
 			</Link>
