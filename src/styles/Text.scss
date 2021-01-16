@@ -1,0 +1,47 @@
+$blue: #1a3270;
+$white: #ffffff;
+$gray: #919191;
+
+.text {
+	position: relative;
+	font-family: Roboto;
+	font-style: normal;
+	font-weight: normal;
+
+	&.user {
+		height: 29px;
+		font-size: 18px;
+		line-height: 24px;
+		top: 40%;
+		right: 3%;
+		color: $white;
+	}
+
+	&.auth {
+		height: 29px;
+		font-size: 20px;
+		line-height: 28.13px;
+
+		&.social {
+			top: 3px;
+			color: $gray;
+		}
+
+		&.go_signup {
+			display: flex;
+			left: 40px;
+			top: 20px;
+			font-size: 16px;
+			line-height: 134.77%;
+		}
+
+		&.error-message {
+			height: 20px;
+			left: 40px;
+			font-size: 16px;
+			line-height: 134.77%;
+			margin: -1px 0px 8px -1px;
+			color: red;
+		}
+	}
+}

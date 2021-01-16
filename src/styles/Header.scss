@@ -1,6 +1,79 @@
-.Header {
+$blue: #1a3270;
+$white: #ffffff;
+
+.header {
 	display: flex;
-	height: 70px;
+	justify-content: space-between;
 	width: 100%;
-	background: pink;
+	height: 90px;
+	bottom: 90%;
+}
+
+.button-area {
+	// position: relative;
+	display: flex;
+	margin-right: 1.5%;
+	// background-color: skyblue;
+}
+
+.logo-area {
+	position: absolute;
+	width: 193px;
+	height: 60px;
+	left: 22px;
+	top: 18px;
+	// background-color: yellow;
+}
+
+.logo-image {
+	position: absolute;
+	height: 60px;
+	width: 60px;
+	left: 1.94%;
+	right: 92.5%;
+	top: 1%;
+	bottom: 16.67%;
+}
+
+// logo-text랑 button-text Text.scss로 옮겨야돼 나중에 하자
+.logo-text {
+	display: flex;
+	position: absolute;
+	width: 104px;
+	height: 49px;
+	left: 36%;
+	right: 90%;
+	top: 13%;
+	bottom: 30%;
+	font-family: Roboto;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 33px;
+	line-height: 134.77%;
+	align-items: center;
+	text-align: center;
+	object-fit: cover;
+}
+
+.button-text {
+	// position: absolute;
+	font-family: Roboto;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 18px;
+	line-height: 24px;
+	// 버튼 안에 텍스트 가운데 정렬시키는걸로 방법 바꿔야됨
+	&.signup {
+		margin-left: 24px;
+		color: $white;
+	}
+	&.login {
+		margin-left: 32px;
+		color: $blue;
+	}
+
+	&.logout {
+		margin-left: 18px;
+		color: $blue;
+	}
 }

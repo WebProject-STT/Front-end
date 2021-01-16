@@ -1,7 +1,41 @@
-input {
-	display: flex;
+$blue: #1a3270;
+$white: #ffffff;
+
+.auth {
+	// display: flex;
+	// position: absolute;
+	// text-align: center;
+	// margin: 0;
 }
 
-button {
+.auth-form {
+	position: relative;
+	width: 530px;
+	height: 550px;
+	top: 100px;
+	margin: auto;
+	// text-align: center;
+	// background-color: pink;
+}
+
+.input {
+	position: relative;
 	display: flex;
+	width: 85%;
+	height: 10%;
+	margin-left: 40px;
+	margin-bottom: 7px;
+	border: 2px solid $blue;
+	box-sizing: border-box;
+	border-radius: 5px;
+}
+
+.social-image {
+	float: left;
+	width: 38px;
+	height: 38px;
+	padding-left: 3%;
+}
+
+.error-message {
 }

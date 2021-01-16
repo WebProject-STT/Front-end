@@ -36,7 +36,7 @@ export function useUserState() {
 	return state;
 }
 
-export function useUsersDispatch() {
+export function useUserDispatch() {
 	const dispatch = useContext(UserDispatchContext);
 	if (!dispatch) {
 		throw new Error('Cannot find UserProvider');

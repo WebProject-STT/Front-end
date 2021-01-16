@@ -1,0 +1,75 @@
+$blue: #1a3270;
+$white_blue: #d9e3ff;
+$white: #ffffff;
+$gray: #919191;
+
+.button {
+	position: relative;
+	border-radius: 5px;
+
+	&:hover {
+		cursor: pointer;
+	}
+
+	&.header {
+		width: 120px;
+		height: 35px;
+		top: 35%;
+		align-items: center;
+		text-align: center;
+
+		&.loginOut {
+			border: 2px solid $blue;
+			box-sizing: border-box;
+			background: $white;
+		}
+
+		&.signup {
+			background: $blue;
+		}
+
+		& + & {
+			margin-left: 10px;
+		}
+	}
+
+	&.auth {
+		&.basic {
+			width: 85%;
+			height: 10%;
+			margin-left: 40px;
+			background: $blue;
+			text-align: center;
+
+			&:first-child {
+				position: relative;
+				font-family: Roboto;
+				font-style: normal;
+				font-weight: normal;
+				font-size: 20px;
+				line-height: 28.13px;
+				color: $white;
+			}
+
+			&:disabled {
+				background: lighten($blue, 35%);
+
+				&:first-child {
+					color: $white_blue;
+				}
+			}
+		}
+
+		&.social {
+			top: 10px;
+			width: 26.5%;
+			height: 9%;
+			margin-left: 40px;
+			background: $white;
+		}
+
+		&.social + &.social {
+			margin-left: 16px;
+		}
+	}
+}
