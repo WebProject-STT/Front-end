@@ -5,14 +5,14 @@ import Words from '../common/Words';
 import LogoWhite from '../common/icon/LogoWhite.png';
 import LogoBlue from '../common/icon/LogoBlue.png';
 import { useUserState } from '../contexts/UserContext';
-import { useHeaderState } from '../contexts/HeaderContext';
+import { useVisibilityState } from '../contexts/VisibilityContext';
 import HeaderButton from './HeaderButton';
 import '../styles/Header.scss';
 import '../styles/Button.scss';
 
 function Header() {
 	const { userName } = useUserState();
-	const { headerVisibility } = useHeaderState();
+	const { headerVisibility } = useVisibilityState();
 	const blue = '#1a3270';
 	const white = '#ffffff';
 
@@ -20,7 +20,7 @@ function Header() {
 		<div className="header" style={{ background: userName ? blue : white }}>
 			<Link to={userName ? '/category' : '/'}>
 				<div className="logo-area">
-					{userName ? <img className="logo-image" src={LogoWhite} /> : <img className="logo-image" src={LogoBlue} />}
+					{userName ? <img className="logo-image" src={LogoWhite} alt="logo" /> : <img className="logo-image" src={LogoBlue} alt="logo" />}
 					<span className={classNames('logo-text')} style={{ color: userName ? white : blue }}>
 						{Words.PROJECT_NAME}
 					</span>

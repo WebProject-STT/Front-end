@@ -2,35 +2,31 @@ $blue: #1a3270;
 $white_blue: #d9e3ff;
 $white: #ffffff;
 $gray: #919191;
-
+// 버튼 내 텍스트 가운데 정렬되록 설정해야돼
 .button {
 	position: relative;
 	border-radius: 5px;
+	align-items: center;
+	text-align: center;
 
 	&:hover {
 		cursor: pointer;
+	}
+
+	&.white {
+		border: 2px solid $blue;
+		box-sizing: border-box;
+		background: $white;
+	}
+
+	&.blue {
+		background: $blue;
 	}
 
 	&.header {
 		width: 120px;
 		height: 35px;
 		top: 35%;
-		align-items: center;
-		text-align: center;
-
-		&.loginOut {
-			border: 2px solid $blue;
-			box-sizing: border-box;
-			background: $white;
-		}
-
-		&.signup {
-			background: $blue;
-		}
-
-		& + & {
-			margin-left: 10px;
-		}
 	}
 
 	&.auth {
@@ -71,5 +67,16 @@ $gray: #919191;
 		&.social + &.social {
 			margin-left: 16px;
 		}
+	}
+
+	&.post-list {
+		width: 70%;
+		height: 50%;
+		// left: 62.3%;
+		top: 40%;
+	}
+
+	& + & {
+		margin-left: 10px;
 	}
 }

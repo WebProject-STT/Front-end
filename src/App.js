@@ -5,11 +5,12 @@ import Home from './components/Home';
 import Header from './components/Header';
 import Login from './components/Login';
 import Signup from './components/Signup';
-import Category from './components/Category';
+import CategoryList from './components/CategoryList';
+import PostList from './components/PostList';
 import { UserProvider } from './contexts/UserContext';
-import { HeaderProvider } from './contexts/HeaderContext';
-// App에서 유저정보 찾아서 다른 컴포넌트들에게 전달하는게 나을까
-// 각 컴포넌트에서 유저정보 찾는게 나을까
+import { VisibilityProvider } from './contexts/VisibilityContext';
+import './styles/App.scss';
+
 const AppProvider = ({ contexts, children }) =>
 	contexts.reduce(
 		(prev, context) =>
@@ -21,12 +22,15 @@ const AppProvider = ({ contexts, children }) =>
 
 function App() {
 	return (
-		<AppProvider contexts={[UserProvider, HeaderProvider]}>
+		<AppProvider contexts={[UserProvider, VisibilityProvider]}>
 			<Header />
 			<PrivateRoute path="/" exact component={Home} />
 			<Route path="/login" component={Login} />
 			<Route path="/signup" component={Signup} />
-			<Route path="/category" component={Category} />
+			<div className="app">
+				<CategoryList />
+				<Route path="/postList" component={PostList} />
+			</div>
 		</AppProvider>
 	);
 }

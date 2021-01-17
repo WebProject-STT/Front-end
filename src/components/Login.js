@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Words from '../common/Words';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
-import { useHeaderDispatch } from '../contexts/HeaderContext';
+import { useVisibilityDispatch } from '../contexts/VisibilityContext';
 import useInputs from '../hooks/useInputs';
 import useInputsCorrect from '../hooks/useInputsCorrect';
 import { isEmpty } from '../common/CheckValue';
@@ -14,7 +14,7 @@ import '../styles/Text.scss';
 import { useUserDispatch } from '../contexts/UserContext';
 
 function LogIn() {
-	const headerDispatch = useHeaderDispatch();
+	const visibilityDispatch = useVisibilityDispatch();
 	const userdispatch = useUserDispatch();
 	const [form, onChange] = useInputs({ id: '', password: '' });
 	const { id, password } = form;
@@ -22,11 +22,11 @@ function LogIn() {
 	const { idCorrect, passwordCorrect } = state;
 
 	useEffect(() => {
-		headerDispatch({ type: 'INVISIBLE' });
+		visibilityDispatch({ type: 'HEADER_INVISIBLE' });
 		return () => {
-			headerDispatch({ type: 'VISIBLE' });
+			visibilityDispatch({ type: 'HEADER_VISIBLE' });
 		};
-	}, [headerDispatch]);
+	}, [visibilityDispatch]);
 
 	// api호출해서 입력한 아이디, 비밀번호와 일치하는 유저 있는지 확인
 	const checkUser = () => {
@@ -51,22 +51,22 @@ function LogIn() {
 				{idCorrect === 0 && <div className={classNames('text', 'auth', 'error-message')}>{Words.ENTER_ID}</div>}
 				<input className="input" type="password" name="password" placeholder={Words.ENTER_PASSWORD} value={password} onChange={onChange} />
 				{passwordCorrect === 0 && <div className={classNames('text', 'auth', 'error-message')}>{Words.ENTER_PASSWORD}</div>}
-				<Link to="/category" onClick={confirmInputs}>
+				<Link to="/postList" onClick={confirmInputs}>
 					<button className={classNames('button', 'auth', 'basic')}>{Words.LOGIN}</button>
 				</Link>
 				<button className={classNames('button', 'auth', 'social')}>
-					<img className="social-image" src={GoogleLogo} />
+					<img className="social-image" src={GoogleLogo} alt="GoogleLogo" />
 					<span className={classNames('text', 'auth', 'social')}>{Words.GOOGLE}</span>
 				</button>
 				<button className={classNames('button', 'auth', 'social')}>
-					<img className="social-image" src={NaverLogo} />
+					<img className="social-image" src={NaverLogo} alt="NaverLogo" />
 					<span className={classNames('text', 'auth', 'social')}>{Words.NAVER}</span>
 				</button>
 				<button className={classNames('button', 'auth', 'social')}>
-					<img className="social-image" src={KakaoLogo} />
+					<img className="social-image" src={KakaoLogo} alt="KakaoLogo" />
 					<span className={classNames('text', 'auth', 'social')}>{Words.KAKAO}</span>
 				</button>
-				<span className={classNames('text', 'auth', 'go_signup')}>
+				<span className={classNames('text', 'auth', 'go-signup')}>
 					{Words.ASK_MEMBER}
 					<Link to="/signup">{Words.SIGNUP}</Link>
 					{Words.GO}

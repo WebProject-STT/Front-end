@@ -1,6 +1,12 @@
 $blue: #1a3270;
 $white: #ffffff;
 $gray: #919191;
+$black: #000000;
+$red: #ff0000;
+
+@mixin text-color($color) {
+	color: $color;
+}
 
 .text {
 	position: relative;
@@ -8,13 +14,23 @@ $gray: #919191;
 	font-style: normal;
 	font-weight: normal;
 
+	&.blue {
+		@include text-color($blue);
+	}
+
+	&.white {
+		@include text-color($white);
+	}
+	&.black {
+		@include text-color($black);
+	}
+
 	&.user {
 		height: 29px;
 		font-size: 18px;
 		line-height: 24px;
 		top: 40%;
 		right: 3%;
-		color: $white;
 	}
 
 	&.auth {
@@ -24,10 +40,10 @@ $gray: #919191;
 
 		&.social {
 			top: 3px;
-			color: $gray;
+			@include text-color($gray);
 		}
 
-		&.go_signup {
+		&.go-signup {
 			display: flex;
 			left: 40px;
 			top: 20px;
@@ -41,7 +57,22 @@ $gray: #919191;
 			font-size: 16px;
 			line-height: 134.77%;
 			margin: -1px 0px 8px -1px;
-			color: red;
+			@include text-color($red);
+		}
+	}
+
+	&.category {
+		left: 4%;
+		font-weight: bold;
+		font-size: 18px;
+		line-height: 134.77%;
+	}
+
+	&.post {
+		&.small {
+			top: calc(42% - 19px / 2 + 0.07px);
+			font-size: 1.3vw;
+			line-height: 19px;
 		}
 	}
 }

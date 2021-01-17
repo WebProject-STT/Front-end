@@ -19,22 +19,22 @@ function HeaderButton() {
 		<div className="button-area">
 			{userName ? (
 				<>
-					<span className={classNames('text', 'user')}>
+					<span className={classNames('text', 'white', 'user')}>
 						{userName}
 						{Words.GREETING}
 					</span>
 					<Link to="/">
-						<button className={classNames('button', 'header', 'loginOut')} onClick={logout}>
+						<button className={classNames('button', 'header', 'white')} onClick={logout}>
 							<span className={classNames('button-text', 'logout')}>{Words.LOGOUT}</span>
 						</button>
 					</Link>
 				</>
 			) : (
 				<>
-					<Link className={classNames('button', 'header', 'loginOut')} role="button" to="/login">
+					<Link className={classNames('button', 'header', 'white')} role="button" to="/login">
 						<div className={classNames('button-text', 'login')}>{Words.LOGIN}</div>
 					</Link>
-					<Link className={classNames('button', 'header', 'signup')} role="button" to="/signup">
+					<Link className={classNames('button', 'header', 'blue')} role="button" to="/signup">
 						<div className={classNames('button-text', 'signup')}>{Words.SIGNUP}</div>
 					</Link>
 				</>
