@@ -1,4 +1,5 @@
 $blue: #1a3270;
+$blueGray: rgba(26, 50, 112, 0.08);
 
 .post-list {
 	width: 80%;
@@ -50,6 +51,26 @@ $blue: #1a3270;
 .list-form {
 	width: 95%;
 	height: 70vh;
-	margin: 0 auto;
+	margin: 2% auto 0 auto;
 	// background-color: pink;
+}
+
+.post {
+	display: flex;
+	width: 100%;
+	height: 7.6%;
+	background-color: $blueGray;
+	justify-content: space-between;
+
+	& + & {
+		margin-top: 1%;
+	}
+}
+
+.title-area {
+	margin-left: 1%;
+}
+
+.date-area {
+	margin-right: 1%;
 }

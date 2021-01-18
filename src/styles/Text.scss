@@ -21,8 +21,13 @@ $red: #ff0000;
 	&.white {
 		@include text-color($white);
 	}
+
 	&.black {
 		@include text-color($black);
+	}
+
+	&.gray {
+		@include text-color($gray);
 	}
 
 	&.user {
@@ -68,11 +73,32 @@ $red: #ff0000;
 		line-height: 134.77%;
 	}
 
-	&.post {
+	&.post-list {
 		&.small {
 			top: calc(42% - 19px / 2 + 0.07px);
 			font-size: 1.3vw;
 			line-height: 19px;
+		}
+	}
+
+	&.post {
+		&.small {
+			height: 60%;
+			// left: 75%;
+			margin-right: 2%;
+			top: 26%;
+			font-size: 1.3vw;
+			line-height: 19px;
+			// background-color: pink;
+		}
+
+		&.big {
+			height: 60%;
+			top: 15%;
+			margin-left: 1.5%;
+			font-weight: bold;
+			font-size: 20px;
+			line-height: 134.77%;
 		}
 	}
 }

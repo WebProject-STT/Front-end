@@ -11,7 +11,6 @@ function CategoryList() {
 	if (!categoryVisibility) {
 		return null;
 	}
-	console.log(categoryData);
 
 	return (
 		<div className="category-list">

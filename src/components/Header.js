@@ -18,7 +18,7 @@ function Header() {
 
 	return (
 		<div className="header" style={{ background: userName ? blue : white }}>
-			<Link to={userName ? '/category' : '/'}>
+			<Link to={userName ? '/postList' : '/'}>
 				<div className="logo-area">
 					{userName ? <img className="logo-image" src={LogoWhite} alt="logo" /> : <img className="logo-image" src={LogoBlue} alt="logo" />}
 					<span className={classNames('logo-text')} style={{ color: userName ? white : blue }}>

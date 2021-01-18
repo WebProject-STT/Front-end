@@ -9,6 +9,7 @@ import CategoryList from './components/CategoryList';
 import PostList from './components/PostList';
 import { UserProvider } from './contexts/UserContext';
 import { VisibilityProvider } from './contexts/VisibilityContext';
+import { CategoryProvider } from './contexts/CategoryContext';
 import './styles/App.scss';
 
 const AppProvider = ({ contexts, children }) =>
@@ -22,7 +23,7 @@ const AppProvider = ({ contexts, children }) =>
 
 function App() {
 	return (
-		<AppProvider contexts={[UserProvider, VisibilityProvider]}>
+		<AppProvider contexts={[UserProvider, VisibilityProvider, CategoryProvider]}>
 			<Header />
 			<PrivateRoute path="/" exact component={Home} />
 			<Route path="/login" component={Login} />
