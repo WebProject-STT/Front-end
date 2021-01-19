@@ -14,8 +14,8 @@ function CategoryList() {
 
 	return (
 		<div className="category-list">
-			{categoryData.map((category, index) => (
-				<Category category={category} key={index} />
+			{categoryData.map((categoryName, index) => (
+				<Category categoryName={categoryName} key={index} />
 			))}
 		</div>
 	);

@@ -8,13 +8,14 @@ $blue: #1a3270;
 }
 
 .category {
-	margin-top: 5%;
+	margin-top: 7%;
+	height: 4.5%;
 
 	&:hover {
 		cursor: pointer;
 	}
 
 	& + & {
-		margin-top: 6%;
+		margin-top: 3%;
 	}
 }

@@ -68,6 +68,7 @@ $red: #ff0000;
 
 	&.category {
 		left: 4%;
+		top: 13%;
 		font-weight: bold;
 		font-size: 18px;
 		line-height: 134.77%;
@@ -75,7 +76,7 @@ $red: #ff0000;
 
 	&.post-list {
 		&.small {
-			top: calc(42% - 19px / 2 + 0.07px);
+			top: 3%;
 			font-size: 1.3vw;
 			line-height: 19px;
 		}
@@ -89,7 +90,6 @@ $red: #ff0000;
 			top: 26%;
 			font-size: 1.3vw;
 			line-height: 19px;
-			// background-color: pink;
 		}
 
 		&.big {
