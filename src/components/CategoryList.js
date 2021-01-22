@@ -1,12 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
 import Category from './Category';
-import { useVisibilityState } from '../contexts/VisibilityContext';
+import { useComponentVisibilityState } from '../contexts/ComponentVisibilityContext';
 import { categoryData } from '../common/tempData';
 import '../styles/Category.scss';
 
 function CategoryList() {
-	const { categoryVisibility } = useVisibilityState();
+	const { categoryVisibility } = useComponentVisibilityState();
 
 	if (!categoryVisibility) {
 		return null;

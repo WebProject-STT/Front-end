@@ -41,7 +41,7 @@ export const postsData = [
 	},
 	{
 		id: 7,
-		category: '세계',
+		category: '정치',
 		title: 'title7',
 		date: '2021.01.18',
 	},
@@ -49,6 +49,18 @@ export const postsData = [
 		id: 8,
 		category: '생활/문화',
 		title: 'title8',
+		date: '2021.01.18',
+	},
+	{
+		id: 9,
+		category: '정치',
+		title: 'title9',
+		date: '2021.01.18',
+	},
+	{
+		id: 10,
+		category: '경제',
+		title: 'title10',
 		date: '2021.01.18',
 	},
 ];

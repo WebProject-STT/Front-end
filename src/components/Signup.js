@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
-import { useVisibilityDispatch } from '../contexts/VisibilityContext';
+import { useComponentVisibilityDispatch } from '../contexts/ComponentVisibilityContext';
 import useInputs from '../hooks/useInputs';
 import useInputsCorrect from '../hooks/useInputsCorrect';
 import Words from '../common/Words';
@@ -12,16 +12,16 @@ const passwordInformation = [Words.ENTER_PASSWORD, Words.PASSWORD_CONDITION, Wor
 const emailInformation = [Words.ENTER_EMAIL, Words.EMAIL_CONDITION, Words.EMAIL_CONDITION];
 
 function Signup() {
-	const dispatch = useVisibilityDispatch();
+	const dispatch = useComponentVisibilityDispatch();
 	const [state, checkInput] = useInputsCorrect({ idCorrect: 1, passwordCorrect: 1, emailCorrect: 1 });
 	const { idCorrect, passwordCorrect, emailCorrect } = state;
 	const [form, onChange] = useInputs({ id: '', password: '', email: '' });
 	const { id, password, email } = form;
 
 	useEffect(() => {
-		dispatch({ type: 'HEADER_INVISIBLE' });
+		dispatch({ type: 'INVISIBLE', name: 'headerVisibility' });
 		return () => {
-			dispatch({ type: 'HEADER_VISIBLE' });
+			dispatch({ type: 'VISIBLE', name: 'headerVisibility' });
 		};
 	}, [dispatch]);
 

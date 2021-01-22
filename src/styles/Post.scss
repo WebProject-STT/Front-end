@@ -1,3 +1,4 @@
+$white: #ffffff;
 $blue: #1a3270;
 $blueGray: #ededf2;
 
@@ -8,8 +9,8 @@ $blueGray: #ededf2;
 
 .list-header {
 	display: flex;
-	height: 8%;
-	width: 100%;
+	height: 8vh;
+	width: 80.85vw;
 	justify-content: space-between;
 	// background-color: aqua;
 
@@ -20,14 +21,22 @@ $blueGray: #ededf2;
 		margin-right: 1.8%;
 		// background-color: coral;
 	}
+
+	&.search-area {
+		display: flex;
+		width: 25%;
+		height: 100%;
+		margin-left: 2.5%;
+		// padding-top: 10px;
+		// background-color: pink;
+	}
 }
 
-.search {
+.search-form {
 	display: flex;
-	width: 15%;
-	height: 50%;
-	margin-left: 2.5%;
-	margin-top: 3vh;
+	width: 70%;
+	height: 53%;
+	margin-top: 5%;
 	border-radius: 5px;
 	border: 2px solid $blue;
 }
@@ -36,7 +45,7 @@ $blueGray: #ededf2;
 	width: 20px;
 	height: 20px;
 	padding-left: 2%;
-	padding-top: 4%;
+	padding-top: 3%;
 }
 
 .search-input {
@@ -49,22 +58,68 @@ $blueGray: #ededf2;
 }
 
 .list-form {
-	width: 95%;
-	height: 70vh;
-	margin: 2% auto 0 auto;
+	width: 96%;
+	height: 71vh;
+	margin: 0.8% auto 0 2.5%;
+	text-align: center;
 	// background-color: pink;
+}
+
+.post-area {
+	display: flex;
+	width: 100%;
+	height: 8%;
+	justify-content: space-between;
+	// background-color: pink;
+
+	&:hover {
+		cursor: pointer;
+	}
+
+	& + & {
+		margin-top: 1%;
+	}
 }
 
 .post {
 	display: flex;
 	width: 100%;
-	height: 7.6%;
 	background-color: $blueGray;
 	justify-content: space-between;
+}
 
-	& + & {
-		margin-top: 1%;
-	}
+.all-check {
+	display: flex;
+	width: 96%;
+	height: 3vh;
+	margin: 0.5% auto 0 2.5%;
+	// background-color: pink;
+}
+
+.check-label {
+	display: flex;
+	align-items: center;
+	margin-right: 1%;
+	// background-color: antiquewhite;
+}
+
+.check-input {
+	display: none;
+}
+
+.check-box {
+	display: inline-block;
+	width: 15.5px;
+	height: 15.5px;
+	border: 1px solid $blue;
+	box-sizing: border-box;
+	cursor: pointer;
+	background-color: $white;
+	border-radius: 2px;
+}
+
+.check-input:checked ~ .check-box {
+	background: url(../common/icon/checkIcon.png) $blue no-repeat center/10px;
 }
 
 .title-area {
@@ -73,4 +128,12 @@ $blueGray: #ededf2;
 
 .date-area {
 	margin-right: 1%;
+}
+
+.footer {
+	width: 9.9%;
+	// margin-left: auto;
+	// margin-right: auto;
+	margin: 0 auto;
+	// background-color: yellow;
 }

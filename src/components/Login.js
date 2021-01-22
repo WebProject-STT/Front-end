@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Words from '../common/Words';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
-import { useVisibilityDispatch } from '../contexts/VisibilityContext';
+import { useComponentVisibilityDispatch } from '../contexts/ComponentVisibilityContext';
 import useInputs from '../hooks/useInputs';
 import useInputsCorrect from '../hooks/useInputsCorrect';
 import { isEmpty } from '../common/CheckValue';
@@ -14,7 +14,7 @@ import '../styles/Text.scss';
 import { useUserDispatch } from '../contexts/UserContext';
 
 function LogIn() {
-	const visibilityDispatch = useVisibilityDispatch();
+	const visibilityDispatch = useComponentVisibilityDispatch();
 	const userdispatch = useUserDispatch();
 	const [form, onChange] = useInputs({ id: '', password: '' });
 	const { id, password } = form;
@@ -22,9 +22,9 @@ function LogIn() {
 	const { idCorrect, passwordCorrect } = state;
 
 	useEffect(() => {
-		visibilityDispatch({ type: 'HEADER_INVISIBLE' });
+		visibilityDispatch({ type: 'INVISIBLE', name: 'headerVisibility' });
 		return () => {
-			visibilityDispatch({ type: 'HEADER_VISIBLE' });
+			visibilityDispatch({ type: 'VISIBLE', name: 'headerVisibility' });
 		};
 	}, [visibilityDispatch]);
 

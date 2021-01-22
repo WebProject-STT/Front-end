@@ -5,14 +5,14 @@ import Words from '../common/Words';
 import LogoWhite from '../common/icon/LogoWhite.png';
 import LogoBlue from '../common/icon/LogoBlue.png';
 import { useUserState } from '../contexts/UserContext';
-import { useVisibilityState } from '../contexts/VisibilityContext';
+import { useComponentVisibilityState } from '../contexts/ComponentVisibilityContext';
 import HeaderButton from './HeaderButton';
 import '../styles/Header.scss';
 import '../styles/Button.scss';
 
 function Header() {
 	const { userName } = useUserState();
-	const { headerVisibility } = useVisibilityState();
+	const { headerVisibility } = useComponentVisibilityState();
 	const blue = '#1a3270';
 	const white = '#ffffff';
 
