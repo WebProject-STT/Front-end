@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 import Words from '../common/Words';
+import useInputs from '../hooks/useInputs';
 import { categoryNotIncludeAll } from '../common/TempData';
 import '../styles/WritePost.scss';
 import '../styles/Text.scss';
@@ -11,6 +12,8 @@ function OptionData({ categoryName }) {
 
 function AddPost() {
 	const [category, setCategory] = useState(categoryNotIncludeAll[0]);
+	const [form, onChange] = useInputs({ title: '', description: '' });
+	const { title, description } = form;
 
 	const changeHandler = ({ target }) => {
 		setCategory(target.value);
@@ -21,7 +24,7 @@ function AddPost() {
 			<div className={classNames('write', 'input-form')}>
 				<div className={classNames('write', 'input-area')}>
 					<span className={classNames('text', 'bold', 'title')}>{Words.TITLE}</span>
-					<input className={classNames('write', 'input', 'small')} placeholder={Words.ENTER_TITLE} />
+					<input className={classNames('write', 'input', 'small')} name="title" placeholder={Words.ENTER_TITLE} value={title} onChange={onChange} />
 				</div>
 				<div className={classNames('write', 'input-area')}>
 					<span className={classNames('text', 'bold', 'title')}>{Words.TOPIC}</span>
@@ -45,7 +48,7 @@ function AddPost() {
 				</div>
 				<div className={classNames('write', 'input-area')}>
 					<span className={classNames('text', 'bold', 'title')}>{Words.DESCRIPTION}</span>
-					<input className={classNames('write', 'input', 'small')} placeholder={Words.ENTER_DESCRIPTION} />
+					<input className={classNames('write', 'input', 'small')} name="description" placeholder={Words.ENTER_DESCRIPTION} value={description} onChange={onChange} />
 				</div>
 			</div>
 		</div>

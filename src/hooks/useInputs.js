@@ -1,4 +1,5 @@
 import { useReducer, useCallback } from 'react';
+import Words from '../common/Words';
 
 function inputsReducer(state, action) {
 	switch (action.type) {
@@ -16,7 +17,11 @@ export function useInputs(initialForm) {
 	const [form, dispatch] = useReducer(inputsReducer, initialForm);
 	const onChange = useCallback((e) => {
 		const { name, value } = e.target;
-		dispatch({ type: 'CHANGE', name, value });
+		if (name === 'title' && value.length > 20) {
+			alert(Words.LIMIT_TITLE_LENGTH);
+		} else {
+			dispatch({ type: 'CHANGE', name, value });
+		}
 	}, []);
 	return [form, onChange];
 }
