@@ -30,6 +30,7 @@ const Words = {
 	ADD: '작성',
 	DELETE: '삭제',
 	SEARCH: '검색',
+	SELECT: '선택',
 	CANCEL: '취소',
 	ALL_CHECK: '전체선택',
 	PROJECT_NAME: 'S-STT',

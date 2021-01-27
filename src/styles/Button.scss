@@ -89,6 +89,15 @@ $gray: #919191;
 		}
 	}
 
+	&.add-post {
+		&.small {
+			width: 18%;
+			height: 80%;
+			margin-top: 0.8%;
+			left: 1%;
+		}
+	}
+
 	& + & {
 		margin-left: 10px;
 	}

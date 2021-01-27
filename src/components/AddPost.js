@@ -4,6 +4,7 @@ import Words from '../common/Words';
 import useInputs from '../hooks/useInputs';
 import { categoryNotIncludeAll } from '../common/TempData';
 import '../styles/WritePost.scss';
+import '../styles/Button.scss';
 import '../styles/Text.scss';
 
 function OptionData({ categoryName }) {
@@ -12,11 +13,22 @@ function OptionData({ categoryName }) {
 
 function AddPost() {
 	const [category, setCategory] = useState(categoryNotIncludeAll[0]);
+	const [file, setFile] = useState(Words.SELECT_FILE);
 	const [form, onChange] = useInputs({ title: '', description: '' });
 	const { title, description } = form;
 
-	const changeHandler = ({ target }) => {
-		setCategory(target.value);
+	const categoryHandler = (value) => {
+		setCategory(value);
+	};
+
+	const fileHandler = ({ target }) => {
+		const _fileInformation = target.files[0];
+		let _fileName = _fileInformation.name;
+		if (_fileName.length >= 24) {
+			_fileName = _fileName.substring(0, 24);
+			_fileName += '...';
+		}
+		setFile(_fileName);
 	};
 
 	return (
@@ -32,7 +44,7 @@ function AddPost() {
 						<select
 							value={category}
 							onChange={(e) => {
-								changeHandler(e);
+								categoryHandler(e);
 							}}
 						>
 							{categoryNotIncludeAll.map((categoryName, index) => (
@@ -44,7 +56,22 @@ function AddPost() {
 				</div>
 				<div className={classNames('write', 'input-area')}>
 					<span className={classNames('text', 'bold', 'title')}>{Words.FILE}</span>
-					<input className={classNames('write', 'input', 'small')} />
+					<div className={classNames('write', 'input', 'small')}>
+						<div className={classNames('write', 'file-name')}>
+							<span className={classNames('text', 'gray', 'file-name')}>{file}</span>
+						</div>
+						<input
+							type="file"
+							id="select-file"
+							style={{ display: 'none' }}
+							onChange={(e) => {
+								fileHandler(e);
+							}}
+						/>
+						<label className={classNames('button', 'add-post', 'blue', 'small')} htmlFor="select-file">
+							<span className={classNames('text', 'white', 'select')}>{Words.SELECT}</span>
+						</label>
+					</div>
 				</div>
 				<div className={classNames('write', 'input-area')}>
 					<span className={classNames('text', 'bold', 'title')}>{Words.DESCRIPTION}</span>

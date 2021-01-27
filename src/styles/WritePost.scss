@@ -50,6 +50,11 @@ $gray: #c4c4c4;
 		border-width: 8px 5px 0 5px;
 		border-color: $blue transparent transparent transparent;
 	}
+
+	&.file-name {
+		width: 79%;
+		height: 100%;
+	}
 }
 
 select {

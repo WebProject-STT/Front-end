@@ -105,4 +105,15 @@ $red: #ff0000;
 		top: 10%;
 		font-weight: bold;
 	}
+
+	&.select {
+		top: 6%;
+		font-size: 12px;
+	}
+
+	&.file-name {
+		left: 1%;
+		top: 16%;
+		font-size: 13.5px;
+	}
 }
