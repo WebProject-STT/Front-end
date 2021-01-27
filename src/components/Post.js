@@ -1,14 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useCheckedItemsDispatch, useCheckedItemsState } from '../contexts/CheckedItemContext';
-import { useCheckBoxVisibilityState } from '../contexts/CheckBoxVisibilityContext';
-import '../styles/Post.scss';
+import { useCheckStatusState } from '../contexts/CheckStatusContext';
+import '../styles/ViewPost.scss';
 import '../styles/Text.scss';
 
 function Post({ post }) {
 	const { checkedItems } = useCheckedItemsState();
 	const checkedItemsDispatch = useCheckedItemsDispatch();
-	const { checkBoxVisibility } = useCheckBoxVisibilityState();
+	const { checkBoxVisibility } = useCheckStatusState();
 
 	const checkHandler = ({ target }) => {
 		if (target.checked) {
@@ -35,10 +35,10 @@ function Post({ post }) {
 			)}
 			<div className="post">
 				<div className="title-area">
-					<span className={classNames('text', 'post', 'black', 'big')}>{post.title}</span>
+					<span className={classNames('text', 'bold', 'title')}>{post.title}</span>
 				</div>
 				<div className="date-area">
-					<span className={classNames('text', 'post', 'gray', 'small')}>{post.date}</span>
+					<span className={classNames('text', 'gray', 'date')}>{post.date}</span>
 				</div>
 			</div>
 		</div>

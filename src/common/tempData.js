@@ -1,12 +1,13 @@
-const category = ['정치', '경제', '사회', '생활/문화', '세계', 'IT/과학'].sort();
-category.splice(0, 0, '전체');
-export const categoryData = [...category];
+export const categoryNotIncludeAll = ['정치', '경제', '사회', '생활/문화', '세계', 'IT/과학'].sort();
+const categoryTemp = [...categoryNotIncludeAll];
+categoryTemp.splice(0, 0, '전체');
+export const categoryIncludeAll = [...categoryTemp];
 
 export const postsData = [
 	{
 		id: 1,
 		category: 'IT/과학',
-		title: '뉴스기사1',
+		title: 'title1',
 		date: '2021.01.18',
 	},
 	{

@@ -7,12 +7,12 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import CategoryList from './components/CategoryList';
 import PostList from './components/PostList';
+import AddPost from './components/AddPost';
 import { UserProvider } from './contexts/UserContext';
 import { ComponentVisibilityProvider } from './contexts/ComponentVisibilityContext';
-import { CheckBoxVisibilityProvider } from './contexts/CheckBoxVisibilityContext';
+import { CheckStatusProvider } from './contexts/CheckStatusContext';
 import { CategoryProvider } from './contexts/CategoryContext';
 import { CheckedItemsProvider } from './contexts/CheckedItemContext';
-import { IsAllCheckedProvider } from './contexts/IsAllCheckedContext';
 import './styles/App.scss';
 
 const AppProvider = ({ contexts, children }) =>
@@ -26,7 +26,7 @@ const AppProvider = ({ contexts, children }) =>
 
 function App() {
 	return (
-		<AppProvider contexts={[UserProvider, ComponentVisibilityProvider, CheckBoxVisibilityProvider, CategoryProvider, CheckedItemsProvider, IsAllCheckedProvider]}>
+		<AppProvider contexts={[UserProvider, ComponentVisibilityProvider, CheckStatusProvider, CategoryProvider, CheckedItemsProvider]}>
 			<Header />
 			<PrivateRoute path="/" exact component={Home} />
 			<Route path="/login" component={Login} />
@@ -34,6 +34,7 @@ function App() {
 			<div className="app">
 				<CategoryList />
 				<Route path="/postList" component={PostList} />
+				<Route path="/addPost" component={AddPost} />
 			</div>
 		</AppProvider>
 	);

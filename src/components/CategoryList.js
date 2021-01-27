@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import Category from './Category';
 import { useComponentVisibilityState } from '../contexts/ComponentVisibilityContext';
-import { categoryData } from '../common/tempData';
+import { categoryIncludeAll } from '../common/TempData';
 import '../styles/Category.scss';
 
 function CategoryList() {
@@ -14,7 +14,7 @@ function CategoryList() {
 
 	return (
 		<div className="category-list">
-			{categoryData.map((categoryName, index) => (
+			{categoryIncludeAll.map((categoryName, index) => (
 				<Category categoryName={categoryName} key={index} />
 			))}
 		</div>

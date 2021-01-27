@@ -2,20 +2,20 @@ import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import Post from './Post';
 import { useComponentVisibilityDispatch } from '../contexts/ComponentVisibilityContext';
-import { useCheckBoxVisibilityState, useCheckBoxVisibilityDispatch } from '../contexts/CheckBoxVisibilityContext';
+import { useCheckStatusState, useCheckStatusDispatch } from '../contexts/CheckStatusContext';
 import { useCategoryState } from '../contexts/CategoryContext';
 import { useCheckedItemsState, useCheckedItemsDispatch } from '../contexts/CheckedItemContext';
-import { useIsAllCheckedDispatch, useIsAllCheckedState } from '../contexts/IsAllCheckedContext';
 import useInputs from '../hooks/useInputs';
 import Words from '../common/Words';
-import { postsData } from '../common/tempData';
+import { postsData } from '../common/TempData';
 import SearchIcon from '../common/icon/SearchIcon.png';
 import LeftArrow from '../common/icon/LeftArrow.png';
 import RightArrow from '../common/icon/RightArrow.png';
-import '../styles/Post.scss';
+import '../styles/ViewPost.scss';
 import '../styles/Button.scss';
 import '../styles/Text.scss';
-
+import { Link } from 'react-router-dom';
+// postlist-header 컴포넌트화 시킬까 생각중..
 function getPostList(category) {
 	const postList = category === '전체' ? postsData : postsData.filter((post) => post.category === category);
 	return postList;
@@ -24,12 +24,10 @@ function getPostList(category) {
 function PostList() {
 	const { category } = useCategoryState();
 	const { checkedItems } = useCheckedItemsState();
-	const { isAllChecked } = useIsAllCheckedState();
-	const isAllCheckedDispatch = useIsAllCheckedDispatch();
-	const componentVisibilityDispatch = useComponentVisibilityDispatch();
 	const checkedItemsDispatch = useCheckedItemsDispatch();
-	const { checkBoxVisibility } = useCheckBoxVisibilityState();
-	const checkBoxVisibilityDispatch = useCheckBoxVisibilityDispatch();
+	const componentVisibilityDispatch = useComponentVisibilityDispatch();
+	const { checkBoxVisibility, isAllChecked } = useCheckStatusState();
+	const checkStatusDispatch = useCheckStatusDispatch();
 	const [form, onChange] = useInputs({ title: '' });
 	const { title } = form;
 	const postList = getPostList(category);
@@ -43,22 +41,22 @@ function PostList() {
 	}, [componentVisibilityDispatch]);
 
 	const resetCheckedItems = () => {
-		isAllCheckedDispatch({ type: 'NOT_CHECKED' });
+		checkStatusDispatch({ type: 'SET_FALSE', name: 'isAllChecked' });
 		checkedItemsDispatch({ type: 'RESET_ITEM' });
 	};
 
 	const checkBoxHandler = () => {
 		if (checkBoxVisibility) {
-			checkBoxVisibilityDispatch({ type: 'CHECKBOX_INVISIBLE' });
+			checkStatusDispatch({ type: 'SET_FALSE', name: 'checkBoxVisibility' });
 			resetCheckedItems();
 		} else {
-			checkBoxVisibilityDispatch({ type: 'CHECKBOX_VISIBLE' });
+			checkStatusDispatch({ type: 'SET_TRUE', name: 'checkBoxVisibility' });
 		}
 	};
 
 	const allCheckedHandler = ({ target }) => {
 		if (target.checked) {
-			isAllCheckedDispatch({ type: 'CHECKED' });
+			checkStatusDispatch({ type: 'SET_TRUE', name: 'isAllChecked' });
 			postList.map((post) => {
 				if (!checkedItems.includes(post.id)) {
 					checkedItemsDispatch({ type: 'ADD_ITEM', item: post.id });
@@ -103,9 +101,11 @@ function PostList() {
 							<span className={classNames('text', 'blue', 'post-list', 'small')}>{Words.DELETE}</span>
 						</button>
 					) : (
-						<button className={classNames('button', 'post-list', 'white', 'big')}>
-							<span className={classNames('text', 'blue', 'post-list', 'small')}>{Words.ADD}</span>
-						</button>
+						<Link to="/AddPost" className="link">
+							<button className={classNames('button', 'post-list', 'white', 'add')}>
+								<span className={classNames('text', 'blue', 'post-list', 'small')}>{Words.ADD}</span>
+							</button>
+						</Link>
 					)}
 					<button className={classNames('button', 'post-list', 'blue', 'big')} onClick={checkBoxHandler}>
 						<span className={classNames('text', 'white', 'post-list', 'small')}>{checkBoxVisibility ? Words.CANCEL : Words.DELETE}</span>
@@ -126,7 +126,7 @@ function PostList() {
 							/>
 							<span className="check-box"></span>
 						</label>
-						<span className={classNames('text', 'post-list', 'bold')}>{Words.ALL_CHECK}</span>
+						<span className={classNames('text', 'post-list', 'check')}>{Words.ALL_CHECK}</span>
 					</>
 				)}
 			</div>

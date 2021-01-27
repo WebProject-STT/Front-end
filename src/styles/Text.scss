@@ -1,7 +1,6 @@
 $blue: #1a3270;
 $white: #ffffff;
 $gray: #919191;
-$black: #000000;
 $red: #ff0000;
 
 @mixin text-color($color) {
@@ -22,12 +21,14 @@ $red: #ff0000;
 		@include text-color($white);
 	}
 
-	&.black {
-		@include text-color($black);
-	}
-
 	&.gray {
 		@include text-color($gray);
+	}
+
+	&.bold {
+		font-weight: bold;
+		font-size: 18px;
+		line-height: 134.77%;
 	}
 
 	&.user {
@@ -69,9 +70,6 @@ $red: #ff0000;
 	&.category {
 		left: 4%;
 		top: 16%;
-		font-weight: bold;
-		font-size: 18px;
-		line-height: 134.77%;
 	}
 
 	&.post-list {
@@ -81,31 +79,26 @@ $red: #ff0000;
 			line-height: 19px;
 		}
 
-		&.bold {
+		&.check {
 			left: 0.5%;
 			font-weight: bold;
 			font-size: 1.1vw;
 		}
 	}
 
-	&.post {
-		&.small {
-			height: 60%;
-			// left: 75%;
-			margin-right: 2%;
-			top: 26%;
-			font-size: 1.3vw;
-			line-height: 19px;
-		}
+	&.date {
+		height: 60%;
+		// left: 75%;
+		margin-right: 2%;
+		top: 26%;
+		font-size: 1.3vw;
+		line-height: 19px;
+	}
 
-		&.big {
-			height: 60%;
-			top: 15%;
-			margin-left: 1.5%;
-			font-weight: bold;
-			font-size: 20px;
-			line-height: 134.77%;
-		}
+	&.title {
+		height: 60%;
+		top: 19%;
+		// margin-left: 1.5%;
 	}
 
 	&.no-post {
