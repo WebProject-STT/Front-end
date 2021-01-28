@@ -22,6 +22,8 @@ const Words = {
 	SELECT_TOPIC: '주제를 선택해주세요',
 	SELECT_FILE: '파일을 선택해주세요',
 	LIMIT_TITLE_LENGTH: '제목은 20자 이내로 입력해주세요',
+	LIMIT_DESCRIPTION_LENGTH: '설명은 100자 이내로 입력해주세요',
+	MAX_DESCRIPTION_LENGTH: '100자',
 	TITLE: '제목',
 	TOPIC: '주제',
 	FILE: '파일',

@@ -17,9 +17,10 @@ export function useInputs(initialForm) {
 	const [form, dispatch] = useReducer(inputsReducer, initialForm);
 	const onChange = useCallback((e) => {
 		const { name, value } = e.target;
+		console.log(value.length);
 		if (name === 'title' && value.length > 20) {
 			alert(Words.LIMIT_TITLE_LENGTH);
-		} else {
+		} else if (name !== 'description' || value.length <= 100) {
 			dispatch({ type: 'CHANGE', name, value });
 		}
 	}, []);
