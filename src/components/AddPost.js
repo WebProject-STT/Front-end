@@ -13,7 +13,10 @@ function OptionData({ categoryName }) {
 
 function AddPost() {
 	const [category, setCategory] = useState(categoryNotIncludeAll[0]);
-	const [file, setFile] = useState(Words.SELECT_FILE);
+	const [uploadFile, setUploadFile] = useState({
+		fileName: Words.SELECT_FILE,
+	});
+	const { fileName } = uploadFile;
 	const [form, onChange] = useInputs({ title: '', description: '' });
 	const { title, description } = form;
 
@@ -22,13 +25,10 @@ function AddPost() {
 	};
 
 	const fileHandler = ({ target }) => {
-		const _fileInformation = target.files[0];
-		let _fileName = _fileInformation.name;
-		if (_fileName.length >= 24) {
-			_fileName = _fileName.substring(0, 24);
-			_fileName += '...';
-		}
-		setFile(_fileName);
+		const _fileName = target.files[0].name;
+		setUploadFile({
+			fileName: _fileName,
+		});
 	};
 
 	return (
@@ -58,15 +58,16 @@ function AddPost() {
 					<span className={classNames('text', 'bold', 'title')}>{Words.FILE}</span>
 					<div className={classNames('write', 'input', 'small')}>
 						<div className={classNames('write', 'file-name')}>
-							<span className={classNames('text', 'gray', 'file-name')}>{file}</span>
+							<span className={classNames('text', 'gray', 'file-name')}>{fileName}</span>
 						</div>
 						<input
 							type="file"
 							id="select-file"
 							style={{ display: 'none' }}
 							onChange={(e) => {
-								fileHandler(e);
+								e.target.files[0] && fileHandler(e);
 							}}
+							accept=".m4a"
 						/>
 						<label className={classNames('button', 'add-post', 'blue', 'small')} htmlFor="select-file">
 							<span className={classNames('text', 'white', 'select')}>{Words.SELECT}</span>

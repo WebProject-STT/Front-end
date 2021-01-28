@@ -21,7 +21,7 @@ const Words = {
 	SELECT_POST: '삭제할 게시글을 선택해주세요',
 	SELECT_TOPIC: '주제를 선택해주세요',
 	SELECT_FILE: '파일을 선택해주세요',
-	LIMIT_TITLE_LENGTH: '제목은 20자이내로 입력해주세요',
+	LIMIT_TITLE_LENGTH: '제목은 20자 이내로 입력해주세요',
 	TITLE: '제목',
 	TOPIC: '주제',
 	FILE: '파일',

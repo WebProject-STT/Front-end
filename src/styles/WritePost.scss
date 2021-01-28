@@ -54,6 +54,9 @@ $gray: #c4c4c4;
 	&.file-name {
 		width: 79%;
 		height: 100%;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 }
 
