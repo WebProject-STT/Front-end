@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import Words from '../common/Words';
 import useInputs from '../hooks/useInputs';
@@ -25,13 +26,23 @@ function AddPost() {
 		setCategory(value);
 	};
 
-	const fileHandler = ({ target }) => {
-		const _fileInformation = target.files[0];
-		const _fileName = _fileInformation.name;
+	const fileHandler = (selectFile) => {
+		const _fileName = selectFile.name;
 		setUploadFile({
 			fileName: _fileName,
-			fileInformation: _fileInformation,
+			fileInformation: selectFile,
 		});
+	};
+
+	const postData = () => {
+		// api호출하는 코드 작성, 데이터 업로드 성공시 postList로 이동
+	};
+
+	const confirmCancel = (e) => {
+		const isCancel = window.confirm(Words.ASK_ADD_CANCEL);
+		if (!isCancel) {
+			e.preventDefault();
+		}
 	};
 
 	return (
@@ -39,7 +50,7 @@ function AddPost() {
 			<div className={classNames('write', 'input-form')}>
 				<div className={classNames('write', 'input-area', 'small')}>
 					<span className={classNames('text', 'bold', 'title')}>{Words.TITLE}</span>
-					<input type="text" className={classNames('write', 'input', 'small')} name="title" maxLength="20" placeholder={Words.ENTER_TITLE} value={title} onChange={onChange} />
+					<input type="text" className={classNames('write', 'input', 'small')} name="title" placeholder={Words.ENTER_TITLE} value={title} onChange={onChange} />
 				</div>
 				<div className={classNames('write', 'input-area', 'small')}>
 					<span className={classNames('text', 'bold', 'title')}>{Words.TOPIC}</span>
@@ -66,13 +77,13 @@ function AddPost() {
 						<input
 							type="file"
 							id="select-file"
-							style={{ display: 'none' }}
 							onChange={(e) => {
-								e.target.files[0] && fileHandler(e);
+								const selectFile = e.target.files[0];
+								selectFile && fileHandler(selectFile);
 							}}
 							accept=".m4a"
 						/>
-						<label className={classNames('button', 'add-post', 'blue', 'small')} htmlFor="select-file">
+						<label className={classNames('button', 'blue', 'write-post', 'small')} htmlFor="select-file">
 							<span className={classNames('text', 'white', 'select')}>{Words.SELECT}</span>
 						</label>
 					</div>
@@ -88,6 +99,20 @@ function AddPost() {
 								</span>
 							</div>
 						</div>
+					</div>
+				</div>
+				<div className={classNames('write', 'input-area', 'big')}>
+					<div className={classNames('write', 'button-area')}>
+						<Link to="postList" className={classNames('write', 'write-link')} onClick={postData}>
+							<button className={classNames('button', 'white', 'write-post', 'big')}>
+								<span className={classNames('text', 'blue', 'write-post')}>{Words.SAVE}</span>
+							</button>
+						</Link>
+						<Link to="postList" className={classNames('write', 'write-link')} onClick={confirmCancel}>
+							<button className={classNames('button', 'blue', 'write-post', 'big')}>
+								<span className={classNames('text', 'white', 'write-post')}>{Words.CANCEL}</span>
+							</button>
+						</Link>
 					</div>
 				</div>
 			</div>
