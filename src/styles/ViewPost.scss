@@ -5,7 +5,6 @@ $blueGray: #ededf2;
 .view-area {
 	width: 82%;
 	// background-color: palegoldenrod;
-	overflow-y: auto;
 }
 
 .view-header {
@@ -44,6 +43,7 @@ $blueGray: #ededf2;
 
 .post-view {
 	height: 90.5%;
+	overflow-y: auto;
 	background-color: aquamarine;
 }
 

@@ -32,24 +32,24 @@ function ViewPost({ match }) {
 			</div>
 			<div className="post-view">
 				<div className={classNames('view-form', 'small')}>
-					{/* <p>야</p>
-				<p>야</p>
-				<p>야</p>
-				<p>야</p>
-				<p>야</p>
-				<p>야</p>
-				<p>야</p>
-				<p>야</p>
-				<p>야</p>
-				<p>야</p>
-				<p>야</p>
-				<p>야</p>
-				<p>야</p>
-				<p>야</p>
-				<p>야</p>
-				<p>야</p>
-				<p>야</p>
-				<p>야</p> */}
+					<p>야</p>
+					<p>야</p>
+					<p>야</p>
+					<p>야</p>
+					<p>야</p>
+					<p>야</p>
+					<p>야</p>
+					<p>야</p>
+					<p>야</p>
+					<p>야</p>
+					<p>야</p>
+					<p>야</p>
+					<p>야</p>
+					<p>야</p>
+					<p>야</p>
+					<p>야</p>
+					<p>야</p>
+					<p>야</p>
 				</div>
 			</div>
 		</div>
