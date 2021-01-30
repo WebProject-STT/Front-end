@@ -8,6 +8,7 @@ import Signup from './components/Signup';
 import CategoryList from './components/CategoryList';
 import PostList from './components/PostList';
 import AddPost from './components/AddPost';
+import ViewPost from './components/ViewPost';
 import { UserProvider } from './contexts/UserContext';
 import { ComponentVisibilityProvider } from './contexts/ComponentVisibilityContext';
 import { CheckStatusProvider } from './contexts/CheckStatusContext';
@@ -35,6 +36,7 @@ function App() {
 				<CategoryList />
 				<Route path="/postList" component={PostList} />
 				<Route path="/addPost" component={AddPost} />
+				<Route path="/viewPost/:postId" component={ViewPost} />
 			</div>
 		</AppProvider>
 	);

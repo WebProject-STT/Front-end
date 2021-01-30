@@ -18,6 +18,8 @@ const Words = {
 	SELECT: '선택',
 	CANCEL: '취소',
 	ALL_CHECK: '전체선택',
+	CHANGE_FILE: '파일 변경',
+	UPDATE: '수정',
 	PROJECT_NAME: 'S-STT',
 	GOOGLE: 'Google',
 	NAVER: 'Naver',

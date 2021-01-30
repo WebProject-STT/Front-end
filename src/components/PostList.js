@@ -84,9 +84,9 @@ function PostList() {
 	};
 
 	return (
-		<div className="post-list">
-			<div className="list-header">
-				<div className={classNames('list-header', 'search-area')}>
+		<div className="view-area">
+			<div className="view-header">
+				<div className={classNames('view-header', 'search-area')}>
 					<div className="search-form">
 						<img className="search-icon" src={SearchIcon} alt="SearchIcon" />
 						<input className="search-input" name="title" placeholder={Words.SEARCH} value={title} onChange={onChange} />
@@ -95,7 +95,7 @@ function PostList() {
 						<span className={classNames('text', 'white', 'post-list', 'small')}>{Words.SEARCH}</span>
 					</button>
 				</div>
-				<div className={classNames('list-header', 'button-area')}>
+				<div className={classNames('view-header', 'button-area', 'small')}>
 					{checkBoxVisibility ? (
 						<button className={classNames('button', 'post-list', 'white', 'big')} onClick={confirmItemsNull}>
 							<span className={classNames('text', 'blue', 'post-list', 'small')}>{Words.DELETE}</span>
@@ -112,38 +112,40 @@ function PostList() {
 					</button>
 				</div>
 			</div>
-			<div className="all-check">
-				{checkBoxVisibility && (
-					<>
-						<label className="check-label">
-							<input
-								className="check-input"
-								type="checkbox"
-								checked={isAllChecked}
-								onChange={(e) => {
-									allCheckedHandler(e);
-								}}
-							/>
-							<span className="check-box"></span>
-						</label>
-						<span className={classNames('text', 'post-list', 'check')}>{Words.ALL_CHECK}</span>
-					</>
-				)}
-			</div>
-			<div className="list-form">
-				{postList.length === 0 ? (
-					<>
-						<span className={classNames('text', 'no-post')}>{Words.NO_POST}</span>
-						<br />
-						<span className={classNames('text', 'no-post')}>{Words.WRITE_POST}</span>
-					</>
-				) : (
-					postList.map((post) => <Post post={post} key={post.id} />)
-				)}
-			</div>
-			<div className="footer">
-				<img className="left-arrow" src={LeftArrow} alt="LeftArrow" />
-				<img className="right-arrow" src={RightArrow} alt="RightArrow" />
+			<div className="post-view">
+				<div className="all-check">
+					{checkBoxVisibility && (
+						<>
+							<label className="check-label">
+								<input
+									className="check-input"
+									type="checkbox"
+									checked={isAllChecked}
+									onChange={(e) => {
+										allCheckedHandler(e);
+									}}
+								/>
+								<span className="check-box"></span>
+							</label>
+							<span className={classNames('text', 'post-list', 'check')}>{Words.ALL_CHECK}</span>
+						</>
+					)}
+				</div>
+				<div className={classNames('view-form', 'big')}>
+					{postList.length === 0 ? (
+						<>
+							<span className={classNames('text', 'no-post')}>{Words.NO_POST}</span>
+							<br />
+							<span className={classNames('text', 'no-post')}>{Words.WRITE_POST}</span>
+						</>
+					) : (
+						postList.map((post) => <Post post={post} key={post.id} />)
+					)}
+				</div>
+				<div className="footer">
+					<img className="left-arrow" src={LeftArrow} alt="LeftArrow" />
+					<img className="right-arrow" src={RightArrow} alt="RightArrow" />
+				</div>
 			</div>
 		</div>
 	);

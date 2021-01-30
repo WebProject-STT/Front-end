@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import { Link } from 'react-router-dom';
 import { useCheckedItemsDispatch, useCheckedItemsState } from '../contexts/CheckedItemContext';
 import { useCheckStatusState } from '../contexts/CheckStatusContext';
 import '../styles/ViewPost.scss';
@@ -19,7 +20,9 @@ function Post({ post }) {
 	};
 
 	return (
-		<div className="post-area">
+		<Link to={`/viewPost/${post.id}`} className="post-area">
+			{/* <Link to="login" className="post-area"> */}
+			{/* <div className="post-area"> */}
 			{checkBoxVisibility && (
 				<label className="check-label">
 					<input
@@ -41,7 +44,8 @@ function Post({ post }) {
 					<span className={classNames('text', 'gray', 'date')}>{post.date}</span>
 				</div>
 			</div>
-		</div>
+			{/* </div> */}
+		</Link>
 	);
 }
 
