@@ -91,23 +91,23 @@ function PostList() {
 						<img className="search-icon" src={SearchIcon} alt="SearchIcon" />
 						<input className="search-input" name="title" placeholder={Words.SEARCH} value={title} onChange={onChange} />
 					</div>
-					<button className={classNames('button', 'post-list', 'blue', 'small')}>
+					<button className={classNames('button', 'view', 'blue', 'small')}>
 						<span className={classNames('text', 'white', 'post-list', 'small')}>{Words.SEARCH}</span>
 					</button>
 				</div>
 				<div className={classNames('view-header', 'button-area', 'small')}>
 					{checkBoxVisibility ? (
-						<button className={classNames('button', 'post-list', 'white', 'big')} onClick={confirmItemsNull}>
+						<button className={classNames('button', 'view', 'white', 'list')} onClick={confirmItemsNull}>
 							<span className={classNames('text', 'blue', 'post-list', 'small')}>{Words.DELETE}</span>
 						</button>
 					) : (
 						<Link to="/AddPost" className="link">
-							<button className={classNames('button', 'post-list', 'white', 'add')}>
+							<button className={classNames('button', 'view', 'white', 'add')}>
 								<span className={classNames('text', 'blue', 'post-list', 'small')}>{Words.ADD}</span>
 							</button>
 						</Link>
 					)}
-					<button className={classNames('button', 'post-list', 'blue', 'big')} onClick={checkBoxHandler}>
+					<button className={classNames('button', 'view', 'blue', 'list')} onClick={checkBoxHandler}>
 						<span className={classNames('text', 'white', 'post-list', 'small')}>{checkBoxVisibility ? Words.CANCEL : Words.DELETE}</span>
 					</button>
 				</div>

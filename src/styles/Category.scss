@@ -1,14 +1,17 @@
 $blue: #1a3270;
+$white: #ffffff;
 
 .category-list {
-	// position: relative;
+	position: fixed;
+	top: 10%;
 	width: 19vw;
 	height: 90vh;
 	border-right: 2px solid $blue;
+	background-color: $white;
 }
 
 .category {
-	margin-top: 7%;
+	margin-top: 5%;
 	height: 5vh;
 
 	&:hover {

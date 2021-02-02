@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import { Link } from 'react-router-dom';
 import '../styles/Category.scss';
 import '../styles/Text.scss';
 import { useCategoryState, useCategoryDispatch } from '../contexts/CategoryContext';
@@ -20,15 +21,17 @@ function Category({ categoryName }) {
 	};
 
 	return (
-		<div
-			className="category"
-			onClick={() => {
-				selectCategory(categoryName);
-			}}
-			style={{ background: category === categoryName ? blueGray : 'white' }}
-		>
-			<span className={classNames('text', 'bold', 'category')}>{categoryName}</span>
-		</div>
+		<Link to="/postList">
+			<div
+				className="category"
+				onClick={() => {
+					selectCategory(categoryName);
+				}}
+				style={{ background: category === categoryName ? blueGray : 'white' }}
+			>
+				<span className={classNames('text', 'bold', 'category')}>{categoryName}</span>
+			</div>
+		</Link>
 	);
 }
 

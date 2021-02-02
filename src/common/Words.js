@@ -30,7 +30,7 @@ const Words = {
 	ENTER_ID: '아이디를 입력해주세요',
 	ENTER_PASSWORD: '비밀번호를 입력해주세요',
 	ENTER_EMAIL: '이메일을 입력해주세요',
-	ENTER_TITLE: '제목을 입력해주세요 (최대 20자)',
+	ENTER_TITLE: '제목을 입력해주세요',
 	ENTER_DESCRIPTION: '설명을 입력해주세요 (최대 100자)',
 	ID_CONDITION: '5~20자의 알파벳과 숫자만을 이용하여 입력해주세요',
 	PASSWORD_CONDITION: '비밀번호는 8자 이상 입력해주세요',
@@ -43,6 +43,7 @@ const Words = {
 	LIMIT_TITLE_LENGTH: '제목은 20자 이내로 입력해주세요',
 	LIMIT_DESCRIPTION_LENGTH: '설명은 100자 이내로 입력해주세요',
 	MAX_DESCRIPTION_LENGTH: '100자',
+	MAX_TITLE_LENGTH: ' (최대 20자)',
 };
 
 export default Words;

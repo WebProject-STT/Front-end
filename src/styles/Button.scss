@@ -69,23 +69,32 @@ $gray: #919191;
 		}
 	}
 
-	&.post-list {
-		height: 59.5%;
+	&.view {
+		// height: 59.5%;
 
-		&.big {
-			margin-top: 2vh;
+		&.list {
+			margin-top: 6.765%;
 			width: 65%;
+			height: 60%;
+		}
+
+		&.detail {
+			margin-top: 4.325%;
+			width: 65%;
+			height: 60%;
 		}
 
 		&.small {
 			margin-top: 5%;
-			width: 20%;
+			width: 18%;
+			height: 60%;
 			// left: -5%;
 		}
 
 		&.add {
-			width: 91%;
-			margin-top: 13%;
+			width: 89%;
+			height: 60%;
+			margin-top: 12.81%;
 		}
 	}
 

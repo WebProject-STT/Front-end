@@ -68,7 +68,9 @@ function LogIn() {
 				</button>
 				<span className={classNames('text', 'auth', 'go-signup')}>
 					{Words.ASK_MEMBER}
-					<Link to="/signup">{Words.SIGNUP}</Link>
+					<Link to="/signup" style={{ color: 'purple' }}>
+						{Words.SIGNUP}
+					</Link>
 					{Words.GO}
 				</span>
 			</div>

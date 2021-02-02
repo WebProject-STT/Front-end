@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import Words from '../common/Words';
+import { isEmpty } from '../common/CheckValue';
 import useInputs from '../hooks/useInputs';
 import { categoryNotIncludeAll } from '../common/TempData';
 import '../styles/WritePost.scss';
@@ -34,7 +35,22 @@ function AddPost() {
 		});
 	};
 
-	const postData = () => {
+	const getMessage = () => {
+		let message = '';
+		if (isEmpty(title)) {
+			message = Words.ENTER_TITLE;
+		} else if (fileName === Words.SELECT_FILE) {
+			message = Words.SELECT_FILE;
+		}
+		return message;
+	};
+
+	const postData = (e) => {
+		const message = getMessage();
+		if (!isEmpty(message)) {
+			alert(message);
+			e.preventDefault();
+		}
 		// api호출하는 코드 작성, 데이터 업로드 성공시 postList로 이동
 	};
 
@@ -50,7 +66,7 @@ function AddPost() {
 			<div className={classNames('write', 'input-form')}>
 				<div className={classNames('write', 'input-area', 'small')}>
 					<span className={classNames('text', 'bold', 'title')}>{Words.TITLE}</span>
-					<input type="text" className={classNames('write', 'input', 'small')} name="title" placeholder={Words.ENTER_TITLE} value={title} onChange={onChange} />
+					<input type="text" className={classNames('write', 'input', 'small')} name="title" placeholder={Words.ENTER_TITLE + Words.MAX_TITLE_LENGTH} value={title} onChange={onChange} />
 				</div>
 				<div className={classNames('write', 'input-area', 'small')}>
 					<span className={classNames('text', 'bold', 'title')}>{Words.TOPIC}</span>

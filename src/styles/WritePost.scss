@@ -6,9 +6,9 @@ $gray: #c4c4c4;
 	height: 79.5vh;
 
 	&.input-form {
-		width: 60%;
+		width: 55%;
 		height: 100%;
-		margin: 0 auto;
+		margin: 5% auto 0 auto;
 		// background-color: pink;
 		padding-top: 5%;
 	}
@@ -45,8 +45,8 @@ $gray: #c4c4c4;
 
 		&.big {
 			display: block;
-			width: 85%;
-			height: 100%;
+			width: 88%;
+			height: 96%;
 			// left: 0.5%;
 		}
 	}
@@ -82,7 +82,7 @@ $gray: #c4c4c4;
 			height: 100%;
 			// display: inline-block;
 			// margin-right: 1%;
-			margin-left: 86%;
+			margin-left: auto;
 			// margin-bottom: 10%;
 			// background-color: yellow;
 		}
@@ -91,7 +91,7 @@ $gray: #c4c4c4;
 	&.button-area {
 		width: 25%;
 		height: 70%;
-		margin-left: 69.8%;
+		margin-left: 73.8%;
 		margin-top: 2.5%;
 		// background-color: pink;
 	}

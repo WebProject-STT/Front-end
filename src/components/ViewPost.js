@@ -19,38 +19,20 @@ function ViewPost({ match }) {
 		<div className="view-area">
 			<div className="view-header">
 				<div className={classNames('view-header', 'button-area', 'big')}>
-					<button className={classNames('button', 'post-list', 'white', 'big')}>
+					<button className={classNames('button', 'view', 'white', 'detail')}>
 						<span className={classNames('text', 'blue', 'post-list', 'small')}>{Words.CHANGE_FILE}</span>
 					</button>
-					<button className={classNames('button', 'post-list', 'white', 'big')}>
+					<button className={classNames('button', 'view', 'white', 'detail')}>
 						<span className={classNames('text', 'blue', 'post-list', 'small')}>{Words.UPDATE}</span>
 					</button>
-					<button className={classNames('button', 'post-list', 'blue', 'big')}>
+					<button className={classNames('button', 'view', 'blue', 'detail')}>
 						<span className={classNames('text', 'white', 'post-list', 'small')}>{Words.DELETE}</span>
 					</button>
 				</div>
 			</div>
 			<div className="post-view">
-				<div className={classNames('view-form', 'small')}>
-					<p>야</p>
-					<p>야</p>
-					<p>야</p>
-					<p>야</p>
-					<p>야</p>
-					<p>야</p>
-					<p>야</p>
-					<p>야</p>
-					<p>야</p>
-					<p>야</p>
-					<p>야</p>
-					<p>야</p>
-					<p>야</p>
-					<p>야</p>
-					<p>야</p>
-					<p>야</p>
-					<p>야</p>
-					<p>야</p>
-				</div>
+				<div className={classNames('view-form', 'middle')}>{/* <div className={} */}</div>
+				<div className={classNames('view-form', 'small')}></div>
 			</div>
 		</div>
 	);
