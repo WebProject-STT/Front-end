@@ -134,15 +134,24 @@ $red: #ff0000;
 		font-weight: bold;
 	}
 
-	&.select {
+	&.select-small {
 		top: 6%;
 		font-size: 12px;
+	}
+
+	&.select-big {
+		top: 18%;
+		font-size: 15px;
 	}
 
 	&.file-name {
 		left: 1%;
 		top: 16%;
 		font-size: 13.5px;
+		&.change {
+			top: 23%;
+			font-size: 14px;
+		}
 	}
 
 	&.description {
@@ -151,5 +160,11 @@ $red: #ff0000;
 
 	&.write-post {
 		font-size: 1.2vw;
+	}
+
+	&.modal-title {
+		font-size: 1.8vw;
+		margin-left: 2%;
+		margin-top: 5%;
 	}
 }

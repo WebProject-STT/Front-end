@@ -20,6 +20,7 @@ function Contents({ postId }) {
 				</div>
 			</div>
 			<div className={classNames('contents-area')}>
+				{/* keyword 인덱스 span태그에 넣어야됨 */}
 				{keywords.map((keyword) => {
 					return <span className={classNames('text', 'gray', 'post-detail', 'keyword')}>{keyword}</span>;
 				})}

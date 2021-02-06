@@ -100,7 +100,7 @@ function AddPost() {
 							accept=".m4a"
 						/>
 						<label className={classNames('button', 'blue', 'write-post', 'small')} htmlFor="select-file">
-							<span className={classNames('text', 'white', 'select')}>{Words.SELECT}</span>
+							<span className={classNames('text', 'white', 'select-small')}>{Words.SELECT}</span>
 						</label>
 					</div>
 				</div>

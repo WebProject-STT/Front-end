@@ -4,6 +4,8 @@ $white: #ffffff;
 .header {
 	position: fixed;
 	display: flex;
+	z-index: 1;
+	overflow: hidden;
 	justify-content: space-between;
 	width: 100%;
 	height: 10vh;

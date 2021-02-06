@@ -102,7 +102,7 @@ $gray: #919191;
 		&.small {
 			width: 15%;
 			height: 80%;
-			margin-top: 0.9%;
+			margin-top: 1.2%;
 			left: 4%;
 		}
 
@@ -114,5 +114,24 @@ $gray: #919191;
 
 	& + & {
 		margin-left: 10px;
+	}
+
+	&.file-change {
+		&.select {
+			width: 20%;
+			height: 70%;
+			margin-top: 2%;
+		}
+
+		&.confirm {
+			width: 30%;
+			height: 80%;
+			margin-top: 1.4%;
+			// margin-left: 25%;
+		}
+
+		& + & {
+			margin-left: 3%;
+		}
 	}
 }
