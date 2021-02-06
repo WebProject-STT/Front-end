@@ -33,17 +33,17 @@ function PostList() {
 	const postList = getPostList(category);
 	console.log(checkedItems);
 
+	const resetCheckedItems = () => {
+		checkStatusDispatch({ type: 'SET_FALSE', name: 'isAllChecked' });
+		checkedItemsDispatch({ type: 'RESET_ITEM' });
+	};
+
 	useEffect(() => {
 		componentVisibilityDispatch({ type: 'VISIBLE', name: 'categoryVisibility' });
 		return () => {
 			componentVisibilityDispatch({ type: 'INVISIBLE', name: 'categoryVisibility' });
 		};
 	}, [componentVisibilityDispatch]);
-
-	const resetCheckedItems = () => {
-		checkStatusDispatch({ type: 'SET_FALSE', name: 'isAllChecked' });
-		checkedItemsDispatch({ type: 'RESET_ITEM' });
-	};
 
 	const checkBoxHandler = () => {
 		if (checkBoxVisibility) {
