@@ -77,6 +77,10 @@ $red: #ff0000;
 			top: 3%;
 			font-size: 1.2vw;
 			line-height: 19px;
+
+			&#delete {
+				top: 20%;
+			}
 		}
 
 		&.check {
@@ -135,12 +139,12 @@ $red: #ff0000;
 	}
 
 	&.select-small {
-		top: 6%;
+		top: 13%;
 		font-size: 12px;
 	}
 
 	&.select-big {
-		top: 18%;
+		// top: 2%;
 		font-size: 15px;
 	}
 

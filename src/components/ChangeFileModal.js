@@ -46,7 +46,7 @@ function ChangeFileModal({ handleChangeFileModal }) {
 					accept=".m4a"
 				/>
 				<label className={classNames('button', 'blue', 'file-change', 'select')} htmlFor="select-file">
-					<span className={classNames('text', 'white', 'select-big')}>{Words.SELECT}</span>
+					<span className={classNames('text', 'white', 'select-small')}>{Words.SELECT}</span>
 				</label>
 			</div>
 			<div className="change-button">

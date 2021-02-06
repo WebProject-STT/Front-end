@@ -55,8 +55,8 @@ function AddPost() {
 	};
 
 	const confirmCancel = (e) => {
-		const isCancel = window.confirm(Words.ASK_ADD_CANCEL);
-		if (!isCancel) {
+		const isConfirm = window.confirm(Words.ASK_ADD_CANCEL);
+		if (!isConfirm) {
 			e.preventDefault();
 		}
 	};

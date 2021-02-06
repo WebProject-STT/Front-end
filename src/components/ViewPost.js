@@ -33,6 +33,15 @@ function ViewPost({ match }) {
 		setIsChangeFileModalOn(!isChangeFileModalOn);
 	};
 
+	const deletePost = (e) => {
+		const isConfirm = window.confirm(Words.ASK_DELETE_POST);
+		if (isConfirm) {
+			// api호출해서 해당 게시글 삭제
+		} else {
+			e.preventDefault();
+		}
+	};
+
 	return (
 		<div className="view-area">
 			<div className="view-header">
@@ -45,9 +54,11 @@ function ViewPost({ match }) {
 					<Link to={`/updatePost/${postId}`} className={classNames('button', 'view', 'white', 'detail')} id="update">
 						<span className={classNames('text', 'blue', 'post-list', 'small')}>{Words.UPDATE}</span>
 					</Link>
-					<button className={classNames('button', 'view', 'blue', 'detail')}>
-						<span className={classNames('text', 'white', 'post-list', 'small')}>{Words.DELETE}</span>
-					</button>
+					<Link to="/postList" className={classNames('button', 'view', 'blue', 'detail')} onClick={deletePost}>
+						<span className={classNames('text', 'white', 'post-list', 'small')} id="delete">
+							{Words.DELETE}
+						</span>
+					</Link>
 				</div>
 			</div>
 			<div className="post-view">

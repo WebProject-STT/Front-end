@@ -68,8 +68,8 @@ function PostList() {
 	};
 
 	const confirmDelete = () => {
-		const confirmFlag = window.confirm(Words.ASK_POST_DELETE);
-		if (confirmFlag) {
+		const isConfirm = window.confirm(Words.ASK_DELETE_POSTS);
+		if (isConfirm) {
 			resetCheckedItems();
 		}
 	};
