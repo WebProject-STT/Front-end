@@ -9,6 +9,7 @@ const Words = {
 	TITLE: '제목',
 	TOPIC: '주제',
 	FILE: '파일',
+	ORIGIN: '원본',
 	DESCRIPTION: '설명',
 	GO: ' 하러가기',
 	ADD: '작성',

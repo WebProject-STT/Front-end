@@ -47,7 +47,7 @@ function LogIn() {
 	return (
 		<div className="auth">
 			<div className="auth-form">
-				<input className="input" name="id" placeholder={Words.ENTER_ID} value={id} onChange={onChange} />
+				<input className="input" name="id" placeholder={Words.ENTER_ID} value={id} maxLength="20" onChange={onChange} />
 				{idCorrect === 0 && <div className={classNames('text', 'auth', 'error-message')}>{Words.ENTER_ID}</div>}
 				<input className="input" type="password" name="password" placeholder={Words.ENTER_PASSWORD} value={password} onChange={onChange} />
 				{passwordCorrect === 0 && <div className={classNames('text', 'auth', 'error-message')}>{Words.ENTER_PASSWORD}</div>}

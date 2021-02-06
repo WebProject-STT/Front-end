@@ -28,7 +28,7 @@ function Signup() {
 	return (
 		<div className="auth">
 			<div className="auth-form">
-				<input className="input" name="id" placeholder={Words.ENTER_ID} value={id} onChange={onChange} onBlur={() => checkInput('idCorrect', id)} />
+				<input className="input" name="id" placeholder={Words.ENTER_ID} value={id} maxLength="20" onChange={onChange} onBlur={() => checkInput('idCorrect', id)} />
 				{idCorrect < 3 && (
 					<>
 						<div className={classNames('text', 'auth', 'error-message')} style={{ color: idCorrect === 1 ? 'green' : 'red' }}>

@@ -3,9 +3,11 @@ import classNames from 'classnames';
 import { useComponentVisibilityDispatch } from '../contexts/ComponentVisibilityContext';
 import Words from '../common/Words';
 import '../styles/ViewPost.scss';
+import Contents from './Contents';
 
 function ViewPost({ match }) {
 	const { postId } = match.params;
+	const postIdNum = parseInt(postId);
 	const componentVisibilityDispatch = useComponentVisibilityDispatch();
 
 	useEffect(() => {
@@ -31,7 +33,9 @@ function ViewPost({ match }) {
 				</div>
 			</div>
 			<div className="post-view">
-				<div className={classNames('view-form', 'middle')}>{/* <div className={} */}</div>
+				<div className={classNames('view-form', 'middle')}>
+					<Contents postId={postIdNum} />
+				</div>
 				<div className={classNames('view-form', 'small')}></div>
 			</div>
 		</div>

@@ -85,8 +85,8 @@ $blueGray: #ededf2;
 
 .view-form {
 	width: 96%;
-	text-align: center;
-	background-color: pink;
+	// text-align: center;
+	// background-color: pink;
 
 	&.small {
 		height: 16vh;
@@ -130,6 +130,21 @@ $blueGray: #ededf2;
 	width: 100%;
 	background-color: $blueGray;
 	justify-content: space-between;
+}
+
+.contents-area {
+	// background-color: beige;
+
+	&.title {
+		display: flex;
+		// height: 20%;
+		justify-content: space-between;
+	}
+
+	&.big {
+		display: inline-block;
+		margin-top: 1%;
+	}
 }
 
 .all-check {
