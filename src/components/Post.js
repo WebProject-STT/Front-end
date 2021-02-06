@@ -21,8 +21,6 @@ function Post({ post }) {
 
 	return (
 		<Link to={`/viewPost/${post.id}`} className="post-area">
-			{/* <Link to="login" className="post-area"> */}
-			{/* <div className="post-area"> */}
 			{checkBoxVisibility && (
 				<label className="check-label">
 					<input
@@ -37,14 +35,13 @@ function Post({ post }) {
 				</label>
 			)}
 			<div className="post">
-				<div className="title-area">
-					<span className={classNames('text', 'bold', 'title')}>{post.title}</span>
-				</div>
+				{/* <div className="title-area"> */}
+				<span className={classNames('text', 'bold', 'title')}>{post.title}</span>
+				{/* </div> */}
 				<div className="date-area">
 					<span className={classNames('text', 'gray', 'date')}>{post.date}</span>
 				</div>
 			</div>
-			{/* </div> */}
 		</Link>
 	);
 }

@@ -12,9 +12,9 @@ function Contents({ postId }) {
 	return (
 		<>
 			<div className={classNames('contents-area', 'title')}>
-				<div className={classNames('title-area')}>
-					<span className={classNames('text', 'bold', 'post-detail', 'title')}>{title}</span>
-				</div>
+				{/* <div className={classNames('title-area')}> */}
+				<span className={classNames('text', 'bold', 'post-detail', 'title')}>{title}</span>
+				{/* </div> */}
 				<div className={classNames('date-area')}>
 					<span className={classNames('text', 'post-detail', 'date')}>{date}</span>
 				</div>

@@ -130,6 +130,7 @@ $blueGray: #ededf2;
 	width: 100%;
 	background-color: $blueGray;
 	justify-content: space-between;
+	padding-left: 1%;
 }
 
 .contents-area {
@@ -181,9 +182,9 @@ $blueGray: #ededf2;
 	background: url(../common/icon/checkIcon.png) $blue no-repeat center/10px;
 }
 
-.title-area {
-	margin-left: 1%;
-}
+// .title-area {
+// 	// margin-left: 1%;
+// }
 
 .date-area {
 	margin-right: 1%;
