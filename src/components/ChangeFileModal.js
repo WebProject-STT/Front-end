@@ -6,7 +6,7 @@ import '../styles/FileModal.scss';
 import '../styles/Button.scss';
 import '../styles/Text.scss';
 
-function ChangeFile({ handleChangeFileModal }) {
+function ChangeFileModal({ handleChangeFileModal }) {
 	const [uploadFile, setUploadFile] = useState({
 		fileName: Words.SELECT_FILE,
 		fileInformation: null,
@@ -50,15 +50,15 @@ function ChangeFile({ handleChangeFileModal }) {
 				</label>
 			</div>
 			<div className="change-button">
-				<div className={classNames('button', 'white', 'file-change', 'confirm')} onClick={changeFile}>
+				<button className={classNames('button', 'white', 'file-change', 'confirm')} onClick={changeFile}>
 					<span className={classNames('text', 'blue', 'select-big')}>{Words.UPDATE}</span>
-				</div>
-				<div className={classNames('button', 'blue', 'file-change', 'confirm')} onClick={handleChangeFileModal}>
+				</button>
+				<button className={classNames('button', 'blue', 'file-change', 'confirm')} onClick={handleChangeFileModal}>
 					<span className={classNames('text', 'white', 'select-big')}>{Words.CANCEL}</span>
-				</div>
+				</button>
 			</div>
 		</div>
 	);
 }
 
-export default ChangeFile;
+export default ChangeFileModal;

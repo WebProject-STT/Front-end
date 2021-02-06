@@ -28,6 +28,7 @@ function Contents({ postId }) {
 			<div className={classNames('contents-area')}>
 				<span className={classNames('text', 'post-detail')}>{description}</span>
 			</div>
+				{/* subjects 인덱스 div와 span태그에 넣어야됨 */}
 			{subjects.map((subject) => {
 				return (
 					<div className={classNames('contents-area', 'big')}>

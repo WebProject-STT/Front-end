@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
+import { Link } from 'react-router-dom';
 import { useComponentVisibilityDispatch } from '../contexts/ComponentVisibilityContext';
 import Words from '../common/Words';
-import ChangeFile from './ChangeFile';
+import ChangeFileModal from './ChangeFileModal';
+import UpdatePost from './UpdatePost';
 import '../styles/ViewPost.scss';
 import Contents from './Contents';
 import LeftArrow from '../common/icon/LeftArrow.png';
@@ -40,9 +42,9 @@ function ViewPost({ match }) {
 							{Words.CHANGE_FILE}
 						</span>
 					</button>
-					<button className={classNames('button', 'view', 'white', 'detail')}>
+					<Link to={`/updatePost/${postId}`} className={classNames('button', 'view', 'white', 'detail')} id="update">
 						<span className={classNames('text', 'blue', 'post-list', 'small')}>{Words.UPDATE}</span>
-					</button>
+					</Link>
 					<button className={classNames('button', 'view', 'blue', 'detail')}>
 						<span className={classNames('text', 'white', 'post-list', 'small')}>{Words.DELETE}</span>
 					</button>
@@ -58,7 +60,7 @@ function ViewPost({ match }) {
 					<img className="right-arrow" src={RightArrow} alt="RightArrow" />
 				</div>
 			</div>
-			{isChangeFileModalOn && <ChangeFile handleChangeFileModal={handleChangeFileModal}></ChangeFile>}
+			{isChangeFileModalOn && <ChangeFileModal handleChangeFileModal={handleChangeFileModal}></ChangeFileModal>}
 		</div>
 	);
 }
