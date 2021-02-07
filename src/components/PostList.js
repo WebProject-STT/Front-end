@@ -7,7 +7,7 @@ import { useCategoryState } from '../contexts/CategoryContext';
 import { useCheckedItemsState, useCheckedItemsDispatch } from '../contexts/CheckedItemContext';
 import useInputs from '../hooks/useInputs';
 import Words from '../common/Words';
-import { postsData } from '../common/TempData';
+import { getPostList } from '../common/getInformation';
 import SearchIcon from '../common/icon/SearchIcon.png';
 import LeftArrow from '../common/icon/LeftArrow.png';
 import RightArrow from '../common/icon/RightArrow.png';
@@ -16,10 +16,6 @@ import '../styles/Button.scss';
 import '../styles/Text.scss';
 import { Link } from 'react-router-dom';
 // postlist-header 컴포넌트화 시킬까 생각중..
-function getPostList(category) {
-	const postList = category === '전체' ? postsData : postsData.filter((post) => post.category === category);
-	return postList;
-}
 
 function PostList() {
 	const { category } = useCategoryState();
@@ -112,7 +108,7 @@ function PostList() {
 					</button>
 				</div>
 			</div>
-			<div className="post-view">
+			<div className={classNames('post-view', 'list')}>
 				<div className="all-check">
 					{checkBoxVisibility && (
 						<>
@@ -139,7 +135,7 @@ function PostList() {
 							<span className={classNames('text', 'no-post')}>{Words.WRITE_POST}</span>
 						</>
 					) : (
-						postList.map((post) => <Post post={post} key={post.id} />)
+						postList.map((post) => <Post post={post} isDetail={false} key={post.id} />)
 					)}
 				</div>
 				<div className="footer">

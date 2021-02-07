@@ -4,10 +4,10 @@ $blueGray: #ededf2;
 
 .view-area {
 	margin-left: 19.2vw;
-	margin-top: 10vh;
 	width: 81%;
+	margin-top: 10vh;
 	// height: auto;
-	// background-color: palegoldenrod;
+	// background-color: pink;
 }
 
 .view-header {
@@ -81,9 +81,23 @@ $blueGray: #ededf2;
 	// z-index: 0;
 	// position: relative;
 	min-height: 90.5%;
-	margin-top: 6.5%;
 	height: auto;
 	// background-color: aquamarine;
+	&.list {
+		margin-top: 6.5%;
+	}
+	&.detail {
+		margin-top: 9vh;
+	}
+}
+
+.detail-list {
+	width: 96%;
+	height: 21vh;
+	border: 2px solid $blue;
+	box-sizing: border-box;
+	border-radius: 8px;
+	margin: 1% auto 0 auto;
 }
 
 .view-form {
@@ -92,21 +106,21 @@ $blueGray: #ededf2;
 	// background-color: pink;
 
 	&.small {
-		height: 16vh;
-		border: 2px solid $blue;
-		box-sizing: border-box;
-		border-radius: 8px;
-		background-color: yellowgreen;
-		margin: 1% auto 0 auto;
+		width: 98%;
+		margin: 0 auto;
+		padding-top: 0.3%;
+		// background-color: yellowgreen;
 	}
 
 	&.middle {
 		margin: 0 auto;
-		min-height: 56vh;
+		min-height: 53vh;
 		height: auto;
+		// background-color: wheat;
 	}
 
 	&.big {
+		text-align: center;
 		height: 71vh;
 		margin: 0.8% auto 0 2.5%;
 	}
@@ -118,6 +132,10 @@ $blueGray: #ededf2;
 	height: 8%;
 	justify-content: space-between;
 	// background-color: pink;
+
+	&.detail + &.detail {
+		margin-top: 0.3%;
+	}
 
 	&:hover {
 		cursor: pointer;
@@ -131,9 +149,13 @@ $blueGray: #ededf2;
 .post {
 	display: flex;
 	width: 100%;
-	background-color: $blueGray;
 	justify-content: space-between;
-	padding-left: 1%;
+	// background-color: pink;
+
+	&.list {
+		padding-left: 1%;
+		background-color: $blueGray;
+	}
 }
 
 .contents-area {
@@ -202,4 +224,11 @@ $blueGray: #ededf2;
 a {
 	color: inherit;
 	text-decoration: none;
+}
+
+.detail-category {
+	width: 98%;
+	height: 23%;
+	margin-left: 1%;
+	border-bottom: 2px solid $blue;
 }

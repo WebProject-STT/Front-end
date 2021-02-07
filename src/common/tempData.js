@@ -24,7 +24,7 @@ export const postsData = [
 	},
 	{
 		id: 4,
-		category: '경제',
+		category: 'IT/과학',
 		title: 'title4',
 		date: '2021.01.18',
 	},
