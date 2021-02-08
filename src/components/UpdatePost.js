@@ -73,7 +73,17 @@ function UpdatePost({ match }) {
 				</div>
 				<div className={classNames('write', 'input-area', 'small')}>
 					<span className={classNames('text', 'bold', 'title')}>{Words.KEYWORD}</span>
-					<input type="text" className={classNames('write', 'input', 'small', 'keyword')} name="keywords" placeholder={Words.ENTER_KEYWORD} value={keywords} onChange={onChange} />
+					<input
+						type="text"
+						className={classNames('write', 'input', 'small', 'keyword')}
+						name="keywords"
+						placeholder={Words.ENTER_KEYWORD}
+						value={keywords}
+						onFocus={(e) => {
+							onChange(e, 0, '', true);
+						}}
+						onChange={onChange}
+					/>
 				</div>
 				<div className={classNames('write', 'input-area', 'middle')}>
 					<span className={classNames('text', 'bold', 'title')}>{Words.DESCRIPTION}</span>
