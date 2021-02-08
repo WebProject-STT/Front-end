@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import useInputs from '../hooks/useInputs';
 import { contentsData, categoryNotIncludeAll } from '../common/TempData';
 import Words from '../common/Words';
+import { isEmpty } from '../common/CheckValue';
 import '../styles/WritePost.scss';
 
 function UpdatePost({ match }) {
@@ -29,15 +30,15 @@ function UpdatePost({ match }) {
 	};
 
 	const postData = (e) => {
+		if (isEmpty(title)) {
+			alert(Words.ENTER_TITLE);
+			e.preventDefault();
+		}
 		// api호출하는 코드 작성, 데이터 업로드 성공시 postList로 이동
-		// if (!isEmpty(message)) {
-		// 	alert(message);
-		// 	e.preventDefault();
-		// }
 	};
 
 	const confirmCancel = (e) => {
-		const isConfirm = window.confirm(Words.ASK_UPDATE_CANCEL);
+		const isConfirm = window.confirm(Words.ASK_ADD_CANCEL);
 		if (!isConfirm) {
 			e.preventDefault();
 		}
@@ -127,12 +128,12 @@ function UpdatePost({ match }) {
 				</div>
 				<div className={classNames('write', 'input-area', 'small', 'update')}>
 					<div className={classNames('write', 'button-area')}>
-						<Link to="/postList" className={classNames('write', 'write-link')} onClick={postData}>
+						<Link to={`/viewPost/${postIdNum}`} className={classNames('write', 'write-link')} onClick={postData}>
 							<button className={classNames('button', 'white', 'write-post', 'big')}>
 								<span className={classNames('text', 'blue', 'write-post')}>{Words.UPDATE}</span>
 							</button>
 						</Link>
-						<Link to="/postList" className={classNames('write', 'write-link')} onClick={confirmCancel}>
+						<Link to={`/viewPost/${postIdNum}`} className={classNames('write', 'write-link')} onClick={confirmCancel}>
 							<button className={classNames('button', 'blue', 'write-post', 'big')}>
 								<span className={classNames('text', 'white', 'write-post')}>{Words.CANCEL}</span>
 							</button>

@@ -18,10 +18,10 @@ function Contents({ contents }) {
 			</div>
 			<div className={classNames('contents-area')}>
 				{/* keyword 인덱스 span태그에 넣어야됨 */}
-				{ct_keywords.map((keyword, index) => {
+				{ct_keywords.map((keyword) => {
 					return (
-						<span className={classNames('text', 'gray', 'post-detail', 'keyword')} key={index}>
-							{keyword}
+						<span className={classNames('text', 'gray', 'post-detail', 'keyword')} key={keyword.tag_id}>
+							{keyword.tag_name}
 						</span>
 					);
 				})}

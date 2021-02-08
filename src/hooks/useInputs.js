@@ -24,10 +24,13 @@ export function useInputs(initialForm) {
 		(e, sum_id = 0, element_name = '') => {
 			const { name, value } = e.target;
 			const length = value.length;
+			console.log(value);
 			if (name === 'title' && length > 20) {
 				alert(Words.LIMIT_TITLE_LENGTH);
 			} else if (name === 'subjects') {
 				dispatch({ type: 'CHANGE_SUBJECT', sum_id, element_name, value });
+			} else if (name === 'keywords' && e.nativeEvent.data === ' ') {
+				dispatch({ type: 'CHANGE', name, value: value + '#' });
 			} else if (name !== 'description' || length <= 100) {
 				dispatch({ type: 'CHANGE', name, value });
 			}
