@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { useComponentVisibilityDispatch } from '../contexts/ComponentVisibilityContext';
-import { useCategoryState } from '../contexts/CategoryContext';
 import Words from '../common/Words';
 import { contentsData, postsData } from '../common/TempData';
 import { getPostList } from '../common/getInformation';
@@ -25,7 +24,7 @@ function ViewPost({ match }) {
 	const componentVisibilityDispatch = useComponentVisibilityDispatch();
 	const [isChangeFileModalOn, setIsChangeFileModalOn] = useState(false);
 	// 일단은 배열에서 find 찾지만 api적용하면 바로 데이터 하나만 받아올 수 있음
-	const contents = contentsData.find((x) => x.id === postIdNum);
+	const contents = contentsData.find((x) => x.ct_id === postIdNum);
 	// 컨텐츠db에서 한번에 받아오도록 변경해야됨
 	const { category } = postsData.find((x) => x.id === postIdNum);
 	const postList = getPostList(category);

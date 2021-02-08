@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import Category from './Category';
 import { useComponentVisibilityState } from '../contexts/ComponentVisibilityContext';
 import { categoryIncludeAll } from '../common/TempData';

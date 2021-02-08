@@ -3,6 +3,11 @@ import Words from '../common/Words';
 
 function inputsReducer(state, action) {
 	switch (action.type) {
+		case 'CHANGE_SUBJECT':
+			return {
+				...state,
+				subjects: state.subjects.map((subject) => (subject.sum_id === action.sum_id ? { ...subject, [action.element_name]: action.value } : subject)),
+			};
 		case 'CHANGE':
 			return {
 				...state,
@@ -15,15 +20,21 @@ function inputsReducer(state, action) {
 
 export function useInputs(initialForm) {
 	const [form, dispatch] = useReducer(inputsReducer, initialForm);
-	const onChange = useCallback((e) => {
-		const { name, value } = e.target;
-		console.log(value.length);
-		if (name === 'title' && value.length > 20) {
-			alert(Words.LIMIT_TITLE_LENGTH);
-		} else if (name !== 'description' || value.length <= 100) {
-			dispatch({ type: 'CHANGE', name, value });
-		}
-	}, []);
+	const onChange = useCallback(
+		(e, sum_id = 0, element_name = '') => {
+			const { name, value } = e.target;
+			const length = value.length;
+			if (name === 'title' && length > 20) {
+				alert(Words.LIMIT_TITLE_LENGTH);
+			} else if (name === 'subjects') {
+				dispatch({ type: 'CHANGE_SUBJECT', sum_id, element_name, value });
+			} else if (name !== 'description' || length <= 100) {
+				dispatch({ type: 'CHANGE', name, value });
+			}
+		},
+		[dispatch]
+	);
+
 	return [form, onChange];
 }
 

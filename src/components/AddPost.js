@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import Words from '../common/Words';
@@ -8,10 +8,6 @@ import { categoryNotIncludeAll } from '../common/TempData';
 import '../styles/WritePost.scss';
 import '../styles/Button.scss';
 import '../styles/Text.scss';
-
-function OptionData({ categoryName }) {
-	return <option value={categoryName}>{categoryName}</option>;
-}
 
 function AddPost() {
 	const [category, setCategory] = useState(categoryNotIncludeAll[0]);
@@ -63,23 +59,27 @@ function AddPost() {
 
 	return (
 		<div className="write">
-			<div className={classNames('write', 'input-form')}>
+			<div className={classNames('write', 'input-form', 'add')}>
 				<div className={classNames('write', 'input-area', 'small')}>
 					<span className={classNames('text', 'bold', 'title')}>{Words.TITLE}</span>
 					<input type="text" className={classNames('write', 'input', 'small')} name="title" placeholder={Words.ENTER_TITLE + Words.MAX_TITLE_LENGTH} value={title} onChange={onChange} />
 				</div>
 				<div className={classNames('write', 'input-area', 'small')}>
-					<span className={classNames('text', 'bold', 'title')}>{Words.TOPIC}</span>
-					<div className={classNames('write', 'input', 'small')}>
+					<span className={classNames('text', 'bold', 'title')}>{Words.CATEGORY}</span>
+					<div className={classNames('write', 'input', 'small', 'category')}>
 						<select
 							value={category}
 							onChange={(e) => {
 								categoryHandler(e.target.value);
 							}}
 						>
-							{categoryNotIncludeAll.map((categoryName, index) => (
-								<OptionData categoryName={categoryName} key={index} />
-							))}
+							{categoryNotIncludeAll.map((categoryName, index) => {
+								return (
+									<option value={categoryName} key={index}>
+										{categoryName}
+									</option>
+								);
+							})}
 						</select>
 						<div className={classNames('write', 'select-arrow')} />
 					</div>
@@ -104,7 +104,7 @@ function AddPost() {
 						</label>
 					</div>
 				</div>
-				<div className={classNames('write', 'input-area', 'big')}>
+				<div className={classNames('write', 'input-area', 'middle')}>
 					<span className={classNames('text', 'bold', 'title')}>{Words.DESCRIPTION}</span>
 					<div className={classNames('write', 'input', 'big')}>
 						<textarea type="text" name="description" placeholder={Words.ENTER_DESCRIPTION} value={description} onChange={onChange} />
@@ -117,14 +117,14 @@ function AddPost() {
 						</div>
 					</div>
 				</div>
-				<div className={classNames('write', 'input-area', 'big')}>
+				<div className={classNames('write', 'input-area', 'small')}>
 					<div className={classNames('write', 'button-area')}>
-						<Link to="postList" className={classNames('write', 'write-link')} onClick={postData}>
+						<Link to="/postList" className={classNames('write', 'write-link')} onClick={postData}>
 							<button className={classNames('button', 'white', 'write-post', 'big')}>
 								<span className={classNames('text', 'blue', 'write-post')}>{Words.SAVE}</span>
 							</button>
 						</Link>
-						<Link to="postList" className={classNames('write', 'write-link')} onClick={confirmCancel}>
+						<Link to="/postList" className={classNames('write', 'write-link')} onClick={confirmCancel}>
 							<button className={classNames('button', 'blue', 'write-post', 'big')}>
 								<span className={classNames('text', 'white', 'write-post')}>{Words.CANCEL}</span>
 							</button>
