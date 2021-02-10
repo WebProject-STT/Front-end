@@ -24,10 +24,9 @@ function PostList() {
 	const componentVisibilityDispatch = useComponentVisibilityDispatch();
 	const { checkBoxVisibility, isAllChecked } = useCheckStatusState();
 	const checkStatusDispatch = useCheckStatusDispatch();
-	const [form, onChange] = useInputs({ title: '' });
-	const { title } = form;
+	const [form, onChange] = useInputs({ search: '' });
+	const { search } = form;
 	const postList = getPostList(category);
-	console.log(checkedItems);
 
 	const resetCheckedItems = () => {
 		checkStatusDispatch({ type: 'SET_FALSE', name: 'isAllChecked' });
@@ -85,11 +84,11 @@ function PostList() {
 				<div className={classNames('view-header', 'search-area')}>
 					<div className="search-form">
 						<img className="search-icon" src={SearchIcon} alt="SearchIcon" />
-						<input className="search-input" name="title" placeholder={Words.SEARCH} value={title} onChange={onChange} />
+						<input className="search-input" name="search" placeholder={Words.SEARCH} value={search} onChange={onChange} />
 					</div>
-					<button className={classNames('button', 'view', 'blue', 'small')}>
+					{/* <button className={classNames('button', 'view', 'blue', 'small')}>
 						<span className={classNames('text', 'white', 'post-list', 'small')}>{Words.SEARCH}</span>
-					</button>
+					</button> */}
 				</div>
 				<div className={classNames('view-header', 'button-area', 'small')}>
 					{checkBoxVisibility ? (
@@ -128,15 +127,16 @@ function PostList() {
 					)}
 				</div>
 				<div className={classNames('view-form', 'big')}>
-					{postList.length === 0 ? (
+					{postList.length === 0 && (
 						<>
 							<span className={classNames('text', 'no-post')}>{Words.NO_POST}</span>
 							<br />
 							<span className={classNames('text', 'no-post')}>{Words.WRITE_POST}</span>
 						</>
-					) : (
-						postList.map((post) => <Post post={post} isDetail={false} key={post.id} />)
 					)}
+					{search === ''
+						? postList.map((post) => <Post post={post} isDetail={false} key={post.id} />)
+						: postList.filter((post) => post.title.includes(search)).map((post) => <Post post={post} isDetail={false} key={post.id} />)}
 				</div>
 				<div className="footer">
 					<img className="left-arrow" src={LeftArrow} alt="LeftArrow" />

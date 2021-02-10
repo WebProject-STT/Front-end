@@ -12,7 +12,7 @@ function Post({ post, isDetail, currentPostId }) {
 	const { checkBoxVisibility } = useCheckStatusState();
 	const { id, title, date } = post;
 	const blueGray = '#ededf2';
-	console.log(isDetail);
+
 	const checkHandler = ({ target }) => {
 		if (target.checked) {
 			checkedItemsDispatch({ type: 'ADD_ITEM', item: id });
