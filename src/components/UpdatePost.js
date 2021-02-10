@@ -28,7 +28,8 @@ function UpdatePost({ match }) {
 	const categoryHandler = (value) => {
 		setCategory(value);
 	};
-
+	// postData와 confirmCancel은 AddPost와 중복되므로 common에 작성
+	// postData함수명 변경해서 빈값만 확인하고 api호출은 컴포넌트에서 하도록 함
 	const postData = (e) => {
 		if (isEmpty(title)) {
 			alert(Words.ENTER_TITLE);
@@ -42,6 +43,20 @@ function UpdatePost({ match }) {
 		if (!isConfirm) {
 			e.preventDefault();
 		}
+	};
+
+	const checkCorrectKeywords = () => {
+		const splitKeyWords = keywords.split(' ');
+		console.log(splitKeyWords);
+		const length = splitKeyWords.length;
+		let alertText = '';
+		if (length > 30) {
+			alertText = Words.LIMIT_KEYWORDS_NUMBER;
+		} else if (splitKeyWords.indexOf(splitKeyWords[length - 1]) !== length - 1) {
+			alertText = `'${splitKeyWords[length - 1]}' ${Words.DUPLICATE_KEYWORDS}`;
+		}
+		alertText !== '' && alert(alertText);
+		return alertText;
 	};
 
 	return (
@@ -80,9 +95,20 @@ function UpdatePost({ match }) {
 						placeholder={Words.ENTER_KEYWORD}
 						value={keywords}
 						onFocus={(e) => {
-							onChange(e, 0, '', true);
+							if (checkCorrectKeywords() === '') {
+								onChange(e, 0, '', true);
+							}
 						}}
-						onChange={onChange}
+						onChange={(e) => {
+							const isSpace = e.nativeEvent.data === ' ' ? true : false;
+							if (isSpace) {
+								if (checkCorrectKeywords() === '') {
+									onChange(e, 0, '', false, isSpace);
+								}
+							} else {
+								onChange(e, 0, '', false, isSpace);
+							}
+						}}
 					/>
 				</div>
 				<div className={classNames('write', 'input-area', 'middle')}>

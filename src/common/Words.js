@@ -32,6 +32,7 @@ const Words = {
 	ASK_DELETE_POSTS: '선택한 게시글들을 정말로 삭제하시겠습니까?',
 	ASK_ADD_CANCEL: '작성중인 게시글은 저장되지 않습니다.\n정말로 게시글 작성을 취소하시겠습니까?',
 	ASK_UPDATE_CANCEL: '수정중인 게시글은 저장되지 않습니다.\n정말로 게시글 수정을 취소하시겠습니까?',
+	DUPLICATE_KEYWORDS: '은/는 중복되는 키워드입니다. 다른 키워드를 입력해주세요',
 	ENTER_ID: '아이디를 입력해주세요',
 	ENTER_PASSWORD: '비밀번호를 입력해주세요',
 	ENTER_EMAIL: '이메일을 입력해주세요',
@@ -49,6 +50,7 @@ const Words = {
 	SELECT_FILE: '파일을 선택해주세요',
 	LIMIT_TITLE_LENGTH: '제목은 20자 이내로 입력해주세요',
 	LIMIT_DESCRIPTION_LENGTH: '설명은 100자 이내로 입력해주세요',
+	LIMIT_KEYWORDS_NUMBER: '키워드는 30개 이내로 입력해주세요',
 	MAX_DESCRIPTION_LENGTH: '100자',
 	MAX_TITLE_LENGTH: ' (최대 20자)',
 };
