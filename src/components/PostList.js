@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react';
+import axios from 'axios';
 import classNames from 'classnames';
+import { Link } from 'react-router-dom';
 import Post from './Post';
 import { useComponentVisibilityDispatch } from '../contexts/ComponentVisibilityContext';
 import { useCheckStatusState, useCheckStatusDispatch } from '../contexts/CheckStatusContext';
 import { useCategoryState } from '../contexts/CategoryContext';
 import { useCheckedItemsState, useCheckedItemsDispatch } from '../contexts/CheckedItemContext';
 import useInputs from '../hooks/useInputs';
+import useAsync from '../hooks/useAsync';
 import Words from '../common/Words';
 import { getPostList } from '../common/getInformation';
 import SearchIcon from '../common/icon/SearchIcon.png';
@@ -14,8 +17,17 @@ import RightArrow from '../common/icon/RightArrow.png';
 import '../styles/ViewPost.scss';
 import '../styles/Button.scss';
 import '../styles/Text.scss';
-import { Link } from 'react-router-dom';
 // postlist-header 컴포넌트화 시킬까 생각중..
+
+// async function getAllPostList() {
+// 	const response = await axios.get('http://virtserver.swaggerhub.com/Kim-SuBin/S-STT/1.0.0/contents');
+// 	return response.data;
+// }
+
+// async function getPostList(category) {
+// 	const response = await axios.get(`http://virtserver.swaggerhub.com/Kim-SuBin/S-STT/1.0.0/contents${category}`);
+// 	return response.data;
+// }
 
 function PostList() {
 	const { category } = useCategoryState();
@@ -26,12 +38,9 @@ function PostList() {
 	const checkStatusDispatch = useCheckStatusDispatch();
 	const [form, onChange] = useInputs({ search: '' });
 	const { search } = form;
+	// const [apiState, refetch] = useAsync(getPostList, []);
+	// const { loading, data: postList, error } = apiState;
 	const postList = getPostList(category);
-
-	const resetCheckedItems = () => {
-		checkStatusDispatch({ type: 'SET_FALSE', name: 'isAllChecked' });
-		checkedItemsDispatch({ type: 'RESET_ITEM' });
-	};
 
 	useEffect(() => {
 		componentVisibilityDispatch({ type: 'VISIBLE', name: 'categoryVisibility' });
@@ -39,6 +48,11 @@ function PostList() {
 			componentVisibilityDispatch({ type: 'INVISIBLE', name: 'categoryVisibility' });
 		};
 	}, [componentVisibilityDispatch]);
+
+	const resetCheckedItems = () => {
+		checkStatusDispatch({ type: 'SET_FALSE', name: 'isAllChecked' });
+		checkedItemsDispatch({ type: 'RESET_ITEM' });
+	};
 
 	const checkBoxHandler = () => {
 		if (checkBoxVisibility) {
@@ -53,8 +67,8 @@ function PostList() {
 		if (target.checked) {
 			checkStatusDispatch({ type: 'SET_TRUE', name: 'isAllChecked' });
 			postList.map((post) => {
-				if (!checkedItems.includes(post.id)) {
-					checkedItemsDispatch({ type: 'ADD_ITEM', item: post.id });
+				if (!checkedItems.includes(post.ct_id)) {
+					checkedItemsDispatch({ type: 'ADD_ITEM', item: post.ct_id });
 				}
 			});
 		} else {
@@ -127,6 +141,11 @@ function PostList() {
 					)}
 				</div>
 				<div className={classNames('view-form', 'big')}>
+					{/* {loading && <>
+							<span className={classNames('text', 'no-post')}>{Words.LOADING_GET_POST}</span>
+							<br />
+							<span className={classNames('text', 'no-post')}>{Words.WAIT}</span>
+						</>} */}
 					{postList.length === 0 && (
 						<>
 							<span className={classNames('text', 'no-post')}>{Words.NO_POST}</span>
@@ -135,8 +154,8 @@ function PostList() {
 						</>
 					)}
 					{search === ''
-						? postList.map((post) => <Post post={post} isDetail={false} key={post.id} />)
-						: postList.filter((post) => post.title.includes(search)).map((post) => <Post post={post} isDetail={false} key={post.id} />)}
+						? postList.map((post) => <Post id={post.ct_id} title={post.ct_title} date={post.ct_date} isDetail={false} key={post.ct_id} />)
+						: postList.filter((post) => post.ct_title.includes(search)).map((post) => <Post id={post.ct_id} title={post.ct_title} date={post.ct_date} isDetail={false} key={post.ct_id} />)}
 				</div>
 				<div className="footer">
 					<img className="left-arrow" src={LeftArrow} alt="LeftArrow" />

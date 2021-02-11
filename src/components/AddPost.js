@@ -4,13 +4,13 @@ import classNames from 'classnames';
 import Words from '../common/Words';
 import { isEmpty } from '../common/CheckValue';
 import useInputs from '../hooks/useInputs';
-import { categoryNotIncludeAll } from '../common/TempData';
+import { categoryList } from '../common/TempData';
 import '../styles/WritePost.scss';
 import '../styles/Button.scss';
 import '../styles/Text.scss';
 
 function AddPost() {
-	const [category, setCategory] = useState(categoryNotIncludeAll[0]);
+	const [category, setCategory] = useState(categoryList[0].cg_title);
 	const [uploadFile, setUploadFile] = useState({
 		fileName: Words.SELECT_FILE,
 		fileInformation: null,
@@ -73,10 +73,10 @@ function AddPost() {
 								categoryHandler(e.target.value);
 							}}
 						>
-							{categoryNotIncludeAll.map((categoryName, index) => {
+							{categoryList.map((category) => {
 								return (
-									<option value={categoryName} key={index}>
-										{categoryName}
+									<option value={category.cg_title} key={category.cg_id}>
+										{category.cg_title}
 									</option>
 								);
 							})}

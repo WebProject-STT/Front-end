@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { useComponentVisibilityDispatch } from '../contexts/ComponentVisibilityContext';
 import Words from '../common/Words';
-import { contentsData, postsData } from '../common/TempData';
+import { postsData } from '../common/TempData';
 import { getPostList } from '../common/getInformation';
 import ChangeFileModal from './ChangeFileModal';
 import Contents from './Contents';
@@ -24,11 +24,8 @@ function ViewPost({ match }) {
 	const componentVisibilityDispatch = useComponentVisibilityDispatch();
 	const [isChangeFileModalOn, setIsChangeFileModalOn] = useState(false);
 	// 일단은 배열에서 find 찾지만 api적용하면 바로 데이터 하나만 받아올 수 있음
-	const contents = contentsData.find((x) => x.ct_id === postIdNum);
-	// 컨텐츠db에서 한번에 받아오도록 변경해야됨
-	const { category } = postsData.find((x) => x.id === postIdNum);
-	const postList = getPostList(category);
-	console.log(postList);
+	const contents = postsData.find((post) => post.ct_id === postIdNum);
+	const postList = getPostList(contents.ct_category);
 
 	useEffect(() => {
 		componentVisibilityDispatch({ type: 'VISIBLE', name: 'categoryVisibility' });
@@ -76,12 +73,11 @@ function ViewPost({ match }) {
 				</div>
 				<div className="detail-list ">
 					<div className="detail-category">
-						{/* 선택된 카테고리로 해야할까 해당 게시글의 주제로 해야할까 */}
-						<span className={classNames('text', 'bold', 'post-detail', 'category-name')}>{category}</span>
+						<span className={classNames('text', 'bold', 'post-detail', 'category-name')}>{contents.ct_category}</span>
 					</div>
 					<div className={classNames('view-form', 'small')}>
 						{postList.map((post) => (
-							<Post post={post} isDetail={true} currentPostId={postIdNum} key={post.id} />
+							<Post id={post.ct_id} title={post.ct_title} date={post.ct_date} isDetail={true} currentPostId={postIdNum} key={post.ct_id} />
 						))}
 					</div>
 				</div>

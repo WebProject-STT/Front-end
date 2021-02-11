@@ -6,11 +6,10 @@ import { useCheckStatusState } from '../contexts/CheckStatusContext';
 import '../styles/ViewPost.scss';
 import '../styles/Text.scss';
 
-function Post({ post, isDetail, currentPostId }) {
+function Post({ id, title, date, isDetail, currentPostId }) {
 	const { checkedItems } = useCheckedItemsState();
 	const checkedItemsDispatch = useCheckedItemsDispatch();
 	const { checkBoxVisibility } = useCheckStatusState();
-	const { id, title, date } = post;
 	const blueGray = '#ededf2';
 
 	const checkHandler = ({ target }) => {

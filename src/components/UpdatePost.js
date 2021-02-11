@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import useInputs from '../hooks/useInputs';
-import { contentsData, categoryNotIncludeAll } from '../common/TempData';
+import { postsData, categoryList } from '../common/TempData';
 import Words from '../common/Words';
 import { isEmpty } from '../common/CheckValue';
 import '../styles/WritePost.scss';
@@ -10,12 +10,12 @@ import '../styles/WritePost.scss';
 function UpdatePost({ match }) {
 	const { postId } = match.params;
 	const postIdNum = parseInt(postId);
-	const { ct_title, ct_category, ct_keywords, ct_description, ct_subjects } = contentsData.find((x) => x.ct_id === postIdNum);
+	const { ct_title, ct_category, ct_keywords, ct_desc, ct_subjects } = postsData.find((x) => x.ct_id === postIdNum);
 	const [category, setCategory] = useState(ct_category);
 	// 키워드는 api에서 단어 받아서 한줄의 문자열로 만들어서 넣으면 됨
 	const [form, onChange] = useInputs({
 		title: ct_title,
-		description: ct_description,
+		description: ct_desc,
 		keywords: ct_keywords
 			.map((keyword) => {
 				return keyword.tag_name;
@@ -47,7 +47,6 @@ function UpdatePost({ match }) {
 
 	const checkCorrectKeywords = () => {
 		const splitKeyWords = keywords.split(' ');
-		console.log(splitKeyWords);
 		const length = splitKeyWords.length;
 		let alertText = '';
 		if (length > 30) {
@@ -75,10 +74,10 @@ function UpdatePost({ match }) {
 								categoryHandler(e.target.value);
 							}}
 						>
-							{categoryNotIncludeAll.map((categoryName, index) => {
+							{categoryList.map((category) => {
 								return (
-									<option value={categoryName} key={index}>
-										{categoryName}
+									<option value={category.cg_title} key={category.cg_id}>
+										{category.cg_title}
 									</option>
 								);
 							})}
@@ -118,7 +117,7 @@ function UpdatePost({ match }) {
 						<div className={classNames('write', 'description')}>
 							<div className={classNames('write', 'description', 'count')}>
 								<span className={classNames('text', 'gray', 'description')}>
-									({description.length}자/{Words.MAX_DESCRIPTION_LENGTH})
+									({ct_desc.length}자/{Words.MAX_DESCRIPTION_LENGTH})
 								</span>
 							</div>
 						</div>

@@ -51,6 +51,8 @@ const Words = {
 	LIMIT_TITLE_LENGTH: '제목은 20자 이내로 입력해주세요',
 	LIMIT_DESCRIPTION_LENGTH: '설명은 100자 이내로 입력해주세요',
 	LIMIT_KEYWORDS_NUMBER: '키워드는 30개 이내로 입력해주세요',
+	LOADING_GET_POST: '게시글을 불러오는 중입니다.',
+	WAIT: '잠시만 기다려주세요😊',
 	MAX_DESCRIPTION_LENGTH: '100자',
 	MAX_TITLE_LENGTH: ' (최대 20자)',
 };
