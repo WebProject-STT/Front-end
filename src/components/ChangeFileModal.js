@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 import Words from '../common/Words';
-import LogoBlue from '../common/icon/LogoBlue.png';
+import LogoBlue from '../icon/LogoBlue.png';
 import '../styles/FileModal.scss';
 import '../styles/Button.scss';
 import '../styles/Text.scss';

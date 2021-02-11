@@ -32,9 +32,13 @@ function Contents({ contents }) {
 			{/* subjects 인덱스 div와 span태그에 넣어야됨 */}
 			{ct_subjects.map((subject) => {
 				return (
-					<div className={classNames('contents-area', 'big')}>
-						<span className={classNames('text', 'bold', 'post-detail', 'subject-title')}>{subject.sum_title}</span>
-						<span className={classNames('text', 'post-detail', 'subject-content')}>{subject.sum_desc}</span>
+					<div className={classNames('contents-area', 'big')} key={`div_${subject.sum_id}`}>
+						<span className={classNames('text', 'bold', 'post-detail', 'subject-title')} key={`span_first_${subject.sum_id}`}>
+							{subject.sum_title}
+						</span>
+						<span className={classNames('text', 'post-detail', 'subject-content')} key={`span_second_${subject.sum_id}`}>
+							{subject.sum_desc}
+						</span>
 					</div>
 				);
 			})}

@@ -10,8 +10,8 @@ import { getPostList } from '../common/getInformation';
 import ChangeFileModal from './ChangeFileModal';
 import Contents from './Contents';
 import Post from './Post';
-import LeftArrow from '../common/icon/LeftArrow.png';
-import RightArrow from '../common/icon/RightArrow.png';
+import LeftArrow from '../icon/LeftArrow.png';
+import RightArrow from '../icon/RightArrow.png';
 import '../styles/ViewPost.scss';
 import '../styles/Text.scss';
 

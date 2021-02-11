@@ -6,9 +6,9 @@ import { useComponentVisibilityDispatch } from '../contexts/ComponentVisibilityC
 import useInputs from '../hooks/useInputs';
 import useInputsCorrect from '../hooks/useInputsCorrect';
 import { isEmpty } from '../common/CheckValue';
-import GoogleLogo from '../common/icon/GoogleLogo.png';
-import NaverLogo from '../common/icon/NaverLogo.png';
-import KakaoLogo from '../common/icon/KakaoLogo.png';
+import GoogleLogo from '../icon/GoogleLogo.png';
+import NaverLogo from '../icon/NaverLogo.png';
+import KakaoLogo from '../icon/KakaoLogo.png';
 import '../styles/Auth.scss';
 import '../styles/Text.scss';
 import { useUserDispatch } from '../contexts/UserContext';

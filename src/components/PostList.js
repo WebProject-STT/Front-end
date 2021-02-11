@@ -11,9 +11,9 @@ import useInputs from '../hooks/useInputs';
 import useAsync from '../hooks/useAsync';
 import Words from '../common/Words';
 import { getPostList } from '../common/getInformation';
-import SearchIcon from '../common/icon/SearchIcon.png';
-import LeftArrow from '../common/icon/LeftArrow.png';
-import RightArrow from '../common/icon/RightArrow.png';
+import SearchIcon from '../icon/SearchIcon.png';
+import LeftArrow from '../icon/LeftArrow.png';
+import RightArrow from '../icon/RightArrow.png';
 import '../styles/ViewPost.scss';
 import '../styles/Button.scss';
 import '../styles/Text.scss';
@@ -41,6 +41,7 @@ function PostList({ match }) {
 	const { search } = form;
 	// const [apiState, refetch] = useAsync(getPostList, []);
 	// const { loading, data: postList, error } = apiState;
+	// const postList = getPostList(categoryIdNum);
 	const postList = getPostList(categoryIdNum);
 
 	useEffect(() => {
