@@ -33,7 +33,10 @@ export const postsData = [
 	{
 		ct_id: 1,
 		ct_date: '2021.01.10',
-		ct_category: 'IT/과학',
+		ct_category: {
+			cg_id: 2,
+			cg_title: 'IT/과학',
+		},
 		ct_title: '제목1',
 		ct_keywords: [
 			{
@@ -66,7 +69,10 @@ export const postsData = [
 	{
 		ct_id: 2,
 		ct_date: '2021.01.10',
-		ct_category: 'IT/과학',
+		ct_category: {
+			cg_id: 2,
+			cg_title: 'IT/과학',
+		},
 		ct_title: '제목2',
 		ct_keywords: [
 			{
@@ -99,7 +105,10 @@ export const postsData = [
 	{
 		ct_id: 3,
 		ct_date: '2021.01.10',
-		ct_category: 'IT/과학',
+		ct_category: {
+			cg_id: 2,
+			cg_title: 'IT/과학',
+		},
 		ct_title: '제목3',
 		ct_keywords: [
 			{
@@ -132,7 +141,10 @@ export const postsData = [
 	{
 		ct_id: 4,
 		ct_date: '2021.01.10',
-		ct_category: 'IT/과학',
+		ct_category: {
+			cg_id: 2,
+			cg_title: 'IT/과학',
+		},
 		ct_title: '제목4',
 		ct_keywords: [
 			{
@@ -162,7 +174,10 @@ export const postsData = [
 	{
 		ct_id: 5,
 		ct_date: '2021.01.10',
-		ct_category: '경제',
+		ct_category: {
+			cg_id: 3,
+			cg_title: '경제',
+		},
 		ct_title: '제목5',
 		ct_keywords: [
 			{
@@ -192,7 +207,10 @@ export const postsData = [
 	{
 		ct_id: 6,
 		ct_date: '2021.01.10',
-		ct_category: '사회',
+		ct_category: {
+			cg_id: 4,
+			cg_title: '사회',
+		},
 		ct_title: '제목6',
 		ct_keywords: [
 			{
@@ -222,7 +240,10 @@ export const postsData = [
 	{
 		ct_id: 7,
 		ct_date: '2021.01.10',
-		ct_category: '사회',
+		ct_category: {
+			cg_id: 4,
+			cg_title: '사회',
+		},
 		ct_title: '제목7',
 		ct_keywords: [
 			{
@@ -252,7 +273,10 @@ export const postsData = [
 	{
 		ct_id: 8,
 		ct_date: '2021.01.10',
-		ct_category: '세계',
+		ct_category: {
+			cg_id: 6,
+			cg_title: '세계',
+		},
 		ct_title: '제목8',
 		ct_keywords: [
 			{
@@ -282,7 +306,10 @@ export const postsData = [
 	{
 		ct_id: 9,
 		ct_date: '2021.01.10',
-		ct_category: '세계',
+		ct_category: {
+			cg_id: 6,
+			cg_title: '세계',
+		},
 		ct_title: '제목9',
 		ct_keywords: [
 			{
@@ -312,7 +339,10 @@ export const postsData = [
 	{
 		ct_id: 10,
 		ct_date: '2021.01.10',
-		ct_category: '정치',
+		ct_category: {
+			cg_id: 7,
+			cg_title: '정치',
+		},
 		ct_title: '제목10',
 		ct_keywords: [
 			{

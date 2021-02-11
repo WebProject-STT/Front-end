@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { useComponentVisibilityDispatch } from '../contexts/ComponentVisibilityContext';
+import { useCheckStatusDispatch } from '../contexts/CheckStatusContext';
+import { useCheckedItemsDispatch } from '../contexts/CheckedItemContext';
 import Words from '../common/Words';
 import { postsData } from '../common/TempData';
 import { getPostList } from '../common/getInformation';
@@ -14,7 +16,7 @@ import '../styles/ViewPost.scss';
 import '../styles/Text.scss';
 
 function scrollToUp(event) {
-	// 스크롤 위로 올라가지 않음, 고쳐야됨
+	// 수정 스크롤 위로 올라가지 않음, 고쳐야됨
 	document.getElementById('root').scrollTo(0, 0);
 }
 
@@ -22,14 +24,17 @@ function ViewPost({ match }) {
 	const { postId } = match.params;
 	const postIdNum = parseInt(postId);
 	const componentVisibilityDispatch = useComponentVisibilityDispatch();
+	const checkStatusDispatch = useCheckStatusDispatch();
+	const checkedItemsDispatch = useCheckedItemsDispatch();
 	const [isChangeFileModalOn, setIsChangeFileModalOn] = useState(false);
 	// 일단은 배열에서 find 찾지만 api적용하면 바로 데이터 하나만 받아올 수 있음
 	const contents = postsData.find((post) => post.ct_id === postIdNum);
-	const postList = getPostList(contents.ct_category);
+	const postList = getPostList(contents.ct_category.cg_id);
 
 	useEffect(() => {
+		checkStatusDispatch({ type: 'RESET' });
+		checkedItemsDispatch({ type: 'RESET_ITEM' });
 		componentVisibilityDispatch({ type: 'VISIBLE', name: 'categoryVisibility' });
-		scrollToUp();
 		return () => {
 			componentVisibilityDispatch({ type: 'INVISIBLE', name: 'categoryVisibility' });
 		};
@@ -60,7 +65,7 @@ function ViewPost({ match }) {
 					<Link to={`/updatePost/${postId}`} className={classNames('button', 'view', 'white', 'detail')} id="update">
 						<span className={classNames('text', 'blue', 'post-list', 'small')}>{Words.UPDATE}</span>
 					</Link>
-					<Link to="/postList" className={classNames('button', 'view', 'blue', 'detail')} onClick={deletePost}>
+					<Link to={`/postList/${contents.ct_category.cg_id}`} className={classNames('button', 'view', 'blue', 'detail')} onClick={deletePost}>
 						<span className={classNames('text', 'white', 'post-list', 'small')} id="delete">
 							{Words.DELETE}
 						</span>
@@ -73,7 +78,7 @@ function ViewPost({ match }) {
 				</div>
 				<div className="detail-list ">
 					<div className="detail-category">
-						<span className={classNames('text', 'bold', 'post-detail', 'category-name')}>{contents.ct_category}</span>
+						<span className={classNames('text', 'bold', 'post-detail', 'category-name')}>{contents.ct_category.cg_title}</span>
 					</div>
 					<div className={classNames('view-form', 'small')}>
 						{postList.map((post) => (

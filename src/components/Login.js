@@ -51,7 +51,7 @@ function LogIn() {
 				{idCorrect === 0 && <div className={classNames('text', 'auth', 'error-message')}>{Words.ENTER_ID}</div>}
 				<input className="input" type="password" name="password" placeholder={Words.ENTER_PASSWORD} value={password} onChange={onChange} />
 				{passwordCorrect === 0 && <div className={classNames('text', 'auth', 'error-message')}>{Words.ENTER_PASSWORD}</div>}
-				<Link to="/postList" onClick={confirmInputs}>
+				<Link to="/postList/1" onClick={confirmInputs}>
 					<button className={classNames('button', 'auth', 'basic')}>{Words.LOGIN}</button>
 				</Link>
 				<button className={classNames('button', 'auth', 'social')}>

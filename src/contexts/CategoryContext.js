@@ -1,7 +1,7 @@
 import React, { createContext, useReducer, useContext } from 'react';
 
 const initialState = {
-	category: '전체',
+	category: 1,
 };
 
 function categoryReducer(state, action) {

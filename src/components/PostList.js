@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import Post from './Post';
 import { useComponentVisibilityDispatch } from '../contexts/ComponentVisibilityContext';
 import { useCheckStatusState, useCheckStatusDispatch } from '../contexts/CheckStatusContext';
-import { useCategoryState } from '../contexts/CategoryContext';
+import { useCategoryState, useCategoryDispatch } from '../contexts/CategoryContext';
 import { useCheckedItemsState, useCheckedItemsDispatch } from '../contexts/CheckedItemContext';
 import useInputs from '../hooks/useInputs';
 import useAsync from '../hooks/useAsync';
@@ -29,8 +29,9 @@ import '../styles/Text.scss';
 // 	return response.data;
 // }
 
-function PostList() {
-	const { category } = useCategoryState();
+function PostList({ match }) {
+	const { categoryId } = match.params;
+	const categoryIdNum = parseInt(categoryId);
 	const { checkedItems } = useCheckedItemsState();
 	const checkedItemsDispatch = useCheckedItemsDispatch();
 	const componentVisibilityDispatch = useComponentVisibilityDispatch();
@@ -40,7 +41,7 @@ function PostList() {
 	const { search } = form;
 	// const [apiState, refetch] = useAsync(getPostList, []);
 	// const { loading, data: postList, error } = apiState;
-	const postList = getPostList(category);
+	const postList = getPostList(categoryIdNum);
 
 	useEffect(() => {
 		componentVisibilityDispatch({ type: 'VISIBLE', name: 'categoryVisibility' });
@@ -157,10 +158,12 @@ function PostList() {
 						? postList.map((post) => <Post id={post.ct_id} title={post.ct_title} date={post.ct_date} isDetail={false} key={post.ct_id} />)
 						: postList.filter((post) => post.ct_title.includes(search)).map((post) => <Post id={post.ct_id} title={post.ct_title} date={post.ct_date} isDetail={false} key={post.ct_id} />)}
 				</div>
-				<div className="footer">
-					<img className="left-arrow" src={LeftArrow} alt="LeftArrow" />
-					<img className="right-arrow" src={RightArrow} alt="RightArrow" />
-				</div>
+				{postList.length !== 0 && (
+					<div className="footer">
+						<img className="left-arrow" src={LeftArrow} alt="LeftArrow" />
+						<img className="right-arrow" src={RightArrow} alt="RightArrow" />
+					</div>
+				)}
 			</div>
 		</div>
 	);

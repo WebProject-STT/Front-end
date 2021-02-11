@@ -14,7 +14,7 @@ function CategoryList() {
 	return (
 		<div className="category-list">
 			{categoryList.map((category) => (
-				<Category categoryName={category.cg_title} key={category.cg_id} />
+				<Category categoryId={category.cg_id} key={category.cg_id} />
 			))}
 		</div>
 	);

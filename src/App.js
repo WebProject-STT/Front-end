@@ -35,7 +35,7 @@ function App() {
 			<Route path="/signup" component={Signup} />
 			<div className="app">
 				<CategoryList />
-				<Route path="/postList" component={PostList} />
+				<Route path="/postList/:categoryId" component={PostList} />
 				<Route path="/addPost" component={AddPost} />
 				<Route path="/viewPost/:postId" component={ViewPost} />
 				<Route path="/updatePost/:postId" component={UpdatePost} />
