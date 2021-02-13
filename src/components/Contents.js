@@ -4,7 +4,7 @@ import Words from '../common/Words';
 import '../styles/ViewPost.scss';
 
 function Contents({ contents }) {
-	const { ct_title, ct_date, ct_keywords, ct_description, ct_subjects, ct_origin } = contents;
+	const { ct_title, ct_date, ct_keywords, ct_desc, ct_subjects, ct_origin } = contents;
 
 	return (
 		<>
@@ -27,7 +27,7 @@ function Contents({ contents }) {
 				})}
 			</div>
 			<div className={classNames('contents-area')}>
-				<span className={classNames('text', 'post-detail')}>{ct_description}</span>
+				<span className={classNames('text', 'post-detail')}>{ct_desc}</span>
 			</div>
 			{/* subjects 인덱스 div와 span태그에 넣어야됨 */}
 			{ct_subjects.map((subject) => {

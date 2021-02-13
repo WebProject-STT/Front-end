@@ -4,7 +4,7 @@ import { useUserState } from '../contexts/UserContext';
 
 function PrivateRoute({ component: Component, ...rest }) {
 	const { userName } = useUserState();
-	return <Route {...rest} render={(props) => (userName ? <Redirect to="/postList" /> : <Component {...props} />)} />;
+	return <Route {...rest} render={(props) => (userName ? <Redirect to="/postList/1" /> : <Component {...props} />)} />;
 }
 
 export default PrivateRoute;

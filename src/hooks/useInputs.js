@@ -1,5 +1,6 @@
 import { useReducer, useCallback } from 'react';
 import Words from '../common/Words';
+import { isCorrectLength } from '../common/CheckValue';
 
 function inputsReducer(state, action) {
 	switch (action.type) {
@@ -24,7 +25,9 @@ export function useInputs(initialForm) {
 		(e, sum_id = 0, element_name = '', isFocus = false, isSpace = false) => {
 			let { name, value } = e.target;
 			let length = value.length;
-			if (name === 'title' && length > 20) {
+			if (name === 'title' && !isCorrectLength(value, 0, 60)) {
+				console.log(isCorrectLength(value, 0, 20));
+				console.log(value);
 				alert(Words.LIMIT_TITLE_LENGTH);
 			} else if (name === 'subjects') {
 				dispatch({ type: 'CHANGE_SUBJECT', sum_id, element_name, value });

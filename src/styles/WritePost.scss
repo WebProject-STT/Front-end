@@ -77,7 +77,7 @@ $gray: #c4c4c4;
 		&.big {
 			display: block;
 			width: 88%;
-			height: 73px;
+			height: 82px;
 			// left: 0.5%;
 		}
 
@@ -129,7 +129,8 @@ $gray: #c4c4c4;
 			// display: inline-block;
 			// margin-right: 1%;
 			margin-left: auto;
-			// margin-bottom: 10%;
+			top: 10%;
+			// margin-bottom: 5px;
 			// background-color: yellow;
 		}
 	}
@@ -169,7 +170,7 @@ textarea {
 	font-family: Roboto;
 	border: none;
 	resize: none;
-	// background-color: yellow;
+	background-color: pink;
 	&::placeholder {
 		font-family: Roboto;
 		font-style: normal;

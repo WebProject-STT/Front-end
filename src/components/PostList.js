@@ -11,6 +11,7 @@ import useInputs from '../hooks/useInputs';
 import useAsync from '../hooks/useAsync';
 import Words from '../common/Words';
 import { getPostList } from '../common/getInformation';
+// import { getAllPostList, getPostList } from '../api/PostAPI';
 import SearchIcon from '../icon/SearchIcon.png';
 import LeftArrow from '../icon/LeftArrow.png';
 import RightArrow from '../icon/RightArrow.png';
@@ -18,16 +19,6 @@ import '../styles/ViewPost.scss';
 import '../styles/Button.scss';
 import '../styles/Text.scss';
 // postlist-header 컴포넌트화 시킬까 생각중..
-
-// async function getAllPostList() {
-// 	const response = await axios.get('http://virtserver.swaggerhub.com/Kim-SuBin/S-STT/1.0.0/contents');
-// 	return response.data;
-// }
-
-// async function getPostList(category) {
-// 	const response = await axios.get(`http://virtserver.swaggerhub.com/Kim-SuBin/S-STT/1.0.0/contents${category}`);
-// 	return response.data;
-// }
 
 function PostList({ match }) {
 	const { categoryId } = match.params;
@@ -39,9 +30,8 @@ function PostList({ match }) {
 	const checkStatusDispatch = useCheckStatusDispatch();
 	const [form, onChange] = useInputs({ search: '' });
 	const { search } = form;
-	// const [apiState, refetch] = useAsync(getPostList, []);
+	// const [apiState, refetch] = useAsync(categoryIdNum === 1 ? getAllPostList : getPostList , []);
 	// const { loading, data: postList, error } = apiState;
-	// const postList = getPostList(categoryIdNum);
 	const postList = getPostList(categoryIdNum);
 
 	useEffect(() => {

@@ -44,7 +44,7 @@ function useAsync(callback, deps = []) {
 
 	useEffect(() => {
 		fetchData();
-	}, deps);
+	}, [deps]);
 
 	return [state, fetchData];
 }

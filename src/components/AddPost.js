@@ -9,7 +9,7 @@ import '../styles/WritePost.scss';
 import '../styles/Button.scss';
 import '../styles/Text.scss';
 
-function AddPost() {
+function AddPost({ history }) {
 	const [category, setCategory] = useState(categoryList[0].cg_title);
 	const [uploadFile, setUploadFile] = useState({
 		fileName: Words.SELECT_FILE,
@@ -31,6 +31,10 @@ function AddPost() {
 		});
 	};
 
+	const goBack = () => {
+		history.goBack();
+	};
+
 	const getMessage = () => {
 		let message = '';
 		if (isEmpty(title)) {
@@ -45,15 +49,16 @@ function AddPost() {
 		const message = getMessage();
 		if (!isEmpty(message)) {
 			alert(message);
-			e.preventDefault();
+		} else {
+			goBack();
 		}
 		// api호출하는 코드 작성, 데이터 업로드 성공시 postList로 이동
 	};
 
 	const confirmCancel = (e) => {
 		const isConfirm = window.confirm(Words.ASK_ADD_CANCEL);
-		if (!isConfirm) {
-			e.preventDefault();
+		if (isConfirm) {
+			goBack();
 		}
 	};
 
@@ -119,16 +124,16 @@ function AddPost() {
 				</div>
 				<div className={classNames('write', 'input-area', 'small')}>
 					<div className={classNames('write', 'button-area')}>
-						<Link to="/postList" className={classNames('write', 'write-link')} onClick={postData}>
-							<button className={classNames('button', 'white', 'write-post', 'big')}>
-								<span className={classNames('text', 'blue', 'write-post')}>{Words.SAVE}</span>
-							</button>
-						</Link>
-						<Link to="/postList" className={classNames('write', 'write-link')} onClick={confirmCancel}>
-							<button className={classNames('button', 'blue', 'write-post', 'big')}>
-								<span className={classNames('text', 'white', 'write-post')}>{Words.CANCEL}</span>
-							</button>
-						</Link>
+						{/* <Link to="/postList" className={classNames('write', 'write-link')} onClick={postData}> */}
+						<button className={classNames('button', 'white', 'write-post', 'big')} onClick={postData}>
+							<span className={classNames('text', 'blue', 'write-post')}>{Words.SAVE}</span>
+						</button>
+						{/* </Link> */}
+						{/* <Link to="/postList" className={classNames('write', 'write-link')} onClick={confirmCancel}> */}
+						<button className={classNames('button', 'blue', 'write-post', 'big')} onClick={confirmCancel}>
+							<span className={classNames('text', 'white', 'write-post')}>{Words.CANCEL}</span>
+						</button>
+						{/* </Link> */}
 					</div>
 				</div>
 			</div>
