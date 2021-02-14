@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react';
-import axios from 'axios';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import Post from './Post';
 import { useComponentVisibilityDispatch } from '../contexts/ComponentVisibilityContext';
 import { useCheckStatusState, useCheckStatusDispatch } from '../contexts/CheckStatusContext';
-import { useCategoryState, useCategoryDispatch } from '../contexts/CategoryContext';
 import { useCheckedItemsState, useCheckedItemsDispatch } from '../contexts/CheckedItemContext';
 import useInputs from '../hooks/useInputs';
 import useAsync from '../hooks/useAsync';
@@ -102,13 +100,13 @@ function PostList({ match }) {
 							<span className={classNames('text', 'blue', 'post-list', 'small')}>{Words.DELETE}</span>
 						</button>
 					) : (
-						<Link to="/AddPost" className="link">
-							<button className={classNames('button', 'view', 'white', 'add')}>
-								<span className={classNames('text', 'blue', 'post-list', 'small')}>{Words.ADD}</span>
-							</button>
+						<Link to="/AddPost" className={classNames('button', 'view', 'white', 'list')} id="add">
+							<span className={classNames('text', 'blue', 'post-list', 'small')} id="add">
+								{Words.ADD}
+							</span>
 						</Link>
 					)}
-					<button className={classNames('button', 'view', 'blue', 'list')} onClick={checkBoxHandler}>
+					<button className={classNames('button', 'view', 'blue', 'list')} onClick={checkBoxHandler} id={!checkBoxVisibility && 'delete'}>
 						<span className={classNames('text', 'white', 'post-list', 'small')}>{checkBoxVisibility ? Words.CANCEL : Words.DELETE}</span>
 					</button>
 				</div>

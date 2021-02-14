@@ -18,6 +18,13 @@ function AddPost({ history }) {
 	const { fileName, fileInformation } = uploadFile;
 	const [form, onChange] = useInputs({ title: '', description: '' });
 	const { title, description } = form;
+	let tempNum = 0;
+
+	const temp = (e) => {
+		console.log(e);
+		console.log(tempNum);
+		tempNum++;
+	};
 
 	const categoryHandler = (value) => {
 		setCategory(value);
@@ -67,7 +74,15 @@ function AddPost({ history }) {
 			<div className={classNames('write', 'input-form', 'add')}>
 				<div className={classNames('write', 'input-area', 'small')}>
 					<span className={classNames('text', 'bold', 'title')}>{Words.TITLE}</span>
-					<input type="text" className={classNames('write', 'input', 'small')} name="title" placeholder={Words.ENTER_TITLE + Words.MAX_TITLE_LENGTH} value={title} onChange={onChange} />
+					<input
+						type="text"
+						className={classNames('write', 'input', 'small')}
+						name="title"
+						placeholder={Words.ENTER_TITLE + Words.MAX_TITLE_LENGTH}
+						value={title}
+						onKeyUp={onChange}
+						// onChange={onChange}
+					/>
 				</div>
 				<div className={classNames('write', 'input-area', 'small')}>
 					<span className={classNames('text', 'bold', 'title')}>{Words.CATEGORY}</span>

@@ -76,6 +76,18 @@ $gray: #919191;
 			margin-top: 6.765%;
 			width: 65%;
 			height: 60%;
+
+			&#delete {
+				width: 64.6%;
+			}
+
+			&#add {
+				width: 67%;
+			}
+
+			& + & {
+				margin-left: 7%;
+			}
 		}
 
 		&.detail {
@@ -86,6 +98,10 @@ $gray: #919191;
 			&#update {
 				padding-top: 1.5%;
 			}
+
+			& + & {
+				margin-left: 4%;
+			}
 		}
 
 		&.small {
@@ -93,12 +109,6 @@ $gray: #919191;
 			width: 18%;
 			height: 60%;
 			// left: -5%;
-		}
-
-		&.add {
-			width: 89%;
-			height: 60%;
-			margin-top: 12.81%;
 		}
 	}
 

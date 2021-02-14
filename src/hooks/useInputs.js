@@ -25,10 +25,11 @@ export function useInputs(initialForm) {
 		(e, sum_id = 0, element_name = '', isFocus = false, isSpace = false) => {
 			let { name, value } = e.target;
 			let length = value.length;
-			if (name === 'title' && !isCorrectLength(value, 0, 60)) {
-				console.log(isCorrectLength(value, 0, 20));
-				console.log(value);
-				alert(Words.LIMIT_TITLE_LENGTH);
+			console.log(name, value);
+			if (name === 'title' && !isCorrectLength(value, 0, 20)) {
+				// console.log(isCorrectLength(value, 0, 20));
+				// console.log(value);
+				// alert(Words.LIMIT_TITLE_LENGTH);
 			} else if (name === 'subjects') {
 				dispatch({ type: 'CHANGE_SUBJECT', sum_id, element_name, value });
 			} else if (name === 'keywords') {
@@ -40,6 +41,7 @@ export function useInputs(initialForm) {
 				}
 				dispatch({ type: 'CHANGE', name, value: value + attach });
 			} else if (name !== 'description' || length <= 100) {
+				console.log('didlaak');
 				dispatch({ type: 'CHANGE', name, value });
 			}
 		},
