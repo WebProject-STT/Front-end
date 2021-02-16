@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import Post from './Post';
@@ -6,9 +6,10 @@ import { useComponentVisibilityDispatch } from '../contexts/ComponentVisibilityC
 import { useCheckStatusState, useCheckStatusDispatch } from '../contexts/CheckStatusContext';
 import { useCheckedItemsState, useCheckedItemsDispatch } from '../contexts/CheckedItemContext';
 import useInputs from '../hooks/useInputs';
+import usePagination from '../hooks/usePagination';
 import useAsync from '../hooks/useAsync';
 import Words from '../common/Words';
-import { getPostList } from '../common/getInformation';
+import { getPostList, getPageArray } from '../common/getInformation';
 // import { getAllPostList, getPostList } from '../api/PostAPI';
 import SearchIcon from '../icon/SearchIcon.png';
 import LeftArrow from '../icon/LeftArrow.png';
@@ -19,6 +20,7 @@ import '../styles/Text.scss';
 // postlist-header 컴포넌트화 시킬까 생각중..
 
 function PostList({ match }) {
+	const pageCount = 10;
 	const { categoryId } = match.params;
 	const categoryIdNum = parseInt(categoryId);
 	const { checkedItems } = useCheckedItemsState();
@@ -28,9 +30,16 @@ function PostList({ match }) {
 	const checkStatusDispatch = useCheckStatusDispatch();
 	const [form, onChange] = useInputs({ search: '' });
 	const { search } = form;
+	const [pagination, updateCurrentPage, updateStartEndPage] = usePagination(pageCount);
+	const { currentPage, start, end } = pagination;
 	// const [apiState, refetch] = useAsync(categoryIdNum === 1 ? getAllPostList : getPostList , []);
 	// const { loading, data: postList, error } = apiState;
 	const postList = getPostList(categoryIdNum);
+	const postCount = useMemo(() => postList.length, [postList]);
+	const pageMaxIndex = Math.ceil(postCount / pageCount);
+	const pageArray = getPageArray(pageMaxIndex).slice(start, end);
+	const postStartIndex = (currentPage - 1) * pageCount;
+	const postEndIndex = currentPage * pageCount;
 
 	useEffect(() => {
 		componentVisibilityDispatch({ type: 'VISIBLE', name: 'categoryVisibility' });
@@ -144,13 +153,55 @@ function PostList({ match }) {
 						</>
 					)}
 					{search === ''
-						? postList.map((post) => <Post id={post.ct_id} title={post.ct_title} date={post.ct_date} isDetail={false} key={post.ct_id} />)
-						: postList.filter((post) => post.ct_title.includes(search)).map((post) => <Post id={post.ct_id} title={post.ct_title} date={post.ct_date} isDetail={false} key={post.ct_id} />)}
+						? postList.slice(postStartIndex, postEndIndex).map((post) => <Post id={post.ct_id} title={post.ct_title} date={post.ct_date} isDetail={false} key={post.ct_id} />)
+						: postList
+								.filter((post) => post.ct_title.includes(search))
+								.slice(postStartIndex, postEndIndex)
+								.map((post) => <Post id={post.ct_id} title={post.ct_title} date={post.ct_date} isDetail={false} key={post.ct_id} />)}
 				</div>
 				{postList.length !== 0 && (
 					<div className="footer">
-						<img className="left-arrow" src={LeftArrow} alt="LeftArrow" />
-						<img className="right-arrow" src={RightArrow} alt="RightArrow" />
+						<img
+							className="left-arrow"
+							src={LeftArrow}
+							alt="LeftArrow"
+							onClick={() => {
+								if (currentPage !== 1) {
+									updateCurrentPage(currentPage - 1);
+									// pageCount 변수명 변경, 한페이지에 놓은 post수 / 페이지 갯수 변수 두개 설정
+									if (currentPage % pageCount === 1) {
+										updateStartEndPage(false);
+									}
+								}
+							}}
+						/>
+						{pageArray.map((page) => {
+							return (
+								<button
+									className={classNames('button', 'view', 'white', 'page-link')}
+									onClick={() => {
+										updateCurrentPage(page);
+									}}
+									style={{ color: currentPage === page && 'pink' }}
+								>
+									{page}
+								</button>
+							);
+						})}
+						<img
+							className="right-arrow"
+							src={RightArrow}
+							alt="RightArrow"
+							onClick={() => {
+								if (currentPage !== pageMaxIndex) {
+									updateCurrentPage(currentPage + 1);
+									// pageCount 변수명 변경, 한페이지에 놓은 post수 / 페이지 갯수 변수 두개 설정
+									if (currentPage % pageCount === 0) {
+										updateStartEndPage(true);
+									}
+								}
+							}}
+						/>
 					</div>
 				)}
 			</div>

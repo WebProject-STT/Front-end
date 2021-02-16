@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { useComponentVisibilityDispatch } from '../contexts/ComponentVisibilityContext';
@@ -6,7 +6,8 @@ import { useCheckStatusDispatch } from '../contexts/CheckStatusContext';
 import { useCheckedItemsDispatch } from '../contexts/CheckedItemContext';
 import Words from '../common/Words';
 import { postsData } from '../common/TempData';
-import { getPostList } from '../common/getInformation';
+import usePagination from '../hooks/usePagination';
+import { getPostList, getPageArray } from '../common/getInformation';
 import ChangeFileModal from './ChangeFileModal';
 import Contents from './Contents';
 import Post from './Post';
@@ -23,6 +24,7 @@ function scrollToUp(event) {
 function ViewPost({ match }) {
 	const { postId } = match.params;
 	const postIdNum = parseInt(postId);
+	const pageCount = 4;
 	const componentVisibilityDispatch = useComponentVisibilityDispatch();
 	const checkStatusDispatch = useCheckStatusDispatch();
 	const checkedItemsDispatch = useCheckedItemsDispatch();
@@ -30,6 +32,13 @@ function ViewPost({ match }) {
 	// 일단은 배열에서 find 찾지만 api적용하면 바로 데이터 하나만 받아올 수 있음
 	const contents = postsData.find((post) => post.ct_id === postIdNum);
 	const postList = getPostList(contents.ct_category.cg_id);
+	const [pagination, updateCurrentPage, updateStartEndPage] = usePagination(pageCount);
+	const { currentPage, start, end } = pagination;
+	const postCount = useMemo(() => postList.length, [postList]);
+	const pageMaxIndex = Math.ceil(postCount / pageCount);
+	const pageArray = getPageArray(pageMaxIndex).slice(start, end);
+	const postIndexStart = (currentPage - 1) * pageCount;
+	const postIndexEnd = currentPage * pageCount;
 
 	useEffect(() => {
 		checkStatusDispatch({ type: 'RESET' });
@@ -81,14 +90,53 @@ function ViewPost({ match }) {
 						<span className={classNames('text', 'bold', 'post-detail', 'category-name')}>{contents.ct_category.cg_title}</span>
 					</div>
 					<div className={classNames('view-form', 'small')}>
-						{postList.map((post) => (
+						{postList.slice(postIndexStart, postIndexEnd).map((post) => (
 							<Post id={post.ct_id} title={post.ct_title} date={post.ct_date} isDetail={true} currentPostId={postIdNum} key={post.ct_id} />
 						))}
 					</div>
 				</div>
 				<div className="footer">
-					<img className="left-arrow" src={LeftArrow} alt="LeftArrow" />
-					<img className="right-arrow" src={RightArrow} alt="RightArrow" />
+					<img
+						className="left-arrow"
+						src={LeftArrow}
+						alt="LeftArrow"
+						onClick={() => {
+							if (currentPage !== 1) {
+								updateCurrentPage(currentPage - 1);
+								// pageCount 변수명 변경, 한페이지에 놓은 post수 / 페이지 갯수 변수 두개 설정
+								if (currentPage % 10 === 1) {
+									updateStartEndPage(false);
+								}
+							}
+						}}
+					/>
+					{pageArray.map((page) => {
+						return (
+							<button
+								className={classNames('button', 'view', 'white', 'page-link')}
+								onClick={() => {
+									updateCurrentPage(page);
+								}}
+								style={{ color: currentPage === page && 'pink' }}
+							>
+								{page}
+							</button>
+						);
+					})}
+					<img
+						className="right-arrow"
+						src={RightArrow}
+						alt="RightArrow"
+						onClick={() => {
+							if (currentPage !== pageMaxIndex) {
+								updateCurrentPage(currentPage + 1);
+								// pageCount 변수명 변경, 한페이지에 놓은 post수 / 페이지 갯수 변수 두개 설정
+								if (currentPage % 10 === 0) {
+									updateStartEndPage(true);
+								}
+							}
+						}}
+					/>
 				</div>
 			</div>
 			{isChangeFileModalOn && <ChangeFileModal handleChangeFileModal={handleChangeFileModal}></ChangeFileModal>}

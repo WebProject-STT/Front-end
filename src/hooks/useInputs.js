@@ -19,7 +19,7 @@ function inputsReducer(state, action) {
 	}
 }
 
-export function useInputs(initialForm) {
+function useInputs(initialForm) {
 	const [form, dispatch] = useReducer(inputsReducer, initialForm);
 	const onChange = useCallback(
 		(e, sum_id = 0, element_name = '', isFocus = false, isSpace = false) => {

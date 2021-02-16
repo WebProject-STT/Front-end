@@ -110,6 +110,10 @@ $gray: #919191;
 			height: 60%;
 			// left: -5%;
 		}
+
+		&.page-link {
+			border: none;
+		}
 	}
 
 	&.write-post {
