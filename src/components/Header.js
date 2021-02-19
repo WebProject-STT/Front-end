@@ -12,7 +12,7 @@ import '../styles/Header.scss';
 import '../styles/Button.scss';
 
 function Header() {
-	const { userName } = useUserState();
+	const { userToken } = useUserState();
 	const categoryDispatch = useCategoryDispatch();
 	const { headerVisibility } = useComponentVisibilityState();
 	const blue = '#1a3270';
@@ -23,11 +23,11 @@ function Header() {
 	};
 
 	return (
-		<div className="header" style={{ background: userName ? blue : white }}>
-			<Link to={userName ? '/postList/1' : '/'} onClick={setCategory}>
+		<div className="header" style={{ background: userToken ? blue : white }}>
+			<Link to={userToken ? '/postList/1' : '/'} onClick={setCategory}>
 				<div className="logo-area">
-					{userName ? <img className="logo-image" src={LogoWhite} alt="logo" /> : <img className="logo-image" src={LogoBlue} alt="logo" />}
-					<span className={classNames('logo-text')} style={{ color: userName ? white : blue }}>
+					{userToken ? <img className="logo-image" src={LogoWhite} alt="logo" /> : <img className="logo-image" src={LogoBlue} alt="logo" />}
+					<span className={classNames('logo-text')} style={{ color: userToken ? white : blue }}>
 						{Words.PROJECT_NAME}
 					</span>
 				</div>

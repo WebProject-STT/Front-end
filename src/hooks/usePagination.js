@@ -17,7 +17,7 @@ function paginationReducer(state, action) {
 			throw new Error(`Unhandled action type: ${action.type}`);
 	}
 }
-
+// viewPost에서 페이지 번호 보내주기
 function usePagination(pageCount) {
 	const initialState = {
 		currentPage: 1,

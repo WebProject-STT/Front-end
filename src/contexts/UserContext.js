@@ -1,15 +1,20 @@
 import React, { createContext, useReducer, useContext } from 'react';
 
 const initialState = {
-	userName: localStorage.getItem('user'),
+	userToken: null,
 };
 
 function userReducer(state, action) {
 	switch (action.type) {
-		case 'CHECK_LOGIN':
+		case 'LOGIN':
 			return {
 				...state,
-				userName: localStorage.getItem('user'),
+				userToken: action.value,
+			};
+		case 'LOGOUT':
+			return {
+				...state,
+				userToken: null,
 			};
 		default:
 			throw new Error(`Unhandled action type: ${action.type}`);

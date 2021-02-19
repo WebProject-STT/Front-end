@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Words from '../common/Words';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { useComponentVisibilityDispatch } from '../contexts/ComponentVisibilityContext';
 import useInputs from '../hooks/useInputs';
+import useAsync from '../hooks/useAsync';
 import useInputsCorrect from '../hooks/useInputsCorrect';
 import { isEmpty } from '../common/CheckValue';
 import GoogleLogo from '../icon/GoogleLogo.png';
@@ -13,13 +15,15 @@ import '../styles/Auth.scss';
 import '../styles/Text.scss';
 import { useUserDispatch } from '../contexts/UserContext';
 
-function LogIn() {
+function LogIn({ history }) {
 	const visibilityDispatch = useComponentVisibilityDispatch();
 	const userdispatch = useUserDispatch();
 	const [form, onChange] = useInputs({ id: '', password: '' });
 	const { id, password } = form;
-	const [state, checkInput] = useInputsCorrect({ idCorrect: 1, passwordCorrect: 1 });
-	const { idCorrect, passwordCorrect } = state;
+	const [inputState, checkInput] = useInputsCorrect({ idCorrect: 1, passwordCorrect: 1 });
+	const { idCorrect, passwordCorrect } = inputState;
+	const [loginState, setLoginError] = useState({ loginSuccess: true });
+	const { loginSuccess } = loginState;
 
 	useEffect(() => {
 		visibilityDispatch({ type: 'INVISIBLE', name: 'headerVisibility' });
@@ -28,19 +32,30 @@ function LogIn() {
 		};
 	}, [visibilityDispatch]);
 
-	// api호출해서 입력한 아이디, 비밀번호와 일치하는 유저 있는지 확인
-	const checkUser = () => {
-		localStorage.setItem('user', id);
-		userdispatch({ type: 'CHECK_LOGIN' });
+	const handleLogin = () => {
+		axios
+			.post('http://52.78.77.73:8080/user/login', {
+				signId: id,
+				pwd: password,
+			})
+			.then((response) => {
+				if (response.data === false) {
+					setLoginError({ ...loginState, loginSuccess: response.data });
+				} else {
+					userdispatch({ type: 'LOGIN', value: response.data });
+					history.push('/postlist/1');
+				}
+			})
+			.catch((error) => {
+				alert(`${error}${Words.REPORT_ERROR}`);
+			});
 	};
 
-	const confirmInputs = (e) => {
+	const confirmInputs = () => {
 		checkInput('idCorrect', id);
 		checkInput('passwordCorrect', password);
-		if (isEmpty(id) || isEmpty(password)) {
-			e.preventDefault();
-		} else {
-			checkUser();
+		if (!isEmpty(id) && !isEmpty(password)) {
+			handleLogin();
 		}
 	};
 
@@ -51,9 +66,11 @@ function LogIn() {
 				{idCorrect === 0 && <div className={classNames('text', 'auth', 'error-message')}>{Words.ENTER_ID}</div>}
 				<input className="input" type="password" name="password" placeholder={Words.ENTER_PASSWORD} value={password} onChange={onChange} />
 				{passwordCorrect === 0 && <div className={classNames('text', 'auth', 'error-message')}>{Words.ENTER_PASSWORD}</div>}
-				<Link to="/postList/1" onClick={confirmInputs}>
-					<button className={classNames('button', 'auth', 'basic')}>{Words.LOGIN}</button>
-				</Link>
+				{!loginSuccess && <div className={classNames('text', 'auth', 'error-message')}>{Words.REPORT_ID_PASSWORD_ERROR}</div>}
+				<button className={classNames('button', 'auth', 'basic')} onClick={confirmInputs}>
+					<span className={classNames('text', 'white', 'auth')}>{Words.LOGIN}</span>
+				</button>
+
 				<button className={classNames('button', 'auth', 'social')}>
 					<img className="social-image" src={GoogleLogo} alt="GoogleLogo" />
 					<span className={classNames('text', 'auth', 'social')}>{Words.GOOGLE}</span>

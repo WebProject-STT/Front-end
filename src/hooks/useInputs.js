@@ -1,5 +1,4 @@
 import { useReducer, useCallback } from 'react';
-import Words from '../common/Words';
 import { isCorrectLength } from '../common/CheckValue';
 
 function inputsReducer(state, action) {
@@ -25,7 +24,6 @@ function useInputs(initialForm) {
 		(e, sum_id = 0, element_name = '', isFocus = false, isSpace = false) => {
 			let { name, value } = e.target;
 			let length = value.length;
-			console.log(name, value);
 			if (name === 'title' && !isCorrectLength(value, 0, 20)) {
 				// console.log(isCorrectLength(value, 0, 20));
 				// console.log(value);
@@ -41,7 +39,6 @@ function useInputs(initialForm) {
 				}
 				dispatch({ type: 'CHANGE', name, value: value + attach });
 			} else if (name !== 'description' || length <= 100) {
-				console.log('didlaak');
 				dispatch({ type: 'CHANGE', name, value });
 			}
 		},

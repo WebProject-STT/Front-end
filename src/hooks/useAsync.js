@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from 'react';
+import { useReducer, useEffect } from 'react';
 
 function reducer(state, action) {
 	switch (action.type) {
@@ -25,7 +25,7 @@ function reducer(state, action) {
 	}
 }
 
-function useAsync(callback, deps = []) {
+function useAsync(callback, skip = false) {
 	const [state, dispatch] = useReducer(reducer, {
 		loading: false,
 		data: null,
@@ -36,6 +36,7 @@ function useAsync(callback, deps = []) {
 		dispatch({ type: 'LOADING' });
 		try {
 			const data = await callback();
+			console.log(data);
 			dispatch({ type: 'SUCCESS', data });
 		} catch (e) {
 			dispatch({ type: 'ERROR', error: e });
@@ -43,8 +44,11 @@ function useAsync(callback, deps = []) {
 	};
 
 	useEffect(() => {
+		if (skip) return;
 		fetchData();
-	}, [deps]);
+		// eslint 설정을 다음 줄에서만 비활성화
+		// eslint-disable-next-line
+	});
 
 	return [state, fetchData];
 }

@@ -1,5 +1,5 @@
 $blue: #1a3270;
-$white_blue: #d9e3ff;
+// $white_blue: #d9e3ff;
 $white: #ffffff;
 $gray: #919191;
 // 버튼 내 텍스트 가운데 정렬되록 설정해야돼
@@ -37,22 +37,22 @@ $gray: #919191;
 			background: $blue;
 			text-align: center;
 
-			&:first-child {
-				position: relative;
-				font-family: Roboto;
-				font-style: normal;
-				font-weight: normal;
-				font-size: 20px;
-				line-height: 28.13px;
-				color: $white;
-			}
+			// &:first-child {
+			// 	position: relative;
+			// 	font-family: Roboto;
+			// 	font-style: normal;
+			// 	font-weight: normal;
+			// 	font-size: 20px;
+			// 	line-height: 28.13px;
+			// 	color: $white;
+			// }
 
 			&:disabled {
 				background: lighten($blue, 35%);
 
-				&:first-child {
-					color: $white_blue;
-				}
+				// &:first-child {
+				// 	color: $white_blue;
+				// }
 			}
 		}
 

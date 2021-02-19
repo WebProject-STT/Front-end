@@ -7,20 +7,19 @@ import '../styles/Header.scss';
 import '../styles/Button.scss';
 
 function HeaderButton() {
-	const { userName } = useUserState();
+	const { userToken } = useUserState();
 	const userdispatch = useUserDispatch();
 
 	const logout = () => {
-		localStorage.removeItem('user');
-		userdispatch({ type: 'CHECK_LOGIN' });
+		userdispatch({ type: 'LOGOUT' });
 	};
 
 	return (
 		<div className="button-area">
-			{userName ? (
+			{userToken ? (
 				<>
 					<span className={classNames('text', 'white', 'user')}>
-						{userName}
+						{/* {userName} */}
 						{Words.GREETING}
 					</span>
 					<Link to="/">
