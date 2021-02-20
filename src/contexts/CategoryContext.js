@@ -1,15 +1,21 @@
 import React, { createContext, useReducer, useContext } from 'react';
 
 const initialState = {
-	category: 1,
+	categoryList: [{ id: 0, title: '전체' }],
+	currentCategoryId: 0,
 };
 
 function categoryReducer(state, action) {
 	switch (action.type) {
-		case 'SET_CATEGORY':
+		case 'SET_CATEGORY_LIST':
 			return {
 				...state,
-				category: action.value,
+				categoryList: state.categoryList.concat(action.value),
+			};
+		case 'SET_CURRENT_CATEGORY':
+			return {
+				...state,
+				currentCategoryId: action.value,
 			};
 		default:
 			throw new Error(`Unhandled action type: ${action.type}`);

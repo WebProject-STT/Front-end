@@ -18,11 +18,12 @@ function paginationReducer(state, action) {
 	}
 }
 // viewPost에서 페이지 번호 보내주기
-function usePagination(pageCount) {
+function usePagination(initialPage = 1) {
+	const initialStart = Math.floor(initialPage / 10);
 	const initialState = {
-		currentPage: 1,
-		start: 0,
-		end: pageCount,
+		currentPage: initialPage,
+		start: initialStart * 10,
+		end: (initialStart + 1) * 10,
 	};
 	const [pagination, dispatch] = useReducer(paginationReducer, initialState);
 

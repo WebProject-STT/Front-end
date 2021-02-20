@@ -32,7 +32,8 @@ function ViewPost({ match }) {
 	// 일단은 배열에서 find 찾지만 api적용하면 바로 데이터 하나만 받아올 수 있음
 	const contents = postsData.find((post) => post.ct_id === postIdNum);
 	const postList = getPostList(contents.ct_category.cg_id);
-	const [pagination, updateCurrentPage, updateStartEndPage] = usePagination(pageCount);
+	const initialPage = Math.floor(postList.findIndex((post) => post.ct_id === postIdNum) / pageCount) + 1;
+	const [pagination, updateCurrentPage, updateStartEndPage] = usePagination(initialPage);
 	const { currentPage, start, end } = pagination;
 	const postCount = useMemo(() => postList.length, [postList]);
 	const pageMaxIndex = Math.ceil(postCount / pageCount);
@@ -95,7 +96,9 @@ function ViewPost({ match }) {
 						))}
 					</div>
 				</div>
-				<div className="footer">
+			</div>
+			<div className="footer">
+				<div className="page-number">
 					<img
 						className="left-arrow"
 						src={LeftArrow}

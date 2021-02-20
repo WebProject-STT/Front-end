@@ -1,16 +1,18 @@
-import React, { useEffect, useCallback, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import Post from './Post';
 import { useComponentVisibilityDispatch } from '../contexts/ComponentVisibilityContext';
 import { useCheckStatusState, useCheckStatusDispatch } from '../contexts/CheckStatusContext';
 import { useCheckedItemsState, useCheckedItemsDispatch } from '../contexts/CheckedItemContext';
+import { useCategoryState } from '../contexts/CategoryContext';
+import { useUserState } from '../contexts/UserContext';
 import useInputs from '../hooks/useInputs';
 import usePagination from '../hooks/usePagination';
 import useAsync from '../hooks/useAsync';
 import Words from '../common/Words';
 import { getPostList, getPageArray } from '../common/getInformation';
-// import { getAllPostList, getPostList } from '../api/PostAPI';
 import SearchIcon from '../icon/SearchIcon.png';
 import LeftArrow from '../icon/LeftArrow.png';
 import RightArrow from '../icon/RightArrow.png';
@@ -19,29 +21,49 @@ import '../styles/Button.scss';
 import '../styles/Text.scss';
 // postlist-header 컴포넌트화 시킬까 생각중..
 
-function PostList({ match }) {
+async function getContents(categoryId = 0, userToken) {
+	const response =
+		categoryId === 0
+			? await axios.get('http://52.78.77.73:8080/contents', { headers: { 'X-AUTH-TOKEN': userToken } })
+			: await axios.get(`http://52.78.77.73:8080/contents/${categoryId}`, { headers: { 'X-AUTH-TOKEN': userToken } });
+	return response.data;
+}
+
+function PostList() {
 	const pageCount = 10;
-	const { categoryId } = match.params;
-	const categoryIdNum = parseInt(categoryId);
+	const { currentCategoryId } = useCategoryState();
 	const { checkedItems } = useCheckedItemsState();
 	const checkedItemsDispatch = useCheckedItemsDispatch();
 	const componentVisibilityDispatch = useComponentVisibilityDispatch();
 	const { checkBoxVisibility, isAllChecked } = useCheckStatusState();
 	const checkStatusDispatch = useCheckStatusDispatch();
+	const { userToken } = useUserState();
 	const [form, onChange] = useInputs({ search: '' });
 	const { search } = form;
-	const [pagination, updateCurrentPage, updateStartEndPage] = usePagination(pageCount);
+	const [pagination, updateCurrentPage, updateStartEndPage] = usePagination();
 	const { currentPage, start, end } = pagination;
-	// const [apiState, refetch] = useAsync(categoryIdNum === 1 ? getAllPostList : getPostList , []);
-	// const { loading, data: postList, error } = apiState;
-	const postList = getPostList(categoryIdNum);
+	// const [postState, refetch] = useAsync(() => getContents(currentCategoryId, userToken), [currentCategoryId]);
+	// const { loading, data: postList, error } = postState;
+	const postList = getPostList(currentCategoryId);
 	const postCount = useMemo(() => postList.length, [postList]);
 	const pageMaxIndex = Math.ceil(postCount / pageCount);
 	const pageArray = getPageArray(pageMaxIndex).slice(start, end);
 	const postStartIndex = (currentPage - 1) * pageCount;
 	const postEndIndex = currentPage * pageCount;
 
+	// if (error) {
+	// 	alert(`${error}${Words.REPORT_API_ERROR}`);
+	// }
+
 	useEffect(() => {
+		// async function getContents(categoryId = 0, userToken) {
+		// 	const response =
+		// 		categoryId === 0
+		// 			? await axios.get('http://52.78.77.73:8080/contents', { 'X-AUTH-TOKEN': userToken })
+		// 			: await axios.get(`http://52.78.77.73:8080/contents/${categoryId}`, { 'X-AUTH-TOKEN': userToken });
+		// 	console.log(response.data);
+		// }
+		// getContents(currentCategoryId, userToken);
 		componentVisibilityDispatch({ type: 'VISIBLE', name: 'categoryVisibility' });
 		return () => {
 			componentVisibilityDispatch({ type: 'INVISIBLE', name: 'categoryVisibility' });
@@ -159,8 +181,10 @@ function PostList({ match }) {
 								.slice(postStartIndex, postEndIndex)
 								.map((post) => <Post id={post.ct_id} title={post.ct_title} date={post.ct_date} isDetail={false} key={post.ct_id} />)}
 				</div>
-				{postList.length !== 0 && (
-					<div className="footer">
+			</div>
+			{postList.length !== 0 && (
+				<div className="footer">
+					<div className="page-number">
 						<img
 							className="left-arrow"
 							src={LeftArrow}
@@ -203,8 +227,8 @@ function PostList({ match }) {
 							}}
 						/>
 					</div>
-				)}
-			</div>
+				</div>
+			)}
 		</div>
 	);
 }

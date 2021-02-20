@@ -1,7 +1,8 @@
 import React, { createContext, useReducer, useContext } from 'react';
 
 const initialState = {
-	userToken: null,
+	userToken: localStorage.getItem('userToken'),
+	userName: localStorage.getItem('userName'),
 };
 
 function userReducer(state, action) {
@@ -9,12 +10,14 @@ function userReducer(state, action) {
 		case 'LOGIN':
 			return {
 				...state,
-				userToken: action.value,
+				userToken: localStorage.getItem('userToken'),
+				userName: localStorage.getItem('userName'),
 			};
 		case 'LOGOUT':
 			return {
 				...state,
 				userToken: null,
+				userName: null,
 			};
 		default:
 			throw new Error(`Unhandled action type: ${action.type}`);

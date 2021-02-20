@@ -39,12 +39,14 @@ function LogIn({ history }) {
 				pwd: password,
 			})
 			.then((response) => {
-				if (response.data === false) {
-					setLoginError({ ...loginState, loginSuccess: response.data });
-				} else {
-					userdispatch({ type: 'LOGIN', value: response.data });
-					history.push('/postlist/1');
-				}
+				console.log(response.data);
+				// if (response.data === false) {
+				// 	setLoginError({ ...loginState, loginSuccess: response.data });
+				// } else {
+				// 	localStorage.setItem('userToken', response.data);
+				// 	userdispatch({ type: 'LOGIN' });
+				// 	history.push('/postlist/1');
+				// }
 			})
 			.catch((error) => {
 				alert(`${error}${Words.REPORT_ERROR}`);
@@ -59,14 +61,21 @@ function LogIn({ history }) {
 		}
 	};
 
+	const getErrorText = () => {
+		if (passwordCorrect === 0) {
+			return <div className={classNames('text', 'auth', 'error-message')}>{Words.ENTER_PASSWORD}</div>;
+		} else if (!loginSuccess) {
+			return <div className={classNames('text', 'auth', 'error-message')}>{Words.REPORT_ID_PASSWORD_ERROR}</div>;
+		}
+	};
+
 	return (
 		<div className="auth">
 			<div className="auth-form">
 				<input className="input" name="id" placeholder={Words.ENTER_ID} value={id} maxLength="20" onChange={onChange} />
 				{idCorrect === 0 && <div className={classNames('text', 'auth', 'error-message')}>{Words.ENTER_ID}</div>}
 				<input className="input" type="password" name="password" placeholder={Words.ENTER_PASSWORD} value={password} onChange={onChange} />
-				{passwordCorrect === 0 && <div className={classNames('text', 'auth', 'error-message')}>{Words.ENTER_PASSWORD}</div>}
-				{!loginSuccess && <div className={classNames('text', 'auth', 'error-message')}>{Words.REPORT_ID_PASSWORD_ERROR}</div>}
+				{getErrorText()}
 				<button className={classNames('button', 'auth', 'basic')} onClick={confirmInputs}>
 					<span className={classNames('text', 'white', 'auth')}>{Words.LOGIN}</span>
 				</button>

@@ -80,10 +80,11 @@ $blueGray: #ededf2;
 .post-view {
 	// z-index: 0;
 	// position: relative;
-	min-height: 90.5%;
+	min-height: 85.5%;
 	height: auto;
 	// background-color: aquamarine;
 	&.list {
+		text-align: center;
 		margin-top: 6.5%;
 	}
 	&.detail {
@@ -216,9 +217,13 @@ $blueGray: #ededf2;
 }
 
 .footer {
-	width: auto;
-	margin: 1% auto 0 auto;
+	text-align: center;
 	// background-color: yellow;
+}
+
+.page-number {
+	width: auto;
+	display: inline-block;
 }
 
 a {

@@ -19,12 +19,12 @@ function Header() {
 	const white = '#ffffff';
 
 	const setCategory = () => {
-		categoryDispatch({ type: 'SET_CATEGORY', value: 1 });
+		categoryDispatch({ type: 'SET_CURRENT_CATEGORY', value: 0 });
 	};
 
 	return (
 		<div className="header" style={{ background: userToken ? blue : white }}>
-			<Link to={userToken ? '/postList/1' : '/'} onClick={setCategory}>
+			<Link to={userToken ? '/postList/0' : '/'} onClick={setCategory}>
 				<div className="logo-area">
 					{userToken ? <img className="logo-image" src={LogoWhite} alt="logo" /> : <img className="logo-image" src={LogoBlue} alt="logo" />}
 					<span className={classNames('logo-text')} style={{ color: userToken ? white : blue }}>
