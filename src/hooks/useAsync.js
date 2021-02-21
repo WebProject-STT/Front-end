@@ -5,7 +5,7 @@ function reducer(state, action) {
 		case 'LOADING':
 			return {
 				loading: true,
-				data: null,
+				data: [],
 				error: null,
 			};
 		case 'SUCCESS':
@@ -17,7 +17,7 @@ function reducer(state, action) {
 		case 'ERROR':
 			return {
 				loading: false,
-				data: null,
+				data: [],
 				error: action.error,
 			};
 		default:
@@ -28,7 +28,7 @@ function reducer(state, action) {
 function useAsync(callback, deps = [], skip = false) {
 	const [state, dispatch] = useReducer(reducer, {
 		loading: false,
-		data: null,
+		data: [],
 		error: false,
 	});
 
@@ -36,7 +36,6 @@ function useAsync(callback, deps = [], skip = false) {
 		dispatch({ type: 'LOADING' });
 		try {
 			const data = await callback();
-			console.log(data);
 			dispatch({ type: 'SUCCESS', data });
 		} catch (e) {
 			dispatch({ type: 'ERROR', error: e });
@@ -46,7 +45,7 @@ function useAsync(callback, deps = [], skip = false) {
 	useEffect(() => {
 		if (skip) return;
 		fetchData();
-	}, [deps]);
+	}, deps);
 
 	return [state, fetchData];
 }

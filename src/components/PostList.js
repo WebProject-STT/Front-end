@@ -21,11 +21,11 @@ import '../styles/Button.scss';
 import '../styles/Text.scss';
 // postlist-header 컴포넌트화 시킬까 생각중..
 
-async function getContents(categoryId = 0, userToken) {
+async function getContents(categoryId, userToken) {
 	const response =
 		categoryId === 0
-			? await axios.get('http://52.78.77.73:8080/contents', { headers: { 'X-AUTH-TOKEN': userToken } })
-			: await axios.get(`http://52.78.77.73:8080/contents/${categoryId}`, { headers: { 'X-AUTH-TOKEN': userToken } });
+			? await axios.get('http://52.78.77.73:8080/contents', { headers: { memberId: userToken } })
+			: await axios.get(`http://52.78.77.73:8080/contents/${categoryId}`, { headers: { memberId: userToken } });
 	return response.data;
 }
 
@@ -42,9 +42,8 @@ function PostList() {
 	const { search } = form;
 	const [pagination, updateCurrentPage, updateStartEndPage] = usePagination();
 	const { currentPage, start, end } = pagination;
-	// const [postState, refetch] = useAsync(() => getContents(currentCategoryId, userToken), [currentCategoryId]);
-	// const { loading, data: postList, error } = postState;
-	const postList = getPostList(currentCategoryId);
+	const [postState] = useAsync(() => getContents(currentCategoryId, userToken), [currentCategoryId]);
+	const { loading, data: postList, error } = postState;
 	const postCount = useMemo(() => postList.length, [postList]);
 	const pageMaxIndex = Math.ceil(postCount / pageCount);
 	const pageArray = getPageArray(pageMaxIndex).slice(start, end);
@@ -56,14 +55,6 @@ function PostList() {
 	// }
 
 	useEffect(() => {
-		// async function getContents(categoryId = 0, userToken) {
-		// 	const response =
-		// 		categoryId === 0
-		// 			? await axios.get('http://52.78.77.73:8080/contents', { 'X-AUTH-TOKEN': userToken })
-		// 			: await axios.get(`http://52.78.77.73:8080/contents/${categoryId}`, { 'X-AUTH-TOKEN': userToken });
-		// 	console.log(response.data);
-		// }
-		// getContents(currentCategoryId, userToken);
 		componentVisibilityDispatch({ type: 'VISIBLE', name: 'categoryVisibility' });
 		return () => {
 			componentVisibilityDispatch({ type: 'INVISIBLE', name: 'categoryVisibility' });
@@ -167,7 +158,7 @@ function PostList() {
 							<br />
 							<span className={classNames('text', 'no-post')}>{Words.WAIT}</span>
 						</>} */}
-					{postList.length === 0 && (
+					{postCount === 0 && (
 						<>
 							<span className={classNames('text', 'no-post')}>{Words.NO_POST}</span>
 							<br />
@@ -175,14 +166,14 @@ function PostList() {
 						</>
 					)}
 					{search === ''
-						? postList.slice(postStartIndex, postEndIndex).map((post) => <Post id={post.ct_id} title={post.ct_title} date={post.ct_date} isDetail={false} key={post.ct_id} />)
+						? postList.slice(postStartIndex, postEndIndex).map((post) => <Post id={post.id} title={post.title} date={post.date.slice(0, 10)} isDetail={false} key={post.id} />)
 						: postList
-								.filter((post) => post.ct_title.includes(search))
+								.filter((post) => post.title.includes(search))
 								.slice(postStartIndex, postEndIndex)
-								.map((post) => <Post id={post.ct_id} title={post.ct_title} date={post.ct_date} isDetail={false} key={post.ct_id} />)}
+								.map((post) => <Post id={post.id} title={post.title} date={post.date.slice(0, 10)} isDetail={false} key={post.id} />)}
 				</div>
 			</div>
-			{postList.length !== 0 && (
+			{postCount !== 0 && (
 				<div className="footer">
 					<div className="page-number">
 						<img

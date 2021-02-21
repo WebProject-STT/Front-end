@@ -22,8 +22,8 @@ function LogIn({ history }) {
 	const { id, password } = form;
 	const [inputState, checkInput] = useInputsCorrect({ idCorrect: 1, passwordCorrect: 1 });
 	const { idCorrect, passwordCorrect } = inputState;
-	const [loginState, setLoginError] = useState({ loginSuccess: true });
-	const { loginSuccess } = loginState;
+	const [loginErrorState, setLoginError] = useState({ loginSuccess: true });
+	const { loginSuccess } = loginErrorState;
 
 	useEffect(() => {
 		visibilityDispatch({ type: 'INVISIBLE', name: 'headerVisibility' });
@@ -39,14 +39,15 @@ function LogIn({ history }) {
 				pwd: password,
 			})
 			.then((response) => {
-				console.log(response.data);
-				// if (response.data === false) {
-				// 	setLoginError({ ...loginState, loginSuccess: response.data });
-				// } else {
-				// 	localStorage.setItem('userToken', response.data);
-				// 	userdispatch({ type: 'LOGIN' });
-				// 	history.push('/postlist/1');
-				// }
+				if (response.data === false) {
+					setLoginError({ ...loginErrorState, loginSuccess: response.data });
+				} else {
+					const { id, name } = response.data;
+					localStorage.setItem('userToken', id);
+					localStorage.setItem('userName', name);
+					userdispatch({ type: 'LOGIN', userToken: id, userName: name });
+					history.push('/postlist/0');
+				}
 			})
 			.catch((error) => {
 				alert(`${error}${Words.REPORT_ERROR}`);

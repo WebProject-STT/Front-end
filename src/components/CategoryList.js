@@ -3,6 +3,7 @@ import axios from 'axios';
 import Category from './Category';
 import { useComponentVisibilityState } from '../contexts/ComponentVisibilityContext';
 import { useCategoryState, useCategoryDispatch } from '../contexts/CategoryContext';
+import Words from '../common/Words';
 import '../styles/Category.scss';
 
 function CategoryList() {
@@ -11,13 +12,16 @@ function CategoryList() {
 	const categoryDispatch = useCategoryDispatch();
 
 	useEffect(() => {
-		async function getCategoryList() {
-			const response = await axios.get('http://52.78.77.73:8080/category');
-			categoryDispatch({ type: 'SET_CATEGORY_LIST', value: response.data });
-		}
-
 		if (categoryList.length === 1) {
-			getCategoryList();
+			console.log(categoryList);
+			axios
+				.get('http://52.78.77.73:8080/category')
+				.then((response) => {
+					categoryDispatch({ type: 'SET_CATEGORY_LIST', value: response.data });
+				})
+				.catch((error) => {
+					alert(`${error}${Words.REPORT_ERROR}`);
+				});
 		}
 	}, [categoryList, categoryDispatch]);
 

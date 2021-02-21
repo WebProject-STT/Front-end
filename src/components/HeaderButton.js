@@ -7,19 +7,19 @@ import '../styles/Header.scss';
 import '../styles/Button.scss';
 
 function HeaderButton() {
-	const { userToken } = useUserState();
+	const { userName } = useUserState();
 	const userdispatch = useUserDispatch();
-
+	console.log(userName);
 	const logout = () => {
 		userdispatch({ type: 'LOGOUT' });
 	};
 
 	return (
 		<div className="button-area">
-			{userToken ? (
+			{userName ? (
 				<>
 					<span className={classNames('text', 'white', 'user')}>
-						{/* {userName} */}
+						{userName}
 						{Words.GREETING}
 					</span>
 					<Link to="/">

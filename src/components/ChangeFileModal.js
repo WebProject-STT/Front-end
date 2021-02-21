@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import classNames from 'classnames';
 import Words from '../common/Words';
 import LogoBlue from '../icon/LogoBlue.png';
-import '../styles/FileModal.scss';
+import '../styles/Modal.scss';
 import '../styles/Button.scss';
 import '../styles/Text.scss';
 
@@ -27,7 +27,7 @@ function ChangeFileModal({ handleChangeFileModal }) {
 	};
 
 	return (
-		<div className="file-modal">
+		<div className={classNames('modal', 'file')}>
 			<div className="file-header">
 				<img className="file-logo" src={LogoBlue} alt="LogoBlue" />
 				<span className={classNames('text', 'bold', 'modal-title')}>{Words.CHANGE_FILE}</span>

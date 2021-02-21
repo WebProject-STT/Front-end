@@ -10,8 +10,8 @@ function userReducer(state, action) {
 		case 'LOGIN':
 			return {
 				...state,
-				userToken: localStorage.getItem('userToken'),
-				userName: localStorage.getItem('userName'),
+				userToken: action.userToken,
+				userName: action.userName,
 			};
 		case 'LOGOUT':
 			return {

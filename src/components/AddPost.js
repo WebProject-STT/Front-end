@@ -1,30 +1,46 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import Words from '../common/Words';
 import { isEmpty } from '../common/CheckValue';
+import { useCategoryState } from '../contexts/CategoryContext';
+import { useUserState } from '../contexts/UserContext';
 import useInputs from '../hooks/useInputs';
-import { categoryList } from '../common/TempData';
+import useAsync from '../hooks/useAsync';
+import { postContents } from '../api/ContentsAPI';
+import LoadingModal from './LoadingModal';
 import '../styles/WritePost.scss';
 import '../styles/Button.scss';
 import '../styles/Text.scss';
 
 function AddPost({ history }) {
-	const [category, setCategory] = useState(categoryList[0].cg_title);
+	const { userToken } = useUserState();
+	const { categoryList } = useCategoryState();
+	const [category, setCategory] = useState(0);
 	const [uploadFile, setUploadFile] = useState({
 		fileName: Words.SELECT_FILE,
 		fileInformation: null,
 	});
 	const { fileName, fileInformation } = uploadFile;
-	const [form, onChange] = useInputs({ title: '', description: '' });
-	const { title, description } = form;
-	let tempNum = 0;
+	const [inputForm, onChange] = useInputs({ title: '', description: '' });
+	const { title, description } = inputForm;
+	const contents = { category: category, desc: description, file: fileInformation, subject_nums: 4, title: title };
+	const [contentsState, refetch] = useAsync(
+		() => {
+			postContents(contents, userToken);
+		},
+		[],
+		true
+	);
+	const { loading, data: isSuccess, error } = contentsState;
+	const [isLoadingModalOn, setIsLoadingModalOn] = useState(loading);
 
-	const temp = (e) => {
-		console.log(e);
-		console.log(tempNum);
-		tempNum++;
+	const goBack = () => {
+		history.goBack();
 	};
+
+	if (!isLoadingModalOn && !isSuccess) {
+		goBack();
+	}
 
 	const categoryHandler = (value) => {
 		setCategory(value);
@@ -38,16 +54,16 @@ function AddPost({ history }) {
 		});
 	};
 
-	const goBack = () => {
-		history.goBack();
-	};
-
 	const getMessage = () => {
 		let message = '';
 		if (isEmpty(title)) {
 			message = Words.ENTER_TITLE;
+		} else if (category === 0) {
+			message = Words.SELECT_CATEGORY;
 		} else if (fileName === Words.SELECT_FILE) {
 			message = Words.SELECT_FILE;
+		} else if (isEmpty(description)) {
+			message = Words.ENTER_DESCRIPTION;
 		}
 		return message;
 	};
@@ -57,9 +73,8 @@ function AddPost({ history }) {
 		if (!isEmpty(message)) {
 			alert(message);
 		} else {
-			goBack();
+			refetch();
 		}
-		// api호출하는 코드 작성, 데이터 업로드 성공시 postList로 이동
 	};
 
 	const confirmCancel = (e) => {
@@ -74,15 +89,7 @@ function AddPost({ history }) {
 			<div className={classNames('write', 'input-form', 'add')}>
 				<div className={classNames('write', 'input-area', 'small')}>
 					<span className={classNames('text', 'bold', 'title')}>{Words.TITLE}</span>
-					<input
-						type="text"
-						className={classNames('write', 'input', 'small')}
-						name="title"
-						placeholder={Words.ENTER_TITLE + Words.MAX_TITLE_LENGTH}
-						value={title}
-						onKeyUp={onChange}
-						// onChange={onChange}
-					/>
+					<input type="text" className={classNames('write', 'input', 'small')} name="title" placeholder={Words.ENTER_TITLE + Words.MAX_TITLE_LENGTH} value={title} onChange={onChange} />
 				</div>
 				<div className={classNames('write', 'input-area', 'small')}>
 					<span className={classNames('text', 'bold', 'title')}>{Words.CATEGORY}</span>
@@ -95,8 +102,8 @@ function AddPost({ history }) {
 						>
 							{categoryList.map((category) => {
 								return (
-									<option value={category.cg_title} key={category.cg_id}>
-										{category.cg_title}
+									<option value={category.id} key={category.id}>
+										{category.id === 0 ? Words.SELECT_CATEGORY : category.title}
 									</option>
 								);
 							})}
@@ -117,7 +124,6 @@ function AddPost({ history }) {
 								const selectFile = e.target.files[0];
 								selectFile && fileHandler(selectFile);
 							}}
-							accept=".m4a"
 						/>
 						<label className={classNames('button', 'blue', 'write-post', 'small')} htmlFor="select-file">
 							<span className={classNames('text', 'white', 'select-small')}>{Words.SELECT}</span>
@@ -140,7 +146,7 @@ function AddPost({ history }) {
 				<div className={classNames('write', 'input-area', 'small')}>
 					<div className={classNames('write', 'button-area')}>
 						{/* <Link to="/postList" className={classNames('write', 'write-link')} onClick={postData}> */}
-						<button className={classNames('button', 'white', 'write-post', 'big')} onClick={postData}>
+						<button type="submit" className={classNames('button', 'white', 'write-post', 'big')} onClick={postData}>
 							<span className={classNames('text', 'blue', 'write-post')}>{Words.SAVE}</span>
 						</button>
 						{/* </Link> */}
@@ -152,6 +158,7 @@ function AddPost({ history }) {
 					</div>
 				</div>
 			</div>
+			{isLoadingModalOn && <LoadingModal />}
 		</div>
 	);
 }

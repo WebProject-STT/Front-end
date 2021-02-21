@@ -1,11 +1,10 @@
 $white: #ffffff;
 $blue: #1a3270;
 
-.file-modal {
+.modal {
 	position: fixed;
 	width: 33%;
 	height: 35%;
-	left: 42%;
 	right: 20%;
 	top: 30%;
 	bottom: 20%;
@@ -13,6 +12,14 @@ $blue: #1a3270;
 	border: 2px solid $blue;
 	box-sizing: border-box;
 	z-index: 10000;
+
+	&.file {
+		left: 42%;
+	}
+
+	&.loading {
+		left: 30%;
+	}
 }
 
 .file-header {

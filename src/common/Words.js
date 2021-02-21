@@ -48,6 +48,7 @@ const Words = {
 	EMAIL_CONDITION: `이메일은 '아이디@주소' 형태로 입력해주세요`,
 	NO_POST: '작성된 게시글이 없습니다.',
 	WRITE_POST: '작성버튼을 눌러 새 게시글을 작성해주세요😊',
+	SELECT_CATEGORY: '카테고리를 선택해주세요',
 	SELECT_POST: '삭제할 게시글을 선택해주세요',
 	SELECT_FILE: '파일을 선택해주세요',
 	SUCCESS_SIGNUP: '회원가입이 완료되었습니다.\n로그인을 진행해주세요',
