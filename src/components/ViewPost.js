@@ -4,15 +4,18 @@ import { Link } from 'react-router-dom';
 import { useComponentVisibilityDispatch } from '../contexts/ComponentVisibilityContext';
 import { useCheckStatusDispatch } from '../contexts/CheckStatusContext';
 import { useCheckedItemsDispatch } from '../contexts/CheckedItemContext';
+import { useUserState } from '../contexts/UserContext';
 import Words from '../common/Words';
-import { postsData } from '../common/TempData';
 import usePagination from '../hooks/usePagination';
-import { getPostList, getPageArray } from '../common/getInformation';
+import useAsync from '../hooks/useAsync';
+import { getContents, getContentsList } from '../api/ContentsAPI';
+import { getPageArray } from '../common/getInformation';
 import ChangeFileModal from './ChangeFileModal';
 import Contents from './Contents';
 import Post from './Post';
 import LeftArrow from '../icon/LeftArrow.png';
 import RightArrow from '../icon/RightArrow.png';
+import LoadingImage from '../icon/LoadingImage.gif';
 import '../styles/ViewPost.scss';
 import '../styles/Text.scss';
 
@@ -22,6 +25,7 @@ function scrollToUp(event) {
 }
 
 function ViewPost({ match }) {
+	const { userToken } = useUserState();
 	const { postId } = match.params;
 	const postIdNum = parseInt(postId);
 	const pageCount = 4;
@@ -29,9 +33,10 @@ function ViewPost({ match }) {
 	const checkStatusDispatch = useCheckStatusDispatch();
 	const checkedItemsDispatch = useCheckedItemsDispatch();
 	const [isChangeFileModalOn, setIsChangeFileModalOn] = useState(false);
-	// 일단은 배열에서 find 찾지만 api적용하면 바로 데이터 하나만 받아올 수 있음
-	const contents = postsData.find((post) => post.ct_id === postIdNum);
-	const postList = getPostList(contents.ct_category.cg_id);
+	const [getContentsState, getContentsRefetch] = useAsync(() => getContents(postIdNum, userToken), [postIdNum], false);
+	const { loading: getContentsLoading, data: contents, error: getContentsError } = getContentsState;
+	const [getContentsListState, getContentsListRefetch] = useAsync(() => getContentsList(contents.category.id, userToken));
+	const { loading: getContentsListLoading, data: postList, error: getContentsListError } = getContentsListState;
 	const initialPage = Math.floor(postList.findIndex((post) => post.ct_id === postIdNum) / pageCount) + 1;
 	const [pagination, updateCurrentPage, updateStartEndPage] = usePagination(initialPage);
 	const { currentPage, start, end } = pagination;
@@ -41,6 +46,8 @@ function ViewPost({ match }) {
 	const postIndexStart = (currentPage - 1) * pageCount;
 	const postIndexEnd = currentPage * pageCount;
 
+	console.log(getContentsLoading);
+
 	useEffect(() => {
 		checkStatusDispatch({ type: 'RESET' });
 		checkedItemsDispatch({ type: 'RESET_ITEM' });
@@ -49,6 +56,10 @@ function ViewPost({ match }) {
 			componentVisibilityDispatch({ type: 'INVISIBLE', name: 'categoryVisibility' });
 		};
 	}, [componentVisibilityDispatch]);
+
+	if (getContentsLoading) {
+		return <img className="loading-image" src={LoadingImage} alt="LoadingImage" />;
+	}
 
 	const handleChangeFileModal = () => {
 		setIsChangeFileModalOn(!isChangeFileModalOn);
@@ -75,11 +86,11 @@ function ViewPost({ match }) {
 					<Link to={`/updatePost/${postId}`} className={classNames('button', 'view', 'white', 'detail')} id="update">
 						<span className={classNames('text', 'blue', 'post-list', 'small')}>{Words.UPDATE}</span>
 					</Link>
-					<Link to={`/postList/${contents.ct_category.cg_id}`} className={classNames('button', 'view', 'blue', 'detail')} onClick={deletePost}>
-						<span className={classNames('text', 'white', 'post-list', 'small')} id="delete">
-							{Words.DELETE}
-						</span>
-					</Link>
+					{/* <Link to={`/postList/${contents.category.id}`} className={classNames('button', 'view', 'blue', 'detail')} onClick={deletePost}> */}
+					<span className={classNames('text', 'white', 'post-list', 'small')} id="delete">
+						{Words.DELETE}
+					</span>
+					{/* </Link> */}
 				</div>
 			</div>
 			<div className={classNames('post-view', 'detail')}>
@@ -88,11 +99,11 @@ function ViewPost({ match }) {
 				</div>
 				<div className="detail-list ">
 					<div className="detail-category">
-						<span className={classNames('text', 'bold', 'post-detail', 'category-name')}>{contents.ct_category.cg_title}</span>
+						<span className={classNames('text', 'bold', 'post-detail', 'category-name')}>{postList}</span>
 					</div>
 					<div className={classNames('view-form', 'small')}>
 						{postList.slice(postIndexStart, postIndexEnd).map((post) => (
-							<Post id={post.ct_id} title={post.ct_title} date={post.ct_date} isDetail={true} currentPostId={postIdNum} key={post.ct_id} />
+							<Post id={post.id} title={post.title} date={post.date} isDetail={true} currentPostId={postIdNum} key={post.ct_id} />
 						))}
 					</div>
 				</div>

@@ -11,23 +11,17 @@ import { useUserState } from '../contexts/UserContext';
 import useInputs from '../hooks/useInputs';
 import usePagination from '../hooks/usePagination';
 import useAsync from '../hooks/useAsync';
+import { getContentsList, deleteContents } from '../api/ContentsAPI';
 import Words from '../common/Words';
-import { getPostList, getPageArray } from '../common/getInformation';
+import { getPageArray } from '../common/getInformation';
 import SearchIcon from '../icon/SearchIcon.png';
 import LeftArrow from '../icon/LeftArrow.png';
 import RightArrow from '../icon/RightArrow.png';
+import LoadingImage from '../icon/LoadingImage.gif';
 import '../styles/ViewPost.scss';
 import '../styles/Button.scss';
 import '../styles/Text.scss';
 // postlist-header 컴포넌트화 시킬까 생각중..
-
-async function getContents(categoryId, userToken) {
-	const response =
-		categoryId === 0
-			? await axios.get('http://52.78.77.73:8080/contents', { headers: { memberId: userToken } })
-			: await axios.get(`http://52.78.77.73:8080/contents/${categoryId}`, { headers: { memberId: userToken } });
-	return response.data;
-}
 
 function PostList() {
 	const pageCount = 10;
@@ -42,17 +36,17 @@ function PostList() {
 	const { search } = form;
 	const [pagination, updateCurrentPage, updateStartEndPage] = usePagination();
 	const { currentPage, start, end } = pagination;
-	const [postState] = useAsync(() => getContents(currentCategoryId, userToken), [currentCategoryId]);
-	const { loading, data: postList, error } = postState;
+	const [getPostState, getRefetch] = useAsync(() => getContentsList(currentCategoryId, userToken), [currentCategoryId]);
+	const { loading: getPostLoading, data: postList, error: getPostError } = getPostState;
+	const [deletePostState, deleteRefetch] = useAsync(() => deleteContents(checkedItems, userToken), [], true);
+	const { loading: deletePostLoading, data: isDeletePost, error: deletePostError } = deletePostState;
 	const postCount = useMemo(() => postList.length, [postList]);
 	const pageMaxIndex = Math.ceil(postCount / pageCount);
 	const pageArray = getPageArray(pageMaxIndex).slice(start, end);
 	const postStartIndex = (currentPage - 1) * pageCount;
 	const postEndIndex = currentPage * pageCount;
 
-	// if (error) {
-	// 	alert(`${error}${Words.REPORT_API_ERROR}`);
-	// }
+	console.log(postList);
 
 	useEffect(() => {
 		componentVisibilityDispatch({ type: 'VISIBLE', name: 'categoryVisibility' });
@@ -79,8 +73,8 @@ function PostList() {
 		if (target.checked) {
 			checkStatusDispatch({ type: 'SET_TRUE', name: 'isAllChecked' });
 			postList.map((post) => {
-				if (!checkedItems.includes(post.ct_id)) {
-					checkedItemsDispatch({ type: 'ADD_ITEM', item: post.ct_id });
+				if (!checkedItems.includes(post.id)) {
+					checkedItemsDispatch({ type: 'ADD_ITEM', item: post.id });
 				}
 			});
 		} else {
@@ -91,7 +85,9 @@ function PostList() {
 	const confirmDelete = () => {
 		const isConfirm = window.confirm(Words.ASK_DELETE_POSTS);
 		if (isConfirm) {
+			deleteRefetch();
 			resetCheckedItems();
+			getRefetch();
 		}
 	};
 
@@ -128,14 +124,14 @@ function PostList() {
 							</span>
 						</Link>
 					)}
-					<button className={classNames('button', 'view', 'blue', 'list')} onClick={checkBoxHandler} id={!checkBoxVisibility && 'delete'}>
+					<button className={classNames('button', 'view', 'blue', 'list')} onClick={checkBoxHandler} id={!checkBoxVisibility ? 'delete' : ''}>
 						<span className={classNames('text', 'white', 'post-list', 'small')}>{checkBoxVisibility ? Words.CANCEL : Words.DELETE}</span>
 					</button>
 				</div>
 			</div>
 			<div className={classNames('post-view', 'list')}>
 				<div className="all-check">
-					{checkBoxVisibility && (
+					{postList.length !== 0 && checkBoxVisibility && (
 						<>
 							<label className="check-label">
 								<input
@@ -153,12 +149,8 @@ function PostList() {
 					)}
 				</div>
 				<div className={classNames('view-form', 'big')}>
-					{/* {loading && <>
-							<span className={classNames('text', 'no-post')}>{Words.LOADING_GET_POST}</span>
-							<br />
-							<span className={classNames('text', 'no-post')}>{Words.WAIT}</span>
-						</>} */}
-					{postCount === 0 && (
+					{getPostLoading && <img className="loading-image" src={LoadingImage} alt="LoadingImage" />}
+					{!getPostLoading && postCount === 0 && (
 						<>
 							<span className={classNames('text', 'no-post')}>{Words.NO_POST}</span>
 							<br />
@@ -198,6 +190,7 @@ function PostList() {
 										updateCurrentPage(page);
 									}}
 									style={{ color: currentPage === page && 'pink' }}
+									key={page}
 								>
 									{page}
 								</button>
