@@ -8,7 +8,7 @@ import { useUserState } from '../contexts/UserContext';
 import Words from '../common/Words';
 import usePagination from '../hooks/usePagination';
 import useAsync from '../hooks/useAsync';
-import { getContents, getContentsList } from '../api/ContentsAPI';
+import { getContents, getContentsList, deleteContents } from '../api/ContentsAPI';
 import { getPageArray } from '../common/getInformation';
 import ChangeFileModal from './ChangeFileModal';
 import Contents from './Contents';
@@ -35,8 +35,15 @@ function ViewPost({ match }) {
 	const [isChangeFileModalOn, setIsChangeFileModalOn] = useState(false);
 	const [getContentsState, getContentsRefetch] = useAsync(() => getContents(postIdNum, userToken), [postIdNum], false);
 	const { loading: getContentsLoading, data: contents, error: getContentsError } = getContentsState;
-	const [getContentsListState, getContentsListRefetch] = useAsync(() => getContentsList(contents.category.id, userToken));
+	const [getContentsListState, getContentsListRefetch] = useAsync(() => getContentsList(contents.category.id, userToken, [contents.category.id], true));
 	const { loading: getContentsListLoading, data: postList, error: getContentsListError } = getContentsListState;
+	const [deleteContentsState, deleteContentsRefetch] = useAsync(
+		() => {
+			deleteContents([postIdNum], userToken);
+		},
+		[],
+		true
+	);
 	const initialPage = Math.floor(postList.findIndex((post) => post.ct_id === postIdNum) / pageCount) + 1;
 	const [pagination, updateCurrentPage, updateStartEndPage] = usePagination(initialPage);
 	const { currentPage, start, end } = pagination;
@@ -46,7 +53,9 @@ function ViewPost({ match }) {
 	const postIndexStart = (currentPage - 1) * pageCount;
 	const postIndexEnd = currentPage * pageCount;
 
-	console.log(getContentsLoading);
+	if (contents.length !== 0) {
+		// getContentsListRefetch();
+	}
 
 	useEffect(() => {
 		checkStatusDispatch({ type: 'RESET' });
@@ -57,10 +66,6 @@ function ViewPost({ match }) {
 		};
 	}, [componentVisibilityDispatch]);
 
-	if (getContentsLoading) {
-		return <img className="loading-image" src={LoadingImage} alt="LoadingImage" />;
-	}
-
 	const handleChangeFileModal = () => {
 		setIsChangeFileModalOn(!isChangeFileModalOn);
 	};
@@ -68,7 +73,7 @@ function ViewPost({ match }) {
 	const deletePost = (e) => {
 		const isConfirm = window.confirm(Words.ASK_DELETE_POST);
 		if (isConfirm) {
-			// api호출해서 해당 게시글 삭제
+			deleteContentsRefetch();
 		} else {
 			e.preventDefault();
 		}
@@ -86,16 +91,16 @@ function ViewPost({ match }) {
 					<Link to={`/updatePost/${postId}`} className={classNames('button', 'view', 'white', 'detail')} id="update">
 						<span className={classNames('text', 'blue', 'post-list', 'small')}>{Words.UPDATE}</span>
 					</Link>
-					{/* <Link to={`/postList/${contents.category.id}`} className={classNames('button', 'view', 'blue', 'detail')} onClick={deletePost}> */}
-					<span className={classNames('text', 'white', 'post-list', 'small')} id="delete">
-						{Words.DELETE}
-					</span>
-					{/* </Link> */}
+					<Link to={contents.length !== 0 ? `/postList/${contents.category.id}` : '/postList/0'} className={classNames('button', 'view', 'blue', 'detail')} onClick={deletePost}>
+						<span className={classNames('text', 'white', 'post-list', 'small')} id="delete">
+							{Words.DELETE}
+						</span>
+					</Link>
 				</div>
 			</div>
 			<div className={classNames('post-view', 'detail')}>
 				<div className={classNames('view-form', 'middle')}>
-					<Contents contents={contents} />
+					{contents.length === 0 ? <img className="loading-image" src={LoadingImage} alt="LoadingImage" /> : <Contents contentsId={postIdNum} contents={contents} />}
 				</div>
 				<div className="detail-list ">
 					<div className="detail-category">
@@ -153,7 +158,7 @@ function ViewPost({ match }) {
 					/>
 				</div>
 			</div>
-			{isChangeFileModalOn && <ChangeFileModal handleChangeFileModal={handleChangeFileModal}></ChangeFileModal>}
+			{isChangeFileModalOn && <ChangeFileModal contentsId={postIdNum} getContentsRefetch={getContentsRefetch} handleChangeFileModal={handleChangeFileModal}></ChangeFileModal>}
 		</div>
 	);
 }

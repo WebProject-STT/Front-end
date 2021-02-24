@@ -8,8 +8,8 @@ import '../styles/ViewPost.scss';
 
 function Contents({ contents }) {
 	const { userToken } = useUserState();
-	const { title, date, tagList, desc, summaryList, origin } = contents;
-	console.log(contents);
+	const { date, desc, origin, summaryList, tagList, title } = contents;
+
 	return (
 		<>
 			<div className={classNames('contents-area', 'title')}>
@@ -17,7 +17,7 @@ function Contents({ contents }) {
 				<span className={classNames('text', 'bold', 'post-detail', 'title')}>{title}</span>
 				{/* </div> */}
 				<div className={classNames('date-area')}>
-					<span className={classNames('text', 'post-detail', 'date')}>{date}</span>
+					<span className={classNames('text', 'post-detail', 'date')}>{date.slice(0, 10)}</span>
 				</div>
 			</div>
 			<div className={classNames('contents-area')}>

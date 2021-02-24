@@ -1,17 +1,33 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 import Words from '../common/Words';
+import { updateContentsFile } from '../api/ContentsAPI';
+import { useUserState } from '../contexts/UserContext';
+import useAsync from '../hooks/useAsync';
 import LogoBlue from '../icon/LogoBlue.png';
 import '../styles/Modal.scss';
 import '../styles/Button.scss';
 import '../styles/Text.scss';
 
-function ChangeFileModal({ handleChangeFileModal }) {
+function ChangeFileModal({ contentsId, handleChangeFileModal, getContentsRefetch }) {
+	const { userToken } = useUserState();
 	const [uploadFile, setUploadFile] = useState({
 		fileName: Words.SELECT_FILE,
 		fileInformation: null,
 	});
 	const { fileName, fileInformation } = uploadFile;
+	const [updateFileState, updateFileRefetch] = useAsync(
+		() => {
+			updateContentsFile(contentsId, { file: fileInformation, subject_nums: 2 }, userToken);
+		},
+		[],
+		true
+	);
+	const { loading: updateFileLoading, data: isUpdate, error: updateFileError } = updateFileState;
+	console.log(updateFileLoading);
+	if (isUpdate === contentsId) {
+		handleChangeFileModal();
+	}
 
 	const fileHandler = (selectFile) => {
 		const _fileName = selectFile.name;
@@ -22,8 +38,17 @@ function ChangeFileModal({ handleChangeFileModal }) {
 	};
 
 	const changeFile = () => {
-		// 파일 변경하는 api호출
-		handleChangeFileModal();
+		updateFileRefetch();
+		// if()
+		getContentsRefetch();
+	};
+
+	const checkFile = () => {
+		if (fileName === Words.SELECT_FILE) {
+			alert(Words.SELECT_FILE);
+		} else {
+			changeFile();
+		}
 	};
 
 	return (
@@ -43,14 +68,13 @@ function ChangeFileModal({ handleChangeFileModal }) {
 						const selectFile = e.target.files[0];
 						selectFile && fileHandler(selectFile);
 					}}
-					accept=".m4a"
 				/>
 				<label className={classNames('button', 'blue', 'file-change', 'select')} htmlFor="select-file">
 					<span className={classNames('text', 'white', 'select-small')}>{Words.SELECT}</span>
 				</label>
 			</div>
 			<div className="change-button">
-				<button className={classNames('button', 'white', 'file-change', 'confirm')} onClick={changeFile}>
+				<button className={classNames('button', 'white', 'file-change', 'confirm')} onClick={checkFile}>
 					<span className={classNames('text', 'blue', 'select-big')}>{Words.UPDATE}</span>
 				</button>
 				<button className={classNames('button', 'blue', 'file-change', 'confirm')} onClick={handleChangeFileModal}>

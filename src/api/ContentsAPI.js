@@ -3,6 +3,7 @@ import axios from 'axios';
 export async function getContentsList(categoryId, userToken) {
 	const url = categoryId === 0 ? 'http://52.78.77.73:8080/contents' : `http://52.78.77.73:8080/contents/list/${categoryId}`;
 	const response = await axios.get(url, { headers: { memberId: userToken } });
+	console.log(response.data);
 	return response.data;
 }
 
@@ -13,7 +14,7 @@ export async function getContents(contentsId, userToken) {
 		},
 	});
 	console.log(response.data);
-	return response.data;
+	return response.data[0];
 }
 
 export async function postContents(contents, userToken) {
@@ -30,8 +31,32 @@ export async function postContents(contents, userToken) {
 	return response.data;
 }
 
+export async function updateContentsFile(contentsId, updateData, userToken) {
+	const contentsData = new FormData();
+	for (let elem in updateData) {
+		contentsData.append(elem, updateData[elem]);
+	}
+	const response = await axios.post(`http://52.78.77.73:8080/contents/${contentsId}`, contentsData, {
+		headers: {
+			memberId: userToken,
+			'Content-Type': 'multipart/form-data',
+		},
+	});
+	console.log(response.data);
+	return response.data;
+}
+
+export async function updateContents(contentsId, contents, userToken) {
+	const response = await axios.put(`http://52.78.77.73:8080/contents/${contentsId}`, {
+		data: contents,
+		headers: {
+			memberId: userToken,
+		},
+	});
+	return response.data;
+}
+
 export async function deleteContents(postList, userToken) {
-	console.log(postList, userToken);
 	const response =
 		postList.length === 1
 			? await axios.delete(`http://52.78.77.73:8080/contents/${postList[0]}`, {

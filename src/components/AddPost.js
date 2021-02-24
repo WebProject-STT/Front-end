@@ -23,7 +23,7 @@ function AddPost({ history }) {
 	const { fileName, fileInformation } = uploadFile;
 	const [inputForm, onChange] = useInputs({ title: '', description: '' });
 	const { title, description } = inputForm;
-	const contents = { category: category, desc: description, file: fileInformation, subject_nums: 4, title: title };
+	const contents = { category: category, desc: description, file: fileInformation, subject_nums: 2, title: title };
 	const [contentsState, refetch] = useAsync(
 		() => {
 			postContents(contents, userToken);
@@ -32,7 +32,7 @@ function AddPost({ history }) {
 		true
 	);
 	const { loading, data: isSuccess, error } = contentsState;
-	const [isLoadingModalOn, setIsLoadingModalOn] = useState(loading);
+	const [isLoadingModalOn, setIsLoadingModalOn] = useState(false);
 
 	const goBack = () => {
 		history.goBack();

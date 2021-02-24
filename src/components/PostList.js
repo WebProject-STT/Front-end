@@ -46,7 +46,7 @@ function PostList() {
 	const postStartIndex = (currentPage - 1) * pageCount;
 	const postEndIndex = currentPage * pageCount;
 
-	console.log(postList);
+	// console.log(getPostLoading);
 
 	useEffect(() => {
 		componentVisibilityDispatch({ type: 'VISIBLE', name: 'categoryVisibility' });
