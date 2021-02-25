@@ -5,7 +5,7 @@ import { useComponentVisibilityDispatch } from '../contexts/ComponentVisibilityC
 import { useCheckStatusDispatch } from '../contexts/CheckStatusContext';
 import { useCheckedItemsDispatch } from '../contexts/CheckedItemContext';
 import { useUserState } from '../contexts/UserContext';
-import { useCategoryDispatch } from '../contexts/CategoryContext';
+import { useCategoryState, useCategoryDispatch } from '../contexts/CategoryContext';
 import Words from '../common/Words';
 import usePagination from '../hooks/usePagination';
 import useAsync from '../hooks/useAsync';
@@ -30,6 +30,7 @@ function ViewPost({ match }) {
 	const { postId } = match.params;
 	const postIdNum = parseInt(postId);
 	const pageCount = 4;
+	const { currentCategoryId } = useCategoryState();
 	const componentVisibilityDispatch = useComponentVisibilityDispatch();
 	const checkStatusDispatch = useCheckStatusDispatch();
 	const checkedItemsDispatch = useCheckedItemsDispatch();
@@ -71,7 +72,9 @@ function ViewPost({ match }) {
 	if (getContentsFetchEnd) {
 		getContentsChangeFetchEnd();
 		getContentsListRefetch();
-		categoryDispatch({ type: 'SET_CURRENT_CATEGORY', value: contents.category.id });
+		if (currentCategoryId !== 0) {
+			categoryDispatch({ type: 'SET_CURRENT_CATEGORY', value: contents.category.id });
+		}
 	}
 
 	if (getContentsListFetchEnd) {
