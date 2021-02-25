@@ -8,6 +8,7 @@ import { useCheckStatusState, useCheckStatusDispatch } from '../contexts/CheckSt
 import { useCheckedItemsState, useCheckedItemsDispatch } from '../contexts/CheckedItemContext';
 import { useCategoryState } from '../contexts/CategoryContext';
 import { useUserState } from '../contexts/UserContext';
+import { useContentsListDispatch } from '../contexts/ContentsListContext';
 import useInputs from '../hooks/useInputs';
 import usePagination from '../hooks/usePagination';
 import useAsync from '../hooks/useAsync';
@@ -32,12 +33,13 @@ function PostList() {
 	const { checkBoxVisibility, isAllChecked } = useCheckStatusState();
 	const checkStatusDispatch = useCheckStatusDispatch();
 	const { userToken } = useUserState();
+	const contentsListDispatch = useContentsListDispatch();
 	const [form, onChange] = useInputs({ search: '' });
 	const { search } = form;
 	const [pagination, updateCurrentPage, updateStartEndPage] = usePagination();
 	const { currentPage, start, end } = pagination;
-	const [getPostState, getRefetch] = useAsync(() => getContentsList(currentCategoryId, userToken), [currentCategoryId]);
-	const { loading: getPostLoading, data: postList, error: getPostError } = getPostState;
+	const [getPostState, getPostRefetch, getPostChangeFetchEnd] = useAsync(() => getContentsList(currentCategoryId, userToken), [currentCategoryId]);
+	const { loading: getPostLoading, data: postList, error: getPostError, fetchEnd: getPostFetchEnd } = getPostState;
 	const [deletePostState, deleteRefetch] = useAsync(() => deleteContents(checkedItems, userToken), [], true);
 	const { loading: deletePostLoading, data: isDeletePost, error: deletePostError } = deletePostState;
 	const postCount = useMemo(() => postList.length, [postList]);
@@ -46,7 +48,10 @@ function PostList() {
 	const postStartIndex = (currentPage - 1) * pageCount;
 	const postEndIndex = currentPage * pageCount;
 
-	// console.log(getPostLoading);
+	if (currentCategoryId !== 0 && getPostFetchEnd) {
+		contentsListDispatch({ type: 'SET_CONTENTS_LIST', value: postList });
+		getPostChangeFetchEnd();
+	}
 
 	useEffect(() => {
 		componentVisibilityDispatch({ type: 'VISIBLE', name: 'categoryVisibility' });
@@ -87,7 +92,7 @@ function PostList() {
 		if (isConfirm) {
 			deleteRefetch();
 			resetCheckedItems();
-			getRefetch();
+			getPostRefetch();
 		}
 	};
 
@@ -158,7 +163,7 @@ function PostList() {
 						</>
 					)}
 					{search === ''
-						? postList.slice(postStartIndex, postEndIndex).map((post) => <Post id={post.id} title={post.title} date={post.date.slice(0, 10)} isDetail={false} key={post.id} />)
+						? postList.slice(postStartIndex, postEndIndex).map((post) => <Post post={post} isDetail={false} key={post.id} />)
 						: postList
 								.filter((post) => post.title.includes(search))
 								.slice(postStartIndex, postEndIndex)

@@ -1,13 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
-import { getContents } from '../api/ContentsAPI';
-import useAsync from '../hooks/useAsync';
-import { useUserState } from '../contexts/UserContext';
 import Words from '../common/Words';
+
 import '../styles/ViewPost.scss';
 
 function Contents({ contents }) {
-	const { userToken } = useUserState();
 	const { date, desc, origin, summaryList, tagList, title } = contents;
 
 	return (

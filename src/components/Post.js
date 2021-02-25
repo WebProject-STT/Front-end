@@ -6,7 +6,8 @@ import { useCheckStatusState } from '../contexts/CheckStatusContext';
 import '../styles/ViewPost.scss';
 import '../styles/Text.scss';
 
-function Post({ id, title, date, isDetail, currentPostId }) {
+function Post({ post, isDetail, currentPostId }) {
+	const { id, title, date, category } = post;
 	const { checkedItems } = useCheckedItemsState();
 	const checkedItemsDispatch = useCheckedItemsDispatch();
 	const { checkBoxVisibility } = useCheckStatusState();
@@ -35,12 +36,12 @@ function Post({ id, title, date, isDetail, currentPostId }) {
 					<span className="check-box"></span>
 				</label>
 			)}
-			<Link to={`/viewPost/${id}`} className={isDetail ? 'post' : classNames('post', 'list')} style={{ backgroundColor: currentPostId === id && blueGray }}>
+			<Link to={`/viewPost/${id}/${category.id}`} className={isDetail ? 'post' : classNames('post', 'list')} style={{ backgroundColor: currentPostId === id && blueGray }}>
 				{/* <div className="title-area"> */}
 				<span className={isDetail ? classNames('text', 'title', 'detail') : classNames('text', 'bold', 'title')}>{title}</span>
 				{/* </div> */}
 				<div className="date-area">
-					<span className={isDetail ? classNames('text', 'date', 'detail') : classNames('text', 'gray', 'date')}>{date}</span>
+					<span className={isDetail ? classNames('text', 'date', 'detail') : classNames('text', 'gray', 'date')}>{date.slice(0, 10)}</span>
 				</div>
 			</Link>
 		</div>

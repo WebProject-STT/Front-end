@@ -5,6 +5,8 @@ import { useComponentVisibilityDispatch } from '../contexts/ComponentVisibilityC
 import { useCheckStatusDispatch } from '../contexts/CheckStatusContext';
 import { useCheckedItemsDispatch } from '../contexts/CheckedItemContext';
 import { useUserState } from '../contexts/UserContext';
+import { useCategoryState } from '../contexts/CategoryContext';
+import { useContentsListState } from '../contexts/ContentsListContext';
 import Words from '../common/Words';
 import usePagination from '../hooks/usePagination';
 import useAsync from '../hooks/useAsync';
@@ -26,17 +28,22 @@ function scrollToUp(event) {
 
 function ViewPost({ match }) {
 	const { userToken } = useUserState();
-	const { postId } = match.params;
+	const { postId, categoryId } = match.params;
 	const postIdNum = parseInt(postId);
+	const categoryIdNum = parseInt(categoryId);
+	const { currentCategoryId } = useCategoryState();
+	const isAllCategory = currentCategoryId === 0;
 	const pageCount = 4;
+	const { contentsList } = useContentsListState();
 	const componentVisibilityDispatch = useComponentVisibilityDispatch();
 	const checkStatusDispatch = useCheckStatusDispatch();
 	const checkedItemsDispatch = useCheckedItemsDispatch();
 	const [isChangeFileModalOn, setIsChangeFileModalOn] = useState(false);
 	const [getContentsState, getContentsRefetch] = useAsync(() => getContents(postIdNum, userToken), [postIdNum], false);
 	const { loading: getContentsLoading, data: contents, error: getContentsError } = getContentsState;
-	const [getContentsListState, getContentsListRefetch] = useAsync(() => getContentsList(contents.category.id, userToken, [contents.category.id], true));
-	const { loading: getContentsListLoading, data: postList, error: getContentsListError } = getContentsListState;
+	const [getContentsListState, getContentsListRefetch, getContentsListchangeFetchEnd] = useAsync(() => getContentsList(categoryIdNum, userToken), [], isAllCategory ? false : true);
+	const { loading: getContentsListLoading, data, error: getContentsListError, fetchEnd: getContentsListFetchEnd } = getContentsListState;
+	const postList = isAllCategory ? data : contentsList;
 	const [deleteContentsState, deleteContentsRefetch] = useAsync(
 		() => {
 			deleteContents([postIdNum], userToken);
@@ -44,18 +51,14 @@ function ViewPost({ match }) {
 		[],
 		true
 	);
-	const initialPage = Math.floor(postList.findIndex((post) => post.ct_id === postIdNum) / pageCount) + 1;
+	const initialPage = useMemo(() => Math.floor(postList.findIndex((post) => post.id === postIdNum) / pageCount) + 1, [postList, postIdNum, pageCount]);
 	const [pagination, updateCurrentPage, updateStartEndPage] = usePagination(initialPage);
 	const { currentPage, start, end } = pagination;
 	const postCount = useMemo(() => postList.length, [postList]);
-	const pageMaxIndex = Math.ceil(postCount / pageCount);
-	const pageArray = getPageArray(pageMaxIndex).slice(start, end);
-	const postIndexStart = (currentPage - 1) * pageCount;
-	const postIndexEnd = currentPage * pageCount;
-
-	if (contents.length !== 0) {
-		// getContentsListRefetch();
-	}
+	const pageMaxIndex = useMemo(() => Math.ceil(postCount / pageCount), [postCount, pageCount]);
+	const pageArray = useMemo(() => getPageArray(pageMaxIndex).slice(start, end), [pageMaxIndex, start, end]);
+	const postIndexStart = useMemo(() => (currentPage - 1) * pageCount, [currentPage, pageCount]);
+	const postIndexEnd = useMemo(() => currentPage * pageCount, [currentPage, pageCount]);
 
 	useEffect(() => {
 		checkStatusDispatch({ type: 'RESET' });
@@ -66,6 +69,11 @@ function ViewPost({ match }) {
 		};
 	}, [componentVisibilityDispatch]);
 
+	if (getContentsListFetchEnd) {
+		updateCurrentPage(initialPage);
+		getContentsListchangeFetchEnd();
+	}
+
 	const handleChangeFileModal = () => {
 		setIsChangeFileModalOn(!isChangeFileModalOn);
 	};
@@ -73,7 +81,8 @@ function ViewPost({ match }) {
 	const deletePost = (e) => {
 		const isConfirm = window.confirm(Words.ASK_DELETE_POST);
 		if (isConfirm) {
-			deleteContentsRefetch();
+			console.log('삭제');
+			// deleteContentsRefetch();
 		} else {
 			e.preventDefault();
 		}
@@ -91,73 +100,77 @@ function ViewPost({ match }) {
 					<Link to={`/updatePost/${postId}`} className={classNames('button', 'view', 'white', 'detail')} id="update">
 						<span className={classNames('text', 'blue', 'post-list', 'small')}>{Words.UPDATE}</span>
 					</Link>
-					<Link to={contents.length !== 0 ? `/postList/${contents.category.id}` : '/postList/0'} className={classNames('button', 'view', 'blue', 'detail')} onClick={deletePost}>
+					<Link to={`/postList/${currentCategoryId}`} className={classNames('button', 'view', 'blue', 'detail')} onClick={deletePost}>
 						<span className={classNames('text', 'white', 'post-list', 'small')} id="delete">
 							{Words.DELETE}
 						</span>
 					</Link>
 				</div>
 			</div>
-			<div className={classNames('post-view', 'detail')}>
-				<div className={classNames('view-form', 'middle')}>
-					{contents.length === 0 ? <img className="loading-image" src={LoadingImage} alt="LoadingImage" /> : <Contents contentsId={postIdNum} contents={contents} />}
-				</div>
-				<div className="detail-list ">
-					<div className="detail-category">
-						<span className={classNames('text', 'bold', 'post-detail', 'category-name')}>{postList}</span>
+			{getContentsLoading || getContentsListLoading ? (
+				<img className="loading-image" src={LoadingImage} alt="LoadingImage" />
+			) : (
+				<>
+					<div className={classNames('post-view', 'detail')}>
+						<div className={classNames('view-form', 'middle')}>{contents.length !== 0 && <Contents contents={contents} />}</div>
+						<div className="detail-list ">
+							<div className="detail-category">
+								<span className={classNames('text', 'bold', 'post-detail', 'category-name')}>{contents.length !== 0 && contents.category.title}</span>
+							</div>
+							<div className={classNames('view-form', 'small')}>
+								{postList.slice(postIndexStart, postIndexEnd).map((post) => (
+									<Post post={post} isDetail={true} currentPostId={postIdNum} key={post.ct_id} />
+								))}
+							</div>
+						</div>
 					</div>
-					<div className={classNames('view-form', 'small')}>
-						{postList.slice(postIndexStart, postIndexEnd).map((post) => (
-							<Post id={post.id} title={post.title} date={post.date} isDetail={true} currentPostId={postIdNum} key={post.ct_id} />
-						))}
-					</div>
-				</div>
-			</div>
-			<div className="footer">
-				<div className="page-number">
-					<img
-						className="left-arrow"
-						src={LeftArrow}
-						alt="LeftArrow"
-						onClick={() => {
-							if (currentPage !== 1) {
-								updateCurrentPage(currentPage - 1);
-								// pageCount 변수명 변경, 한페이지에 놓은 post수 / 페이지 갯수 변수 두개 설정
-								if (currentPage % 10 === 1) {
-									updateStartEndPage(false);
-								}
-							}
-						}}
-					/>
-					{pageArray.map((page) => {
-						return (
-							<button
-								className={classNames('button', 'view', 'white', 'page-link')}
+					<div className="footer">
+						<div className="page-number">
+							<img
+								className="left-arrow"
+								src={LeftArrow}
+								alt="LeftArrow"
 								onClick={() => {
-									updateCurrentPage(page);
+									if (currentPage !== 1) {
+										updateCurrentPage(currentPage - 1);
+										// pageCount 변수명 변경, 한페이지에 놓은 post수 / 페이지 갯수 변수 두개 설정
+										if (currentPage % 10 === 1) {
+											updateStartEndPage(false);
+										}
+									}
 								}}
-								style={{ color: currentPage === page && 'pink' }}
-							>
-								{page}
-							</button>
-						);
-					})}
-					<img
-						className="right-arrow"
-						src={RightArrow}
-						alt="RightArrow"
-						onClick={() => {
-							if (currentPage !== pageMaxIndex) {
-								updateCurrentPage(currentPage + 1);
-								// pageCount 변수명 변경, 한페이지에 놓은 post수 / 페이지 갯수 변수 두개 설정
-								if (currentPage % 10 === 0) {
-									updateStartEndPage(true);
-								}
-							}
-						}}
-					/>
-				</div>
-			</div>
+							/>
+							{pageArray.map((page) => {
+								return (
+									<button
+										className={classNames('button', 'view', 'white', 'page-link')}
+										onClick={() => {
+											updateCurrentPage(page);
+										}}
+										style={{ color: currentPage === page && 'pink' }}
+									>
+										{page}
+									</button>
+								);
+							})}
+							<img
+								className="right-arrow"
+								src={RightArrow}
+								alt="RightArrow"
+								onClick={() => {
+									if (currentPage !== pageMaxIndex) {
+										updateCurrentPage(currentPage + 1);
+										// pageCount 변수명 변경, 한페이지에 놓은 post수 / 페이지 갯수 변수 두개 설정
+										if (currentPage % 10 === 0) {
+											updateStartEndPage(true);
+										}
+									}
+								}}
+							/>
+						</div>
+					</div>
+				</>
+			)}
 			{isChangeFileModalOn && <ChangeFileModal contentsId={postIdNum} getContentsRefetch={getContentsRefetch} handleChangeFileModal={handleChangeFileModal}></ChangeFileModal>}
 		</div>
 	);
