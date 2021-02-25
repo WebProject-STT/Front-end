@@ -6,7 +6,6 @@ import '../styles/Text.scss';
 import { useCategoryState, useCategoryDispatch } from '../contexts/CategoryContext';
 import { useCheckStatusDispatch } from '../contexts/CheckStatusContext';
 import { useCheckedItemsDispatch } from '../contexts/CheckedItemContext';
-import { categoryList } from '../common/TempData';
 
 function Category({ categoryTitle, categoryId }) {
 	const { currentCategoryId } = useCategoryState();

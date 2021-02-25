@@ -1,29 +1,40 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
+import { useUserState } from '../contexts/UserContext';
+import { useCategoryState } from '../contexts/CategoryContext';
+import useAsync from '../hooks/useAsync';
+import { getContents } from '../api/ContentsAPI';
 import useInputs from '../hooks/useInputs';
-import { postsData, categoryList } from '../common/TempData';
 import Words from '../common/Words';
 import { isEmpty } from '../common/CheckValue';
+import LoadingImage from '../icon/LoadingImage.gif';
 import '../styles/WritePost.scss';
 
 function UpdatePost({ match }) {
+	const { userToken } = useUserState();
 	const { postId } = match.params;
 	const postIdNum = parseInt(postId);
-	const { ct_title, ct_category, ct_keywords, ct_desc, ct_subjects } = postsData.find((x) => x.ct_id === postIdNum);
-	const [category, setCategory] = useState(ct_category);
-	// 키워드는 api에서 단어 받아서 한줄의 문자열로 만들어서 넣으면 됨
-	const [form, onChange] = useInputs({
-		title: ct_title,
-		description: ct_desc,
-		keywords: ct_keywords
-			.map((keyword) => {
-				return keyword.tag_name;
-			})
-			.join(' '),
-		subjects: ct_subjects,
+	const { categoryList } = useCategoryState();
+	const [getContentsState, getContentsRefetch, getContentsChangeFetchEnd] = useAsync(() => getContents(postIdNum, userToken));
+	const { loading, data: contents, error, fetchEnd } = getContentsState;
+	const [currentCategory, setCategory] = useState(null);
+	const [form, onChange, setUpdatePostForm] = useInputs({
+		title: '',
+		description: '',
+		tags: '',
+		summaries: [],
 	});
-	const { title, description, keywords, subjects } = form;
+	const { title, description, tags, summaries } = form;
+
+	if (loading) {
+		return <img className="loading-image" src={LoadingImage} alt="LoadingImage" />;
+	}
+	if (fetchEnd) {
+		setUpdatePostForm(contents);
+		setCategory(contents.category.id);
+		getContentsChangeFetchEnd();
+	}
 
 	const categoryHandler = (value) => {
 		setCategory(value);
@@ -45,14 +56,14 @@ function UpdatePost({ match }) {
 		}
 	};
 
-	const checkCorrectKeywords = () => {
-		const splitKeyWords = keywords.split(' ');
-		const length = splitKeyWords.length;
+	const checkCorrectTags = () => {
+		const splitTags = tags.split(' ');
+		const length = splitTags.length;
 		let alertText = '';
 		if (length > 30) {
-			alertText = Words.LIMIT_KEYWORDS_NUMBER;
-		} else if (splitKeyWords.indexOf(splitKeyWords[length - 1]) !== length - 1) {
-			alertText = `'${splitKeyWords[length - 1]}' ${Words.DUPLICATE_KEYWORDS}`;
+			alertText = Words.LIMIT_TAGS_NUMBER;
+		} else if (splitTags.indexOf(splitTags[length - 1]) !== length - 1) {
+			alertText = `'${splitTags[length - 1]}' ${Words.DUPLICATE_TAGS}`;
 		}
 		alertText !== '' && alert(alertText);
 		return alertText;
@@ -69,39 +80,41 @@ function UpdatePost({ match }) {
 					<span className={classNames('text', 'bold', 'title')}>{Words.CATEGORY}</span>
 					<div className={classNames('write', 'input', 'small', 'category')}>
 						<select
-							value={category}
+							value={currentCategory}
 							onChange={(e) => {
 								categoryHandler(e.target.value);
 							}}
 						>
 							{categoryList.map((category) => {
-								return (
-									<option value={category.cg_title} key={category.cg_id}>
-										{category.cg_title}
-									</option>
-								);
+								if (category.id !== 0) {
+									return (
+										<option value={category.id} key={category.id}>
+											{category.title}
+										</option>
+									);
+								}
 							})}
 						</select>
 						<div className={classNames('write', 'select-arrow')} />
 					</div>
 				</div>
 				<div className={classNames('write', 'input-area', 'small')}>
-					<span className={classNames('text', 'bold', 'title')}>{Words.KEYWORD}</span>
+					<span className={classNames('text', 'bold', 'title')}>{Words.TAG}</span>
 					<input
 						type="text"
-						className={classNames('write', 'input', 'small', 'keyword')}
-						name="keywords"
-						placeholder={Words.ENTER_KEYWORD}
-						value={keywords}
+						className={classNames('write', 'input', 'small', 'tag')}
+						name="tags"
+						placeholder={Words.ENTER_TAG}
+						value={tags}
 						onFocus={(e) => {
-							if (checkCorrectKeywords() === '') {
+							if (checkCorrectTags() === '') {
 								onChange(e, 0, '', true);
 							}
 						}}
 						onChange={(e) => {
 							const isSpace = e.nativeEvent.data === ' ' ? true : false;
 							if (isSpace) {
-								if (checkCorrectKeywords() === '') {
+								if (checkCorrectTags() === '') {
 									onChange(e, 0, '', false, isSpace);
 								}
 							} else {
@@ -117,42 +130,42 @@ function UpdatePost({ match }) {
 						<div className={classNames('write', 'description')}>
 							<div className={classNames('write', 'description', 'count')}>
 								<span className={classNames('text', 'gray', 'description')}>
-									({ct_desc.length}자/{Words.MAX_DESCRIPTION_LENGTH})
+									({description.length}자/{Words.MAX_DESCRIPTION_LENGTH})
 								</span>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div className={classNames('write', 'input-area', 'big')}>
-					<div className={classNames('write', 'subject-title')}>
-						<span className={classNames('text', 'bold', 'title')}>{Words.SUBJECT}</span>
+					<div className={classNames('write', 'summary-title')}>
+						<span className={classNames('text', 'bold', 'title')}>{Words.SUMMARY}</span>
 					</div>
-					<div className={classNames('write', 'subject-input')}>
-						{subjects.map((subject) => {
+					<div className={classNames('write', 'summary-input')}>
+						{summaries.map((summary) => {
 							return (
 								<>
 									<input
 										// 키 이름 바꿔주기
 										// key={subject.sum_id}
 										type="text"
-										name="subjects"
-										className={classNames('write', 'input', 'subject', 'small')}
-										placeholder={Words.ENTER_SUBJECT_TITLE}
-										value={subject.sum_title}
+										name="summaries"
+										className={classNames('write', 'input', 'summary', 'small')}
+										placeholder={Words.ENTER_SUMMARY_TITLE}
+										value={summary.title}
 										onChange={(e) => {
-											onChange(e, subject.sum_id, 'sum_title');
+											onChange(e, summary.id, 'title');
 										}}
 									/>
-									<div className={classNames('write', 'input', 'subject', 'big')}>
+									<div className={classNames('write', 'input', 'summary', 'big')}>
 										<textarea
 											type="text"
-											id="subject"
-											key={subject.sum_id}
-											name="subjects"
-											placeholder={Words.ENTER_SUBJECT_CONTENT}
-											value={subject.sum_desc}
+											id="summary"
+											key={summary.id}
+											name="summaries"
+											placeholder={Words.ENTER_SUMMARY_CONTENT}
+											value={summary.desc}
 											onChange={(e) => {
-												onChange(e, subject.sum_id, 'sum_desc');
+												onChange(e, summary.id, 'desc');
 											}}
 										/>
 									</div>

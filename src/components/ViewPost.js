@@ -39,8 +39,8 @@ function ViewPost({ match }) {
 	const checkStatusDispatch = useCheckStatusDispatch();
 	const checkedItemsDispatch = useCheckedItemsDispatch();
 	const [isChangeFileModalOn, setIsChangeFileModalOn] = useState(false);
-	const [getContentsState, getContentsRefetch] = useAsync(() => getContents(postIdNum, userToken), [postIdNum], false);
-	const { loading: getContentsLoading, data: contents, error: getContentsError } = getContentsState;
+	const [getContentsState, getContentsRefetch, getContentsChangeFetchEnd] = useAsync(() => getContents(postIdNum, userToken), [postIdNum], false);
+	const { loading: getContentsLoading, data: contents, error: getContentsError, fetchEnd: getContentsFetchEnd } = getContentsState;
 	const [getContentsListState, getContentsListRefetch, getContentsListchangeFetchEnd] = useAsync(() => getContentsList(categoryIdNum, userToken), [], isAllCategory ? false : true);
 	const { loading: getContentsListLoading, data, error: getContentsListError, fetchEnd: getContentsListFetchEnd } = getContentsListState;
 	const postList = isAllCategory ? data : contentsList;

@@ -3,10 +3,21 @@ import { isCorrectLength } from '../common/CheckValue';
 
 function inputsReducer(state, action) {
 	switch (action.type) {
-		case 'CHANGE_SUBJECT':
+		case 'SET_UPDATE_POST_FORM':
+			return {
+				title: action.value.title,
+				description: action.value.desc,
+				tags: action.value.tagList
+					.map((tag) => {
+						return `#${tag.name}`;
+					})
+					.join(' '),
+				summaries: action.value.summaryList,
+			};
+		case 'CHANGE_SUMMARY':
 			return {
 				...state,
-				subjects: state.subjects.map((subject) => (subject.sum_id === action.sum_id ? { ...subject, [action.element_name]: action.value } : subject)),
+				summaries: state.summaries.map((summary) => (summary.id === action.sum_id ? { ...summary, [action.element_name]: action.value } : summary)),
 			};
 		case 'CHANGE':
 			return {
@@ -28,9 +39,9 @@ function useInputs(initialForm) {
 				// console.log(isCorrectLength(value, 0, 20));
 				// console.log(value);
 				// alert(Words.LIMIT_TITLE_LENGTH);
-			} else if (name === 'subjects') {
-				dispatch({ type: 'CHANGE_SUBJECT', sum_id, element_name, value });
-			} else if (name === 'keywords') {
+			} else if (name === 'summaries') {
+				dispatch({ type: 'CHANGE_SUMMARY', sum_id, element_name, value });
+			} else if (name === 'tags') {
 				let attach = '';
 				if (isSpace) {
 					attach = '#';
@@ -44,8 +55,11 @@ function useInputs(initialForm) {
 		},
 		[dispatch]
 	);
+	const setUpdatePostForm = (contents) => {
+		dispatch({ type: 'SET_UPDATE_POST_FORM', value: contents });
+	};
 
-	return [form, onChange];
+	return [form, onChange, setUpdatePostForm];
 }
 
 export default useInputs;

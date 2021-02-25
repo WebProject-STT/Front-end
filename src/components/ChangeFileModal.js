@@ -23,8 +23,8 @@ function ChangeFileModal({ contentsId, handleChangeFileModal, getContentsRefetch
 		[],
 		true
 	);
-	const { loading: updateFileLoading, data: isUpdate, error: updateFileError } = updateFileState;
-	console.log(updateFileLoading);
+	const { loading, data: isUpdate, error } = updateFileState;
+	console.log(loading);
 	if (isUpdate === contentsId) {
 		handleChangeFileModal();
 	}
