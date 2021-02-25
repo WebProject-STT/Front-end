@@ -5,8 +5,7 @@ import { useComponentVisibilityDispatch } from '../contexts/ComponentVisibilityC
 import { useCheckStatusDispatch } from '../contexts/CheckStatusContext';
 import { useCheckedItemsDispatch } from '../contexts/CheckedItemContext';
 import { useUserState } from '../contexts/UserContext';
-import { useCategoryState } from '../contexts/CategoryContext';
-import { useContentsListState } from '../contexts/ContentsListContext';
+import { useCategoryDispatch } from '../contexts/CategoryContext';
 import Words from '../common/Words';
 import usePagination from '../hooks/usePagination';
 import useAsync from '../hooks/useAsync';
@@ -28,22 +27,22 @@ function scrollToUp(event) {
 
 function ViewPost({ match }) {
 	const { userToken } = useUserState();
-	const { postId, categoryId } = match.params;
+	const { postId } = match.params;
 	const postIdNum = parseInt(postId);
-	const categoryIdNum = parseInt(categoryId);
-	const { currentCategoryId } = useCategoryState();
-	const isAllCategory = currentCategoryId === 0;
 	const pageCount = 4;
-	const { contentsList } = useContentsListState();
 	const componentVisibilityDispatch = useComponentVisibilityDispatch();
 	const checkStatusDispatch = useCheckStatusDispatch();
 	const checkedItemsDispatch = useCheckedItemsDispatch();
+	const categoryDispatch = useCategoryDispatch();
 	const [isChangeFileModalOn, setIsChangeFileModalOn] = useState(false);
 	const [getContentsState, getContentsRefetch, getContentsChangeFetchEnd] = useAsync(() => getContents(postIdNum, userToken), [postIdNum], false);
 	const { loading: getContentsLoading, data: contents, error: getContentsError, fetchEnd: getContentsFetchEnd } = getContentsState;
-	const [getContentsListState, getContentsListRefetch, getContentsListchangeFetchEnd] = useAsync(() => getContentsList(categoryIdNum, userToken), [], isAllCategory ? false : true);
-	const { loading: getContentsListLoading, data, error: getContentsListError, fetchEnd: getContentsListFetchEnd } = getContentsListState;
-	const postList = isAllCategory ? data : contentsList;
+	const [getContentsListState, getContentsListRefetch, getContentsListchangeFetchEnd] = useAsync(
+		() => getContentsList(contents.category.id, userToken),
+		[contents.length !== 0 && contents.category.id],
+		true
+	);
+	const { loading: getContentsListLoading, data: postList, error: getContentsListError, fetchEnd: getContentsListFetchEnd } = getContentsListState;
 	const [deleteContentsState, deleteContentsRefetch] = useAsync(
 		() => {
 			deleteContents([postIdNum], userToken);
@@ -69,6 +68,12 @@ function ViewPost({ match }) {
 		};
 	}, [componentVisibilityDispatch]);
 
+	if (getContentsFetchEnd) {
+		getContentsChangeFetchEnd();
+		getContentsListRefetch();
+		categoryDispatch({ type: 'SET_CURRENT_CATEGORY', value: contents.category.id });
+	}
+
 	if (getContentsListFetchEnd) {
 		updateCurrentPage(initialPage);
 		getContentsListchangeFetchEnd();
@@ -81,8 +86,7 @@ function ViewPost({ match }) {
 	const deletePost = (e) => {
 		const isConfirm = window.confirm(Words.ASK_DELETE_POST);
 		if (isConfirm) {
-			console.log('삭제');
-			// deleteContentsRefetch();
+			deleteContentsRefetch();
 		} else {
 			e.preventDefault();
 		}
@@ -100,7 +104,7 @@ function ViewPost({ match }) {
 					<Link to={`/updatePost/${postId}`} className={classNames('button', 'view', 'white', 'detail')} id="update">
 						<span className={classNames('text', 'blue', 'post-list', 'small')}>{Words.UPDATE}</span>
 					</Link>
-					<Link to={`/postList/${currentCategoryId}`} className={classNames('button', 'view', 'blue', 'detail')} onClick={deletePost}>
+					<Link to={contents.length === 0 ? `/postList/0` : `/postList/${contents.category.id}`} className={classNames('button', 'view', 'blue', 'detail')} onClick={deletePost}>
 						<span className={classNames('text', 'white', 'post-list', 'small')} id="delete">
 							{Words.DELETE}
 						</span>

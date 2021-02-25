@@ -8,7 +8,6 @@ import { useCheckStatusState, useCheckStatusDispatch } from '../contexts/CheckSt
 import { useCheckedItemsState, useCheckedItemsDispatch } from '../contexts/CheckedItemContext';
 import { useCategoryState } from '../contexts/CategoryContext';
 import { useUserState } from '../contexts/UserContext';
-import { useContentsListDispatch } from '../contexts/ContentsListContext';
 import useInputs from '../hooks/useInputs';
 import usePagination from '../hooks/usePagination';
 import useAsync from '../hooks/useAsync';
@@ -33,7 +32,6 @@ function PostList() {
 	const { checkBoxVisibility, isAllChecked } = useCheckStatusState();
 	const checkStatusDispatch = useCheckStatusDispatch();
 	const { userToken } = useUserState();
-	const contentsListDispatch = useContentsListDispatch();
 	const [form, onChange] = useInputs({ search: '' });
 	const { search } = form;
 	const [pagination, updateCurrentPage, updateStartEndPage] = usePagination();
@@ -54,11 +52,6 @@ function PostList() {
 			componentVisibilityDispatch({ type: 'INVISIBLE', name: 'categoryVisibility' });
 		};
 	}, [componentVisibilityDispatch]);
-
-	if (currentCategoryId !== 0 && getPostFetchEnd) {
-		contentsListDispatch({ type: 'SET_CONTENTS_LIST', value: postList });
-		getPostChangeFetchEnd();
-	}
 
 	if (deletePostFetchEnd) {
 		getPostRefetch();

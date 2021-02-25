@@ -7,3 +7,12 @@ export function getPageArray(pageMaxIndex) {
 
 	return pageArray;
 }
+
+export function getObjectTags(tags) {
+	let objectTags = [];
+	const noTags = tags.replaceAll('#', '');
+	noTags.split(' ').map((tag) => {
+		objectTags.push({ name: tag });
+	});
+	return objectTags;
+}

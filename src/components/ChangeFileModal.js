@@ -24,7 +24,7 @@ function ChangeFileModal({ contentsId, handleChangeFileModal, getContentsRefetch
 		true
 	);
 	const { loading, data: isUpdate, error } = updateFileState;
-	console.log(loading);
+
 	if (isUpdate === contentsId) {
 		handleChangeFileModal();
 	}

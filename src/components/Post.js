@@ -36,7 +36,7 @@ function Post({ post, isDetail, currentPostId }) {
 					<span className="check-box"></span>
 				</label>
 			)}
-			<Link to={`/viewPost/${id}/${category.id}`} className={isDetail ? 'post' : classNames('post', 'list')} style={{ backgroundColor: currentPostId === id && blueGray }}>
+			<Link to={`/viewPost/${id}`} className={isDetail ? 'post' : classNames('post', 'list')} style={{ backgroundColor: currentPostId === id && blueGray }}>
 				{/* <div className="title-area"> */}
 				<span className={isDetail ? classNames('text', 'title', 'detail') : classNames('text', 'bold', 'title')}>{title}</span>
 				{/* </div> */}
