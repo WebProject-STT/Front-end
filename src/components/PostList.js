@@ -40,18 +40,13 @@ function PostList() {
 	const { currentPage, start, end } = pagination;
 	const [getPostState, getPostRefetch, getPostChangeFetchEnd] = useAsync(() => getContentsList(currentCategoryId, userToken), [currentCategoryId]);
 	const { loading: getPostLoading, data: postList, error: getPostError, fetchEnd: getPostFetchEnd } = getPostState;
-	const [deletePostState, deleteRefetch] = useAsync(() => deleteContents(checkedItems, userToken), [], true);
-	const { loading: deletePostLoading, data: isDeletePost, error: deletePostError } = deletePostState;
+	const [deletePostState, deleteRefetch, deletePostChangeFetchEnd] = useAsync(() => deleteContents(checkedItems, userToken), [], true);
+	const { loading: deletePostLoading, data: isDeletePost, error: deletePostError, fetchEnd: deletePostFetchEnd } = deletePostState;
 	const postCount = useMemo(() => postList.length, [postList]);
-	const pageMaxIndex = Math.ceil(postCount / pageCount);
-	const pageArray = getPageArray(pageMaxIndex).slice(start, end);
-	const postStartIndex = (currentPage - 1) * pageCount;
-	const postEndIndex = currentPage * pageCount;
-
-	if (currentCategoryId !== 0 && getPostFetchEnd) {
-		contentsListDispatch({ type: 'SET_CONTENTS_LIST', value: postList });
-		getPostChangeFetchEnd();
-	}
+	const pageMaxIndex = useMemo(() => Math.ceil(postCount / pageCount), [postCount, pageCount]);
+	const pageArray = useMemo(() => getPageArray(pageMaxIndex).slice(start, end), [pageMaxIndex, start, end]);
+	const postStartIndex = useMemo(() => (currentPage - 1) * pageCount, [currentPage, pageCount]);
+	const postEndIndex = useMemo(() => currentPage * pageCount, [currentPage, pageCount]);
 
 	useEffect(() => {
 		componentVisibilityDispatch({ type: 'VISIBLE', name: 'categoryVisibility' });
@@ -59,6 +54,16 @@ function PostList() {
 			componentVisibilityDispatch({ type: 'INVISIBLE', name: 'categoryVisibility' });
 		};
 	}, [componentVisibilityDispatch]);
+
+	if (currentCategoryId !== 0 && getPostFetchEnd) {
+		contentsListDispatch({ type: 'SET_CONTENTS_LIST', value: postList });
+		getPostChangeFetchEnd();
+	}
+
+	if (deletePostFetchEnd) {
+		getPostRefetch();
+		deletePostChangeFetchEnd();
+	}
 
 	const resetCheckedItems = () => {
 		checkStatusDispatch({ type: 'SET_FALSE', name: 'isAllChecked' });
