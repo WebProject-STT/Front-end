@@ -9,7 +9,7 @@ import '../styles/Modal.scss';
 import '../styles/Button.scss';
 import '../styles/Text.scss';
 
-function ChangeFileModal({ contentsId, handleChangeFileModal, getContentsRefetch }) {
+function ChangeFileModal({ contentsId, getContentsRefetch, handleChangeFileModal }) {
 	const { userToken } = useUserState();
 	const [uploadFile, setUploadFile] = useState({
 		fileName: Words.SELECT_FILE,
@@ -17,12 +17,21 @@ function ChangeFileModal({ contentsId, handleChangeFileModal, getContentsRefetch
 	});
 	const { fileName, fileInformation } = uploadFile;
 	const [updateFileState, updateFileRefetch, updateFileChangeFetchEnd] = useAsync(() => updateContentsFile(contentsId, { file: fileInformation, subject_nums: 2 }, userToken), [], true);
-	const { loading, data: isUpdate, error, fetchEnd } = updateFileState;
+	const { loading, fetchEnd } = updateFileState;
+
+	if (loading) {
+		return (
+			<div className={classNames('modal', 'file')}>
+				<span className={classNames('text', 'no-post')}>{Words.LOADING_UPLOAD_FILE}</span>
+				<br />
+				<span className={classNames('text', 'no-post')}>{Words.WAIT}</span>
+			</div>
+		);
+	}
 
 	if (fetchEnd) {
-		getContentsRefetch();
 		updateFileChangeFetchEnd();
-		console.log('예아..!');
+		getContentsRefetch();
 		handleChangeFileModal();
 	}
 

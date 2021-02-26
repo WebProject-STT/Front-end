@@ -3,18 +3,19 @@ $blue: #1a3270;
 
 .modal {
 	position: fixed;
-	width: 33%;
-	height: 35%;
-	right: 20%;
+	width: 28%;
+	height: 30%;
+	// right: 25%;
 	top: 30%;
 	bottom: 20%;
 	background-color: $white;
 	border: 2px solid $blue;
+	border-radius: 4px;
 	box-sizing: border-box;
 	z-index: 10000;
 
 	&.file {
-		left: 42%;
+		left: 44%;
 	}
 
 	&.loading {

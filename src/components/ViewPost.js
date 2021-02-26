@@ -26,15 +26,15 @@ function scrollToUp(event) {
 }
 
 function ViewPost({ match }) {
-	const { userToken } = useUserState();
 	const { postId } = match.params;
 	const postIdNum = parseInt(postId);
 	const pageCount = 4;
-	const { currentCategoryId } = useCategoryState();
-	const componentVisibilityDispatch = useComponentVisibilityDispatch();
+	const { userToken } = useUserState();
 	const checkStatusDispatch = useCheckStatusDispatch();
 	const checkedItemsDispatch = useCheckedItemsDispatch();
 	const categoryDispatch = useCategoryDispatch();
+	const componentVisibilityDispatch = useComponentVisibilityDispatch();
+	const { currentCategoryId } = useCategoryState();
 	const [isChangeFileModalOn, setIsChangeFileModalOn] = useState(false);
 	const [getContentsState, getContentsRefetch, getContentsChangeFetchEnd] = useAsync(() => getContents(postIdNum, userToken), [postIdNum], false);
 	const { loading: getContentsLoading, data: contents, error: getContentsError, fetchEnd: getContentsFetchEnd } = getContentsState;
@@ -44,7 +44,7 @@ function ViewPost({ match }) {
 		true
 	);
 	const { loading: getContentsListLoading, data: postList, error: getContentsListError, fetchEnd: getContentsListFetchEnd } = getContentsListState;
-	const [deleteContentsState, deleteContentsRefetch] = useAsync(() => deleteContents([postIdNum], userToken), [], true);
+	const [deleteContentsState, deleteContentsRefetch] = useAsync(() => deleteContents([postIdNum], userToken), [postIdNum], true);
 	const initialPage = useMemo(() => Math.floor(postList.findIndex((post) => post.id === postIdNum) / pageCount) + 1, [postList, postIdNum, pageCount]);
 	const [pagination, updateCurrentPage, updateStartEndPage] = usePagination(initialPage);
 	const { currentPage, start, end } = pagination;
@@ -53,6 +53,7 @@ function ViewPost({ match }) {
 	const pageArray = useMemo(() => getPageArray(pageMaxIndex).slice(start, end), [pageMaxIndex, start, end]);
 	const postIndexStart = useMemo(() => (currentPage - 1) * pageCount, [currentPage, pageCount]);
 	const postIndexEnd = useMemo(() => currentPage * pageCount, [currentPage, pageCount]);
+	console.log('viewPost');
 
 	useEffect(() => {
 		checkStatusDispatch({ type: 'RESET' });

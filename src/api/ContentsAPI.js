@@ -30,6 +30,7 @@ export async function postContents(contents, userToken) {
 }
 
 export async function updateContentsFile(contentsId, updateContents, userToken) {
+	console.log('updatefile');
 	const contentsData = new FormData();
 	for (let elem in updateContents) {
 		contentsData.append(elem, updateContents[elem]);
