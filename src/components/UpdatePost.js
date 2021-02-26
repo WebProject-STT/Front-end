@@ -27,11 +27,8 @@ function UpdatePost({ match, history }) {
 	const { title, description, tags, summaries } = form;
 	const [getContentsState, getContentsRefetch, getContentsChangeFetchEnd] = useAsync(() => getContents(postIdNum, userToken));
 	const { loading: getContentsLoading, data: contents, error: getContentsError, fetchEnd: getContentsFetchEnd } = getContentsState;
-	const [updateContentsState, updateContentsRefetch, updateContentsChangeFetchEnd] = useAsync(
-		() => updateContents(postIdNum, { category: currentCategory, desc: description, origin: contents.origin, summaryList: summaries, tagList: getObjectTags(tags), title: title }, userToken),
-		[],
-		true
-	);
+	const updateContentsParameter = { category: currentCategory, desc: description, origin: contents.origin, summaryList: summaries, tagList: getObjectTags(tags), title: title };
+	const [updateContentsState, updateContentsRefetch, updateContentsChangeFetchEnd] = useAsync(() => updateContents(postIdNum, updateContentsParameter, userToken), [], true);
 	const { loading: updateContentsLoading, data: isUpdateContents, error: updateContentsError, fetchEnd: updateContentsFetchEnd } = updateContentsState;
 
 	if (getContentsLoading) {

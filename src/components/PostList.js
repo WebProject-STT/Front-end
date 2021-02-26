@@ -90,7 +90,6 @@ function PostList() {
 		if (isConfirm) {
 			deleteRefetch();
 			resetCheckedItems();
-			getPostRefetch();
 		}
 	};
 

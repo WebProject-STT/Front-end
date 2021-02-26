@@ -3,7 +3,6 @@ import axios from 'axios';
 export async function getContentsList(categoryId, userToken) {
 	const url = categoryId === 0 ? 'http://52.78.77.73:8080/contents' : `http://52.78.77.73:8080/contents/list/${categoryId}`;
 	const response = await axios.get(url, { headers: { memberId: userToken } });
-	console.log('getContentList');
 	return response.data;
 }
 
@@ -30,10 +29,10 @@ export async function postContents(contents, userToken) {
 	return response.data;
 }
 
-export async function updateContentsFile(contentsId, updateData, userToken) {
+export async function updateContentsFile(contentsId, updateContents, userToken) {
 	const contentsData = new FormData();
-	for (let elem in updateData) {
-		contentsData.append(elem, updateData[elem]);
+	for (let elem in updateContents) {
+		contentsData.append(elem, updateContents[elem]);
 	}
 	const response = await axios.post(`http://52.78.77.73:8080/contents/${contentsId}`, contentsData, {
 		headers: {

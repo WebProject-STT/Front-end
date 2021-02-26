@@ -2,16 +2,21 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { useUserState, useUserDispatch } from '../contexts/UserContext';
+import { getLogout } from '../api/MemberAPI';
+import useAsync from '../hooks/useAsync';
 import Words from '../common/Words';
 import '../styles/Header.scss';
 import '../styles/Button.scss';
 
 function HeaderButton() {
-	const { userName } = useUserState();
-	const userdispatch = useUserDispatch();
-	console.log(userName);
-	const logout = () => {
-		userdispatch({ type: 'LOGOUT' });
+	const { userToken, userName } = useUserState();
+	const userDispatch = useUserDispatch();
+	const [getLogoutState, getLogoutRefetch, getLogoutChangeFetchEnd] = useAsync(() => getLogout(userToken), [], true);
+	const { loading, data, error, fetchEnd } = getLogoutState;
+
+	const handleLogout = () => {
+		localStorage.clear();
+		userDispatch({ type: 'LOGOUT' });
 	};
 
 	return (
@@ -23,7 +28,7 @@ function HeaderButton() {
 						{Words.GREETING}
 					</span>
 					<Link to="/">
-						<button className={classNames('button', 'header', 'white')} onClick={logout}>
+						<button className={classNames('button', 'header', 'white')} onClick={handleLogout}>
 							<span className={classNames('button-text', 'logout')}>{Words.LOGOUT}</span>
 						</button>
 					</Link>

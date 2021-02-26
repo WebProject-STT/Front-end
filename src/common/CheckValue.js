@@ -5,11 +5,7 @@ export function isEmpty(value) {
 }
 
 export function isCorrectLength(value, minSize = 0, maxSize = 1000000) {
-	const length = ((s, b, i, c) => {
-		for (b = i = 0; (c = s.charCodeAt(i++)); b += c >> 11 ? 3 : c >> 7 ? 2 : 1);
-		return b;
-	})(value);
-
+	const length = value.length;
 	return length >= minSize && length <= maxSize;
 }
 

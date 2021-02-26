@@ -56,6 +56,7 @@ const Words = {
 	LIMIT_DESCRIPTION_LENGTH: '설명은 100자 이내로 입력해주세요',
 	LIMIT_TAGS_NUMBER: '태그는 30개 이내로 입력해주세요',
 	LOADING_GET_POST: '게시글을 불러오는 중입니다.',
+	LOADING_UPLOAD_POST: '게시글을 업로드하는 중입니다.',
 	REPORT_API_ERROR: '가 발생하였습니다.',
 	REPORT_ID_PASSWORD_ERROR: '가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.',
 	WAIT: '잠시만 기다려주세요😊',

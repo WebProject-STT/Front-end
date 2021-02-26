@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import Words from '../common/Words';
 import { isEmpty } from '../common/CheckValue';
-import { useCategoryState } from '../contexts/CategoryContext';
+import { useCategoryState, useCategoryDispatch } from '../contexts/CategoryContext';
 import { useUserState } from '../contexts/UserContext';
 import useInputs from '../hooks/useInputs';
 import useAsync from '../hooks/useAsync';
+import axios from 'axios';
 import { postContents } from '../api/ContentsAPI';
 import LoadingModal from './LoadingModal';
 import '../styles/WritePost.scss';
@@ -15,6 +16,7 @@ import '../styles/Text.scss';
 function AddPost({ history }) {
 	const { userToken } = useUserState();
 	const { categoryList } = useCategoryState();
+	const categoryDispatch = useCategoryDispatch();
 	const [category, setCategory] = useState(0);
 	const [uploadFile, setUploadFile] = useState({
 		fileName: Words.SELECT_FILE,
@@ -24,22 +26,19 @@ function AddPost({ history }) {
 	const [inputForm, onChange] = useInputs({ title: '', description: '' });
 	const { title, description } = inputForm;
 	const contents = { category: category, desc: description, file: fileInformation, subject_nums: 2, title: title };
-	const [contentsState, refetch] = useAsync(
-		() => {
-			postContents(contents, userToken);
-		},
-		[],
-		true
-	);
-	const { loading, data: isSuccess, error } = contentsState;
-	const [isLoadingModalOn, setIsLoadingModalOn] = useState(false);
+	const [postContentsState, postContentsRefetch, postContentsChangeFetchEnd] = useAsync(() => postContents(contents, userToken), [], true);
+	const { loading, data, error, fetchEnd } = postContentsState;
 
-	const goBack = () => {
-		history.goBack();
-	};
-
-	if (!isLoadingModalOn && !isSuccess) {
-		goBack();
+	if (loading) {
+		return <LoadingModal />;
+	}
+	if (error) {
+		console.log(error);
+	}
+	if (fetchEnd) {
+		postContentsChangeFetchEnd();
+		categoryDispatch({ type: 'SET_CURRENT_CATEGORY', value: category });
+		history.push(`/viewPost/${data}`);
 	}
 
 	const categoryHandler = (value) => {
@@ -73,14 +72,14 @@ function AddPost({ history }) {
 		if (!isEmpty(message)) {
 			alert(message);
 		} else {
-			refetch();
+			postContentsRefetch();
 		}
 	};
 
 	const confirmCancel = (e) => {
 		const isConfirm = window.confirm(Words.ASK_ADD_CANCEL);
 		if (isConfirm) {
-			goBack();
+			history.goBack();
 		}
 	};
 
@@ -124,6 +123,7 @@ function AddPost({ history }) {
 								const selectFile = e.target.files[0];
 								selectFile && fileHandler(selectFile);
 							}}
+							accept=".wav, .ogg, .flac, .mp3"
 						/>
 						<label className={classNames('button', 'blue', 'write-post', 'small')} htmlFor="select-file">
 							<span className={classNames('text', 'white', 'select-small')}>{Words.SELECT}</span>
@@ -158,7 +158,6 @@ function AddPost({ history }) {
 					</div>
 				</div>
 			</div>
-			{isLoadingModalOn && <LoadingModal />}
 		</div>
 	);
 }

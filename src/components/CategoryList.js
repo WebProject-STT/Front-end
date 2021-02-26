@@ -3,6 +3,8 @@ import axios from 'axios';
 import Category from './Category';
 import { useComponentVisibilityState } from '../contexts/ComponentVisibilityContext';
 import { useCategoryState, useCategoryDispatch } from '../contexts/CategoryContext';
+import useAsync from '../hooks/useAsync';
+import { getCategoryList } from '../api/CategoryAPI';
 import Words from '../common/Words';
 import '../styles/Category.scss';
 
@@ -10,20 +12,19 @@ function CategoryList() {
 	const { categoryVisibility } = useComponentVisibilityState();
 	const { categoryList } = useCategoryState();
 	const categoryDispatch = useCategoryDispatch();
+	const [getCategoryState, getCategoryRefetch, getCategoryChangeFetchEnd] = useAsync(getCategoryList, [], true);
+	const { loading, data, fetchEnd } = getCategoryState;
 
 	useEffect(() => {
 		if (categoryList.length === 1) {
-			console.log(categoryList);
-			axios
-				.get('http://52.78.77.73:8080/category')
-				.then((response) => {
-					categoryDispatch({ type: 'SET_CATEGORY_LIST', value: response.data });
-				})
-				.catch((error) => {
-					alert(`${error}${Words.REPORT_ERROR}`);
-				});
+			getCategoryRefetch();
 		}
 	}, [categoryList, categoryDispatch]);
+
+	if (fetchEnd) {
+		categoryDispatch({ type: 'SET_CATEGORY_LIST', value: data });
+		getCategoryChangeFetchEnd();
+	}
 
 	if (!categoryVisibility) {
 		return null;

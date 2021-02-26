@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import Words from '../common/Words';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
@@ -7,6 +6,7 @@ import { useComponentVisibilityDispatch } from '../contexts/ComponentVisibilityC
 import useInputs from '../hooks/useInputs';
 import useAsync from '../hooks/useAsync';
 import useInputsCorrect from '../hooks/useInputsCorrect';
+import { postLogin } from '../api/MemberAPI';
 import { isEmpty } from '../common/CheckValue';
 import GoogleLogo from '../icon/GoogleLogo.png';
 import NaverLogo from '../icon/NaverLogo.png';
@@ -22,6 +22,8 @@ function LogIn({ history }) {
 	const { id, password } = form;
 	const [inputState, checkInput] = useInputsCorrect({ idCorrect: 1, passwordCorrect: 1 });
 	const { idCorrect, passwordCorrect } = inputState;
+	const [postLoginState, postLoginRefetch, postLoginChangeFetchEnd] = useAsync(() => postLogin(id, password), [id], true);
+	const { loading, data, error, fetchEnd } = postLoginState;
 	const [loginErrorState, setLoginError] = useState({ loginSuccess: true });
 	const { loginSuccess } = loginErrorState;
 
@@ -32,33 +34,24 @@ function LogIn({ history }) {
 		};
 	}, [visibilityDispatch]);
 
-	const handleLogin = () => {
-		axios
-			.post('http://52.78.77.73:8080/user/login', {
-				signId: id,
-				pwd: password,
-			})
-			.then((response) => {
-				if (response.data === false) {
-					setLoginError({ ...loginErrorState, loginSuccess: response.data });
-				} else {
-					const { id, name } = response.data;
-					localStorage.setItem('userToken', id);
-					localStorage.setItem('userName', name);
-					userdispatch({ type: 'LOGIN', userToken: id, userName: name });
-					history.push('/postlist/0');
-				}
-			})
-			.catch((error) => {
-				alert(`${error}${Words.REPORT_ERROR}`);
-			});
-	};
+	if (fetchEnd) {
+		if (!data) {
+			setLoginError({ ...loginErrorState, loginSuccess: data });
+		} else {
+			const { id, name } = data;
+			localStorage.setItem('userToken', id);
+			localStorage.setItem('userName', name);
+			userdispatch({ type: 'LOGIN', userToken: id, userName: name });
+			history.push('/postlist/0');
+		}
+		postLoginChangeFetchEnd();
+	}
 
 	const confirmInputs = () => {
 		checkInput('idCorrect', id);
 		checkInput('passwordCorrect', password);
 		if (!isEmpty(id) && !isEmpty(password)) {
-			handleLogin();
+			postLoginRefetch();
 		}
 	};
 

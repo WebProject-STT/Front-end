@@ -16,16 +16,13 @@ function ChangeFileModal({ contentsId, handleChangeFileModal, getContentsRefetch
 		fileInformation: null,
 	});
 	const { fileName, fileInformation } = uploadFile;
-	const [updateFileState, updateFileRefetch] = useAsync(
-		() => {
-			updateContentsFile(contentsId, { file: fileInformation, subject_nums: 2 }, userToken);
-		},
-		[],
-		true
-	);
-	const { loading, data: isUpdate, error } = updateFileState;
+	const [updateFileState, updateFileRefetch, updateFileChangeFetchEnd] = useAsync(() => updateContentsFile(contentsId, { file: fileInformation, subject_nums: 2 }, userToken), [], true);
+	const { loading, data: isUpdate, error, fetchEnd } = updateFileState;
 
-	if (isUpdate === contentsId) {
+	if (fetchEnd) {
+		getContentsRefetch();
+		updateFileChangeFetchEnd();
+		console.log('예아..!');
 		handleChangeFileModal();
 	}
 
@@ -37,17 +34,11 @@ function ChangeFileModal({ contentsId, handleChangeFileModal, getContentsRefetch
 		});
 	};
 
-	const changeFile = () => {
-		updateFileRefetch();
-		// if()
-		getContentsRefetch();
-	};
-
 	const checkFile = () => {
 		if (fileName === Words.SELECT_FILE) {
 			alert(Words.SELECT_FILE);
 		} else {
-			changeFile();
+			updateFileRefetch();
 		}
 	};
 
@@ -68,6 +59,7 @@ function ChangeFileModal({ contentsId, handleChangeFileModal, getContentsRefetch
 						const selectFile = e.target.files[0];
 						selectFile && fileHandler(selectFile);
 					}}
+					accept=".wav, .ogg, .flac, .mp3"
 				/>
 				<label className={classNames('button', 'blue', 'file-change', 'select')} htmlFor="select-file">
 					<span className={classNames('text', 'white', 'select-small')}>{Words.SELECT}</span>

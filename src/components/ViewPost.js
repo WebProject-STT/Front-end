@@ -44,13 +44,7 @@ function ViewPost({ match }) {
 		true
 	);
 	const { loading: getContentsListLoading, data: postList, error: getContentsListError, fetchEnd: getContentsListFetchEnd } = getContentsListState;
-	const [deleteContentsState, deleteContentsRefetch] = useAsync(
-		() => {
-			deleteContents([postIdNum], userToken);
-		},
-		[],
-		true
-	);
+	const [deleteContentsState, deleteContentsRefetch] = useAsync(() => deleteContents([postIdNum], userToken), [], true);
 	const initialPage = useMemo(() => Math.floor(postList.findIndex((post) => post.id === postIdNum) / pageCount) + 1, [postList, postIdNum, pageCount]);
 	const [pagination, updateCurrentPage, updateStartEndPage] = usePagination(initialPage);
 	const { currentPage, start, end } = pagination;
