@@ -37,7 +37,7 @@ function App() {
 				<CategoryList />
 				<Route path="/postList/:categoryId" component={PostList} />
 				<Route path="/addPost" component={AddPost} />
-				<Route path="/viewPost/:postId/" component={ViewPost} />
+				<Route path="/viewPost/:postId/:categoryId" component={ViewPost} />
 				<Route path="/updatePost/:postId" component={UpdatePost} />
 			</div>
 		</AppProvider>

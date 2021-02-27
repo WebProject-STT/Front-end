@@ -26,8 +26,9 @@ function scrollToUp(event) {
 }
 
 function ViewPost({ match }) {
-	const { postId } = match.params;
+	const { postId, categoryId } = match.params;
 	const postIdNum = parseInt(postId);
+	const categoryIdNum = parseInt(categoryId);
 	const pageCount = 4;
 	const { userToken } = useUserState();
 	const checkStatusDispatch = useCheckStatusDispatch();
@@ -53,12 +54,14 @@ function ViewPost({ match }) {
 	const pageArray = useMemo(() => getPageArray(pageMaxIndex).slice(start, end), [pageMaxIndex, start, end]);
 	const postIndexStart = useMemo(() => (currentPage - 1) * pageCount, [currentPage, pageCount]);
 	const postIndexEnd = useMemo(() => currentPage * pageCount, [currentPage, pageCount]);
-	console.log('viewPost');
 
 	useEffect(() => {
 		checkStatusDispatch({ type: 'RESET' });
 		checkedItemsDispatch({ type: 'RESET_ITEM' });
 		componentVisibilityDispatch({ type: 'VISIBLE', name: 'categoryVisibility' });
+		if (currentCategoryId !== 0) {
+			categoryDispatch({ type: 'SET_CURRENT_CATEGORY', value: categoryIdNum });
+		}
 		return () => {
 			componentVisibilityDispatch({ type: 'INVISIBLE', name: 'categoryVisibility' });
 		};
@@ -67,9 +70,6 @@ function ViewPost({ match }) {
 	if (getContentsFetchEnd) {
 		getContentsChangeFetchEnd();
 		getContentsListRefetch();
-		if (currentCategoryId !== 0) {
-			categoryDispatch({ type: 'SET_CURRENT_CATEGORY', value: contents.category.id });
-		}
 	}
 
 	if (getContentsListFetchEnd) {
@@ -99,7 +99,7 @@ function ViewPost({ match }) {
 							{Words.CHANGE_FILE}
 						</span>
 					</button>
-					<Link to={`/updatePost/${postId}`} className={classNames('button', 'view', 'white', 'detail')} id="update">
+					<Link to={`/updatePost/${postIdNum}`} className={classNames('button', 'view', 'white', 'detail')} id="update">
 						<span className={classNames('text', 'blue', 'post-list', 'small')}>{Words.UPDATE}</span>
 					</Link>
 					<Link to={contents.length === 0 ? `/postList/0` : `/postList/${contents.category.id}`} className={classNames('button', 'view', 'blue', 'detail')} onClick={deletePost}>
@@ -110,7 +110,9 @@ function ViewPost({ match }) {
 				</div>
 			</div>
 			{getContentsLoading || getContentsListLoading ? (
-				<img className="loading-image" src={LoadingImage} alt="LoadingImage" />
+				<div className="loading-div">
+					<img src={LoadingImage} alt="LoadingImage" />
+				</div>
 			) : (
 				<>
 					<div className={classNames('post-view', 'detail')}>
@@ -121,7 +123,7 @@ function ViewPost({ match }) {
 							</div>
 							<div className={classNames('view-form', 'small')}>
 								{postList.slice(postIndexStart, postIndexEnd).map((post) => (
-									<Post post={post} isDetail={true} currentPostId={postIdNum} key={post.ct_id} />
+									<Post post={post} isDetail={true} currentPostId={postIdNum} key={post.id} />
 								))}
 							</div>
 						</div>
@@ -150,6 +152,7 @@ function ViewPost({ match }) {
 											updateCurrentPage(page);
 										}}
 										style={{ color: currentPage === page && 'pink' }}
+										key={page}
 									>
 										{page}
 									</button>

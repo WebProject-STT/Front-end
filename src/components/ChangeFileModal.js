@@ -5,6 +5,7 @@ import { updateContentsFile } from '../api/ContentsAPI';
 import { useUserState } from '../contexts/UserContext';
 import useAsync from '../hooks/useAsync';
 import LogoBlue from '../icon/LogoBlue.png';
+import LoadingImage from '../icon/LoadingImage.gif';
 import '../styles/Modal.scss';
 import '../styles/Button.scss';
 import '../styles/Text.scss';
@@ -21,10 +22,12 @@ function ChangeFileModal({ contentsId, getContentsRefetch, handleChangeFileModal
 
 	if (loading) {
 		return (
-			<div className={classNames('modal', 'file')}>
+			<div className={classNames('modal', 'file', 'center')}>
 				<span className={classNames('text', 'no-post')}>{Words.LOADING_UPLOAD_FILE}</span>
 				<br />
 				<span className={classNames('text', 'no-post')}>{Words.WAIT}</span>
+				<br />
+				<img className="loading-image" src={LoadingImage} alt="LoadingImage" />
 			</div>
 		);
 	}

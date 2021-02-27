@@ -1,9 +1,10 @@
 import React, { useState, useRef } from 'react';
 import classNames from 'classnames';
+import axios from 'axios';
 import { useUserState } from '../contexts/UserContext';
 import { useCategoryState } from '../contexts/CategoryContext';
 import useAsync from '../hooks/useAsync';
-import { getContents, updateContents } from '../api/ContentsAPI';
+import { getContents } from '../api/ContentsAPI';
 import useInputs from '../hooks/useInputs';
 import Words from '../common/Words';
 import { isEmpty, checkCorrectTags } from '../common/CheckValue';
@@ -17,7 +18,8 @@ function UpdatePost({ match, history }) {
 	const { postId } = match.params;
 	const postIdNum = parseInt(postId);
 	const { categoryList } = useCategoryState();
-	const [currentCategory, setCategory] = useState({ id: null, title: null });
+	const [currentCategory, setCategory] = useState({ id: 0, title: '' });
+	const [isLoadingModalOn, setIsLoadingModalOn] = useState(false);
 	const [form, onChange, setUpdatePostForm] = useInputs({
 		title: '',
 		description: '',
@@ -28,29 +30,44 @@ function UpdatePost({ match, history }) {
 	const [getContentsState, getContentsRefetch, getContentsChangeFetchEnd] = useAsync(() => getContents(postIdNum, userToken));
 	const { loading: getContentsLoading, data: contents, error: getContentsError, fetchEnd: getContentsFetchEnd } = getContentsState;
 	const updateContentsParameter = { category: currentCategory, desc: description, origin: contents.origin, summaryList: summaries, tagList: getObjectTags(tags), title: title };
-	const [updateContentsState, updateContentsRefetch, updateContentsChangeFetchEnd] = useAsync(() => updateContents(postIdNum, updateContentsParameter, userToken), [], true);
-	const { loading: updateContentsLoading, data: isUpdateContents, error: updateContentsError, fetchEnd: updateContentsFetchEnd } = updateContentsState;
 
 	if (getContentsLoading) {
-		return <img className="loading-image" src={LoadingImage} alt="LoadingImage" />;
+		return (
+			<div className={classNames('write', 'loading-div')}>
+				<img src={LoadingImage} alt="LoadingImage" />
+			</div>
+		);
 	}
 	if (getContentsFetchEnd) {
 		setUpdatePostForm(contents);
 		setCategory({ id: contents.category.id, title: contents.category.title });
 		getContentsChangeFetchEnd();
 	}
-	if (updateContentsLoading) {
-		return <LoadingModal />;
-	}
-	if (updateContentsFetchEnd) {
-		updateContentsChangeFetchEnd();
-		history.goBack();
-	}
 
 	const categoryHandler = (e) => {
 		const categoryOptions = e.target.options;
 		const selectOption = categoryOptions[categoryOptions.selectedIndex];
 		setCategory({ id: selectOption.value, title: selectOption.name });
+	};
+
+	const callUpdateContentsApi = async () => {
+		try {
+			setIsLoadingModalOn(true);
+			await axios
+				.put(`http://52.78.77.73:8080/contents/${postIdNum}`, updateContentsParameter, {
+					headers: {
+						memberId: userToken,
+						'Content-Type': 'application/json',
+					},
+				})
+				.then((response) => {
+					setIsLoadingModalOn(false);
+					history.push(`/viewPost/${postIdNum}/${currentCategory.id}`);
+				});
+		} catch (error) {
+			setIsLoadingModalOn(false);
+			alert(`${error}${Words.REPORT_ERROR}`);
+		}
 	};
 	// 이것도 공통함수로 뺄 수 있음 수정하기
 	// const getMessage = () => {
@@ -68,17 +85,15 @@ function UpdatePost({ match, history }) {
 	// 	return message;
 	// };
 
-	// postData와 confirmCancel은 AddPost와 중복되므로 common에 작성
-	// postData함수명 변경해서 빈값만 확인하고 api호출은 컴포넌트에서 하도록 함
-	const postData = (e) => {
+	const updateContents = () => {
 		if (isEmpty(title)) {
 			alert(Words.ENTER_TITLE);
 		} else {
-			updateContentsRefetch();
+			callUpdateContentsApi();
 		}
 	};
 
-	const confirmCancel = (e) => {
+	const confirmCancel = () => {
 		const isConfirm = window.confirm(Words.ASK_ADD_CANCEL);
 		if (isConfirm) {
 			history.goBack();
@@ -154,10 +169,9 @@ function UpdatePost({ match, history }) {
 					<div className={classNames('write', 'summary-input')}>
 						{summaries.map((summary) => {
 							return (
-								<>
+								<div key={`firstDiv${summary.id}`}>
 									<input
-										// 키 이름 바꿔주기
-										// key={subject.sum_id}
+										key={`input${summary.id}`}
 										type="text"
 										name="summaries"
 										className={classNames('write', 'input', 'summary', 'small')}
@@ -167,11 +181,11 @@ function UpdatePost({ match, history }) {
 											onChange(e, summary.id, 'title');
 										}}
 									/>
-									<div className={classNames('write', 'input', 'summary', 'big')}>
+									<div className={classNames('write', 'input', 'summary', 'big')} key={`secondDiv${summary.id}`}>
 										<textarea
 											type="text"
 											id="summary"
-											key={summary.id}
+											key={`textarea${summary.id}`}
 											name="summaries"
 											placeholder={Words.ENTER_SUMMARY_CONTENT}
 											value={summary.desc}
@@ -180,7 +194,7 @@ function UpdatePost({ match, history }) {
 											}}
 										/>
 									</div>
-								</>
+								</div>
 							);
 						})}
 					</div>
@@ -188,7 +202,7 @@ function UpdatePost({ match, history }) {
 				<div className={classNames('write', 'input-area', 'small', 'update')}>
 					<div className={classNames('write', 'button-area')}>
 						{/* <Link to={`/viewPost/${postIdNum}`} className={classNames('write', 'write-link')} onClick={postData}> */}
-						<button className={classNames('button', 'white', 'write-post', 'big')} onClick={postData}>
+						<button className={classNames('button', 'white', 'write-post', 'big')} onClick={updateContents}>
 							<span className={classNames('text', 'blue', 'write-post')}>{Words.UPDATE}</span>
 						</button>
 						{/* </Link> */}
@@ -200,6 +214,7 @@ function UpdatePost({ match, history }) {
 					</div>
 				</div>
 			</div>
+			{isLoadingModalOn && <LoadingModal />}
 		</div>
 	);
 }

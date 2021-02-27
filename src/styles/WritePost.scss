@@ -152,6 +152,11 @@ $gray: #c4c4c4;
 			margin-left: 6%;
 		}
 	}
+
+	&.loading-div {
+		padding-top: 18%;
+		text-align: center;
+	}
 }
 
 select {

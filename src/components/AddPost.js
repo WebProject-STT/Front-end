@@ -5,9 +5,7 @@ import { isEmpty } from '../common/CheckValue';
 import { useCategoryState, useCategoryDispatch } from '../contexts/CategoryContext';
 import { useUserState } from '../contexts/UserContext';
 import useInputs from '../hooks/useInputs';
-import useAsync from '../hooks/useAsync';
 import axios from 'axios';
-import { postContents } from '../api/ContentsAPI';
 import LoadingModal from './LoadingModal';
 import '../styles/WritePost.scss';
 import '../styles/Button.scss';
@@ -22,24 +20,41 @@ function AddPost({ history }) {
 		fileName: Words.SELECT_FILE,
 		fileInformation: null,
 	});
+	const [isLoadingModalOn, setIsLoadingModalOn] = useState(false);
 	const { fileName, fileInformation } = uploadFile;
 	const [inputForm, onChange] = useInputs({ title: '', description: '' });
 	const { title, description } = inputForm;
 	const contents = { category: category, desc: description, file: fileInformation, subject_nums: 2, title: title };
-	const [postContentsState, postContentsRefetch, postContentsChangeFetchEnd] = useAsync(() => postContents(contents, userToken), [], true);
-	const { loading, data, error, fetchEnd } = postContentsState;
 
-	if (loading) {
-		return <LoadingModal />;
-	}
-	if (error) {
-		console.log(error);
-	}
-	if (fetchEnd) {
-		postContentsChangeFetchEnd();
-		categoryDispatch({ type: 'SET_CURRENT_CATEGORY', value: category });
-		history.push(`/viewPost/${data}`);
-	}
+	useEffect(() => {
+		return () => {
+			categoryDispatch({ type: 'SET_CURRENT_CATEGORY', value: category });
+		};
+	}, [category, categoryDispatch]);
+
+	const callPostContentsApi = async () => {
+		const contentsData = new FormData();
+		for (let elem in contents) {
+			contentsData.append(elem, contents[elem]);
+		}
+		try {
+			setIsLoadingModalOn(true);
+			await axios
+				.post('http://52.78.77.73:8080/contents', contentsData, {
+					headers: {
+						memberId: userToken,
+						'Content-Type': 'multipart/form-data',
+					},
+				})
+				.then((response) => {
+					setIsLoadingModalOn(false);
+					history.push(`/viewPost/${response.data}/${category}`);
+				});
+		} catch (error) {
+			setIsLoadingModalOn(false);
+			alert(`${error}${Words.REPORT_ERROR}`);
+		}
+	};
 
 	const categoryHandler = (value) => {
 		setCategory(value);
@@ -72,7 +87,7 @@ function AddPost({ history }) {
 		if (!isEmpty(message)) {
 			alert(message);
 		} else {
-			postContentsRefetch();
+			callPostContentsApi();
 		}
 	};
 
@@ -158,6 +173,7 @@ function AddPost({ history }) {
 					</div>
 				</div>
 			</div>
+			{isLoadingModalOn && <LoadingModal />}
 		</div>
 	);
 }

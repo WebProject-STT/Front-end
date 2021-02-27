@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
 import Words from '../common/Words';
-
 import '../styles/ViewPost.scss';
 
 function Contents({ contents }) {

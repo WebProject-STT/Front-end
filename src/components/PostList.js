@@ -1,7 +1,6 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import Post from './Post';
 import { useComponentVisibilityDispatch } from '../contexts/ComponentVisibilityContext';
 import { useCheckStatusState, useCheckStatusDispatch } from '../contexts/CheckStatusContext';
@@ -34,13 +33,14 @@ function PostList() {
 	const { userToken } = useUserState();
 	const [form, onChange] = useInputs({ search: '' });
 	const { search } = form;
+	const [callGetPostList, setCallGetPostList] = useState(true);
 	const [pagination, updateCurrentPage, updateStartEndPage] = usePagination();
 	const { currentPage, start, end } = pagination;
-	const [getPostState, getPostRefetch, getPostChangeFetchEnd] = useAsync(() => getContentsList(currentCategoryId, userToken), [currentCategoryId]);
+	const [getPostState, getPostRefetch, getPostChangeFetchEnd] = useAsync(() => getContentsList(currentCategoryId, userToken), [currentCategoryId], userToken ? false : true, true);
 	const { loading: getPostLoading, data: postList, error: getPostError, fetchEnd: getPostFetchEnd } = getPostState;
 	const [deletePostState, deleteRefetch, deletePostChangeFetchEnd] = useAsync(() => deleteContents(checkedItems, userToken), [], true);
 	const { loading: deletePostLoading, data: isDeletePost, error: deletePostError, fetchEnd: deletePostFetchEnd } = deletePostState;
-	const postCount = useMemo(() => postList.length, [postList]);
+	const postCount = useMemo(() => (!postList ? 0 : postList.length), [postList]);
 	const pageMaxIndex = useMemo(() => Math.ceil(postCount / pageCount), [postCount, pageCount]);
 	const pageArray = useMemo(() => getPageArray(pageMaxIndex).slice(start, end), [pageMaxIndex, start, end]);
 	const postStartIndex = useMemo(() => (currentPage - 1) * pageCount, [currentPage, pageCount]);
@@ -52,6 +52,11 @@ function PostList() {
 			componentVisibilityDispatch({ type: 'INVISIBLE', name: 'categoryVisibility' });
 		};
 	}, [componentVisibilityDispatch]);
+
+	if (userToken && callGetPostList) {
+		getPostRefetch();
+		setCallGetPostList(false);
+	}
 
 	if (deletePostFetchEnd) {
 		getPostRefetch();
@@ -133,7 +138,7 @@ function PostList() {
 			</div>
 			<div className={classNames('post-view', 'list')}>
 				<div className="all-check">
-					{postList.length !== 0 && checkBoxVisibility && (
+					{getPostFetchEnd && postList.length !== 0 && checkBoxVisibility && (
 						<>
 							<label className="check-label">
 								<input
@@ -151,20 +156,21 @@ function PostList() {
 					)}
 				</div>
 				<div className={classNames('view-form', 'big')}>
-					{getPostLoading && <img className="loading-image" src={LoadingImage} alt="LoadingImage" />}
-					{!getPostLoading && postCount === 0 && (
+					{getPostLoading && <img src={LoadingImage} alt="LoadingImage" />}
+					{getPostFetchEnd && postCount === 0 && (
 						<>
 							<span className={classNames('text', 'no-post')}>{Words.NO_POST}</span>
 							<br />
 							<span className={classNames('text', 'no-post')}>{Words.WRITE_POST}</span>
 						</>
 					)}
-					{search === ''
-						? postList.slice(postStartIndex, postEndIndex).map((post) => <Post post={post} isDetail={false} key={post.id} />)
-						: postList
-								.filter((post) => post.title.includes(search))
-								.slice(postStartIndex, postEndIndex)
-								.map((post) => <Post id={post.id} title={post.title} date={post.date.slice(0, 10)} isDetail={false} key={post.id} />)}
+					{getPostFetchEnd && search === '' && postList.slice(postStartIndex, postEndIndex).map((post) => <Post post={post} isDetail={false} key={post.id} />)}
+					{getPostFetchEnd &&
+						search !== '' &&
+						postList
+							.filter((post) => post.title.includes(search))
+							.slice(postStartIndex, postEndIndex)
+							.map((post) => <Post post={post} isDetail={false} key={post.id} />)}
 				</div>
 			</div>
 			{postCount !== 0 && (

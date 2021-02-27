@@ -1,11 +1,13 @@
 import { useReducer, useEffect } from 'react';
 
+let dataInitialState;
+
 function reducer(state, action) {
 	switch (action.type) {
 		case 'LOADING':
 			return {
 				loading: true,
-				data: [],
+				data: dataInitialState,
 				error: null,
 				fetchEnd: false,
 			};
@@ -19,7 +21,7 @@ function reducer(state, action) {
 		case 'ERROR':
 			return {
 				loading: false,
-				data: [],
+				data: dataInitialState,
 				error: action.error,
 				fetchEnd: true,
 			};
@@ -33,10 +35,11 @@ function reducer(state, action) {
 	}
 }
 
-function useAsync(callback, deps = [], skip = false) {
+function useAsync(callback, deps = [], skip = false, isGetPostList = false) {
+	dataInitialState = isGetPostList ? null : [];
 	const [state, dispatch] = useReducer(reducer, {
 		loading: false,
-		data: [],
+		data: dataInitialState,
 		error: false,
 		fetchEnd: false,
 	});

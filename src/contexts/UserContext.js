@@ -9,13 +9,11 @@ function userReducer(state, action) {
 	switch (action.type) {
 		case 'LOGIN':
 			return {
-				...state,
-				userToken: action.userToken,
-				userName: action.userName,
+				userToken: localStorage.getItem('userToken'),
+				userName: localStorage.getItem('userName'),
 			};
 		case 'LOGOUT':
 			return {
-				...state,
 				userToken: null,
 				userName: null,
 			};

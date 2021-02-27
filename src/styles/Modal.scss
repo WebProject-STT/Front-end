@@ -16,12 +16,23 @@ $blue: #1a3270;
 
 	&.file {
 		left: 44%;
+
+		&.center {
+			text-align: center;
+		}
 	}
 
 	&.loading {
-		left: 30%;
+		left: 38%;
 		text-align: center;
 	}
+}
+
+.loading-image {
+	width: 35%;
+	height: 40%;
+	margin-top: 10%;
+	background-color: pink;
 }
 
 .file-header {

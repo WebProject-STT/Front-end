@@ -17,7 +17,6 @@ function Header() {
 	const { headerVisibility } = useComponentVisibilityState();
 	const blue = '#1a3270';
 	const white = '#ffffff';
-
 	const setCategory = () => {
 		categoryDispatch({ type: 'SET_CURRENT_CATEGORY', value: 0 });
 	};
