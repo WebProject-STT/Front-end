@@ -1,8 +1,7 @@
 $blue: #1a3270;
-// $white_blue: #d9e3ff;
 $white: #ffffff;
 $gray: #919191;
-// 버튼 내 텍스트 가운데 정렬되록 설정해야돼
+
 .button {
 	position: relative;
 	border-radius: 5px;
@@ -36,23 +35,8 @@ $gray: #919191;
 			margin-left: 40px;
 			background: $blue;
 			text-align: center;
-
-			// &:first-child {
-			// 	position: relative;
-			// 	font-family: Roboto;
-			// 	font-style: normal;
-			// 	font-weight: normal;
-			// 	font-size: 20px;
-			// 	line-height: 28.13px;
-			// 	color: $white;
-			// }
-
 			&:disabled {
 				background: lighten($blue, 35%);
-
-				// &:first-child {
-				// 	color: $white_blue;
-				// }
 			}
 		}
 
@@ -70,8 +54,6 @@ $gray: #919191;
 	}
 
 	&.view {
-		// height: 59.5%;
-
 		&.list {
 			margin-top: 6.765%;
 			width: 65%;
@@ -108,7 +90,6 @@ $gray: #919191;
 			margin-top: 5%;
 			width: 18%;
 			height: 60%;
-			// left: -5%;
 		}
 
 		&.page-link {
@@ -151,7 +132,6 @@ $gray: #919191;
 			width: 30%;
 			height: 80%;
 			margin-top: 1.4%;
-			// margin-left: 25%;
 		}
 
 		& + & {

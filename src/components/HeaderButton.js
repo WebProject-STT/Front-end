@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
+import axios from 'axios';
 import { useUserState, useUserDispatch } from '../contexts/UserContext';
 import { getLogout } from '../api/MemberAPI';
 import useAsync from '../hooks/useAsync';
@@ -15,8 +16,19 @@ function HeaderButton() {
 	const { loading, data, error, fetchEnd } = getLogoutState;
 
 	const handleLogout = () => {
-		localStorage.clear();
-		userDispatch({ type: 'LOGOUT' });
+		axios
+			.get('http://52.78.77.73:8080/user/logout', {
+				header: {
+					'X-AUTH-TOKEN': userToken,
+				},
+			})
+			.then((response) => {
+				localStorage.clear();
+				userDispatch({ type: 'LOGOUT' });
+			})
+			.catch((error) => {
+				alert(`${error}${Words.REPORT_ERROR}`);
+			});
 	};
 
 	return (

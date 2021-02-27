@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 import axios from 'axios';
 import { useUserState } from '../contexts/UserContext';
@@ -69,25 +69,21 @@ function UpdatePost({ match, history }) {
 			alert(`${error}${Words.REPORT_ERROR}`);
 		}
 	};
-	// 이것도 공통함수로 뺄 수 있음 수정하기
-	// const getMessage = () => {
-	// 	let message = '';
-	// 	if (isEmpty(title)) {
-	// 		message = Words.ENTER_TITLE;
-	// 	} else if (isEmpty(tags)) {
-	// 		message = Words.ENTER_TAG;
-	// 	} else if (isEmpty(description)) {
-	// 		message = Words.ENTER_DESCRIPTION;
-	// 	}
-	// 	else {
 
-	// 	}
-	// 	return message;
-	// };
+	const getMessage = () => {
+		let message = '';
+		if (isEmpty(title)) {
+			message = Words.ENTER_TITLE;
+		} else if (isEmpty(description)) {
+			message = Words.ENTER_DESCRIPTION;
+		}
+		return message;
+	};
 
 	const updateContents = () => {
-		if (isEmpty(title)) {
-			alert(Words.ENTER_TITLE);
+		const message = getMessage();
+		if (!isEmpty(message)) {
+			alert(message);
 		} else {
 			callUpdateContentsApi();
 		}

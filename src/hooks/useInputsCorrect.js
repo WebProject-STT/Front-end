@@ -31,7 +31,6 @@ function useInputsCorrect(initialState) {
 					isCorrect = isCorrectLength(inputValue, 8);
 					break;
 				case 'emailCorrect':
-					// 일단은 이메일에 '@' 있는지만 확인했는데 더 보완해야됨
 					isCorrect = inputValue.search('@') >= 0;
 					break;
 				default:

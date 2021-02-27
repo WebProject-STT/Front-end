@@ -70,36 +70,34 @@ function LogIn({ history }) {
 	};
 
 	return (
-		<div className="auth">
-			<div className="auth-form">
-				<input className="input" name="id" placeholder={Words.ENTER_ID} value={id} maxLength="20" onChange={onChange} />
-				{idCorrect === 0 && <div className={classNames('text', 'auth', 'error-message')}>{Words.ENTER_ID}</div>}
-				<input className="input" type="password" name="password" placeholder={Words.ENTER_PASSWORD} value={password} onChange={onChange} />
-				{getErrorText()}
-				<button className={classNames('button', 'auth', 'basic')} onClick={confirmInputs}>
-					<span className={classNames('text', 'white', 'auth')}>{Words.LOGIN}</span>
-				</button>
+		<div className="auth-form">
+			<input className="input" name="id" placeholder={Words.ENTER_ID} value={id} maxLength="20" onChange={onChange} />
+			{idCorrect === 0 && <div className={classNames('text', 'auth', 'error-message')}>{Words.ENTER_ID}</div>}
+			<input className="input" type="password" name="password" placeholder={Words.ENTER_PASSWORD} value={password} onChange={onChange} />
+			{getErrorText()}
+			<button className={classNames('button', 'auth', 'basic')} onClick={confirmInputs}>
+				<span className={classNames('text', 'white', 'auth')}>{Words.LOGIN}</span>
+			</button>
 
-				<button className={classNames('button', 'auth', 'social')}>
-					<img className="social-image" src={GoogleLogo} alt="GoogleLogo" />
-					<span className={classNames('text', 'auth', 'social')}>{Words.GOOGLE}</span>
-				</button>
-				<button className={classNames('button', 'auth', 'social')}>
-					<img className="social-image" src={NaverLogo} alt="NaverLogo" />
-					<span className={classNames('text', 'auth', 'social')}>{Words.NAVER}</span>
-				</button>
-				<button className={classNames('button', 'auth', 'social')}>
-					<img className="social-image" src={KakaoLogo} alt="KakaoLogo" />
-					<span className={classNames('text', 'auth', 'social')}>{Words.KAKAO}</span>
-				</button>
-				<span className={classNames('text', 'auth', 'go-signup')}>
-					{Words.ASK_MEMBER}
-					<Link to="/signup" style={{ color: 'purple' }}>
-						{Words.SIGNUP}
-					</Link>
-					{Words.GO}
-				</span>
-			</div>
+			<button className={classNames('button', 'auth', 'social')}>
+				<img className="social-image" src={GoogleLogo} alt="GoogleLogo" />
+				<span className={classNames('text', 'auth', 'social')}>{Words.GOOGLE}</span>
+			</button>
+			<button className={classNames('button', 'auth', 'social')}>
+				<img className="social-image" src={NaverLogo} alt="NaverLogo" />
+				<span className={classNames('text', 'auth', 'social')}>{Words.NAVER}</span>
+			</button>
+			<button className={classNames('button', 'auth', 'social')}>
+				<img className="social-image" src={KakaoLogo} alt="KakaoLogo" />
+				<span className={classNames('text', 'auth', 'social')}>{Words.KAKAO}</span>
+			</button>
+			<span className={classNames('text', 'auth', 'go-signup')}>
+				{Words.ASK_MEMBER}
+				<Link to="/signup" style={{ color: 'purple' }}>
+					{Words.SIGNUP}
+				</Link>
+				{Words.GO}
+			</span>
 		</div>
 	);
 }

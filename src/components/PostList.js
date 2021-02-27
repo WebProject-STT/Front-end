@@ -20,7 +20,6 @@ import LoadingImage from '../icon/LoadingImage.gif';
 import '../styles/ViewPost.scss';
 import '../styles/Button.scss';
 import '../styles/Text.scss';
-// postlist-header 컴포넌트화 시킬까 생각중..
 
 function PostList() {
 	const pageCount = 10;
@@ -184,7 +183,6 @@ function PostList() {
 							onClick={() => {
 								if (currentPage !== 1) {
 									updateCurrentPage(currentPage - 1);
-									// pageCount 변수명 변경, 한페이지에 놓은 post수 / 페이지 갯수 변수 두개 설정
 									if (currentPage % pageCount === 1) {
 										updateStartEndPage(false);
 									}
@@ -213,7 +211,6 @@ function PostList() {
 							onClick={() => {
 								if (currentPage !== pageMaxIndex) {
 									updateCurrentPage(currentPage + 1);
-									// pageCount 변수명 변경, 한페이지에 놓은 post수 / 페이지 갯수 변수 두개 설정
 									if (currentPage % pageCount === 0) {
 										updateStartEndPage(true);
 									}

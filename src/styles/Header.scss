@@ -13,10 +13,8 @@ $white: #ffffff;
 }
 
 .button-area {
-	// position: relative;
 	display: flex;
 	margin-right: 1.5%;
-	// background-color: skyblue;
 }
 
 .logo-area {
@@ -25,7 +23,6 @@ $white: #ffffff;
 	height: 8vh;
 	left: 22px;
 	top: 1vh;
-	// background-color: yellow;
 }
 
 .logo-image {
@@ -38,7 +35,6 @@ $white: #ffffff;
 	bottom: 16.67%;
 }
 
-// logo-text랑 button-text Text.scss로 옮겨야돼 나중에 하자
 .logo-text {
 	display: flex;
 	position: absolute;
@@ -59,13 +55,12 @@ $white: #ffffff;
 }
 
 .button-text {
-	// position: absolute;
 	font-family: Roboto;
 	font-style: normal;
 	font-weight: normal;
 	font-size: 18px;
 	line-height: 24px;
-	// 버튼 안에 텍스트 가운데 정렬시키는걸로 방법 바꿔야됨
+
 	&.signup {
 		margin-left: 24px;
 		color: $white;

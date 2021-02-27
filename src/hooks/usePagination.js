@@ -17,7 +17,7 @@ function paginationReducer(state, action) {
 			throw new Error(`Unhandled action type: ${action.type}`);
 	}
 }
-// viewPost에서 페이지 번호 보내주기
+
 function usePagination(initialPage = 1) {
 	const initialStart = Math.floor(initialPage / 10);
 	const initialState = {
@@ -30,7 +30,7 @@ function usePagination(initialPage = 1) {
 	const updateCurrentPage = (value) => {
 		dispatch({ type: 'UPDATE_CURRENT_PAGE', value });
 	};
-	// 수정 - pageCount 매개변수에 넣어야 되나..?
+
 	const updateStartEndPage = (isUpIndex) => {
 		isUpIndex ? dispatch({ type: 'UPDATE_START_END_PAGE', value: 10 }) : dispatch({ type: 'UPDATE_START_END_PAGE', value: -10 });
 	};

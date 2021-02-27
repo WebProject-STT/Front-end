@@ -138,7 +138,6 @@ function ViewPost({ match }) {
 								onClick={() => {
 									if (currentPage !== 1) {
 										updateCurrentPage(currentPage - 1);
-										// pageCount 변수명 변경, 한페이지에 놓은 post수 / 페이지 갯수 변수 두개 설정
 										if (currentPage % 10 === 1) {
 											updateStartEndPage(false);
 										}
@@ -167,7 +166,6 @@ function ViewPost({ match }) {
 								onClick={() => {
 									if (currentPage !== pageMaxIndex) {
 										updateCurrentPage(currentPage + 1);
-										// pageCount 변수명 변경, 한페이지에 놓은 post수 / 페이지 갯수 변수 두개 설정
 										if (currentPage % 10 === 0) {
 											updateStartEndPage(true);
 										}
