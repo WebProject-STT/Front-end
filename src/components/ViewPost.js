@@ -54,6 +54,7 @@ function ViewPost({ match }) {
 	const pageArray = useMemo(() => getPageArray(pageMaxIndex).slice(start, end), [pageMaxIndex, start, end]);
 	const postIndexStart = useMemo(() => (currentPage - 1) * pageCount, [currentPage, pageCount]);
 	const postIndexEnd = useMemo(() => currentPage * pageCount, [currentPage, pageCount]);
+	const blue = '#1a3270';
 
 	useEffect(() => {
 		checkStatusDispatch({ type: 'RESET' });
@@ -151,10 +152,11 @@ function ViewPost({ match }) {
 										onClick={() => {
 											updateCurrentPage(page);
 										}}
-										style={{ color: currentPage === page && 'pink' }}
 										key={page}
 									>
-										{page}
+										<span className={classNames('text', 'page-number')} style={{ color: currentPage === page ? blue : 'gray' }}>
+											{page}
+										</span>
 									</button>
 								);
 							})}

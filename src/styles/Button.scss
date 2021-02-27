@@ -112,7 +112,13 @@ $gray: #919191;
 		}
 
 		&.page-link {
+			top: -13px;
 			border: none;
+
+			&:focus {
+				border: none;
+				outline: none;
+			}
 		}
 	}
 

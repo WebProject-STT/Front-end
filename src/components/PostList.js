@@ -45,6 +45,7 @@ function PostList() {
 	const pageArray = useMemo(() => getPageArray(pageMaxIndex).slice(start, end), [pageMaxIndex, start, end]);
 	const postStartIndex = useMemo(() => (currentPage - 1) * pageCount, [currentPage, pageCount]);
 	const postEndIndex = useMemo(() => currentPage * pageCount, [currentPage, pageCount]);
+	const blue = '#1a3270';
 
 	useEffect(() => {
 		componentVisibilityDispatch({ type: 'VISIBLE', name: 'categoryVisibility' });
@@ -175,7 +176,7 @@ function PostList() {
 			</div>
 			{postCount !== 0 && (
 				<div className="footer">
-					<div className="page-number">
+					<div className="page-numbers">
 						<img
 							className="left-arrow"
 							src={LeftArrow}
@@ -197,10 +198,11 @@ function PostList() {
 									onClick={() => {
 										updateCurrentPage(page);
 									}}
-									style={{ color: currentPage === page && 'pink' }}
 									key={page}
 								>
-									{page}
+									<span className={classNames('text', 'page-number')} style={{ color: currentPage === page ? blue : 'gray' }}>
+										{page}
+									</span>
 								</button>
 							);
 						})}
