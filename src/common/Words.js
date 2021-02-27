@@ -37,7 +37,7 @@ const Words = {
 	ENTER_ID: '아이디를 입력해주세요',
 	ENTER_PASSWORD: '비밀번호를 입력해주세요',
 	ENTER_EMAIL: '이메일을 입력해주세요',
-	ENTER_TITLE: '제목을 입력해주세요',
+	ENTER_TITLE: '제목을 입력해주세요 (최대 20자)',
 	ENTER_NICKNAME: '닉네임을 입력해주세요',
 	ENTER_DESCRIPTION: '설명을 입력해주세요 (최대 100자)',
 	ENTER_TAG: '태그를 입력해주세요',
@@ -62,7 +62,7 @@ const Words = {
 	REPORT_ID_PASSWORD_ERROR: '가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.',
 	WAIT: '잠시만 기다려주세요😊',
 	MAX_DESCRIPTION_LENGTH: '100자',
-	MAX_TITLE_LENGTH: ' (최대 20자)',
+	MAX_TITLE_LENGTH: '20자',
 };
 
 export default Words;

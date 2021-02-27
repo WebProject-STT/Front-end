@@ -35,11 +35,7 @@ function useInputs(initialForm) {
 		(e, sum_id = 0, element_name = '', isFocus = false, isSpace = false) => {
 			let { name, value } = e.target;
 			let length = value.length;
-			if (name === 'title' && !isCorrectLength(value, 0, 20)) {
-				// console.log(isCorrectLength(value, 0, 20));
-				// console.log(value);
-				// alert(Words.LIMIT_TITLE_LENGTH);
-			} else if (name === 'summaries') {
+			if (name === 'summaries') {
 				dispatch({ type: 'CHANGE_SUMMARY', sum_id, element_name, value });
 			} else if (name === 'tags') {
 				let attach = '';
@@ -49,7 +45,7 @@ function useInputs(initialForm) {
 					attach = length > 0 ? ' #' : '#';
 				}
 				dispatch({ type: 'CHANGE', name, value: value + attach });
-			} else if (name !== 'description' || length <= 100) {
+			} else if ((name !== 'description' || length <= 100) && (name !== 'title' || length <= 20)) {
 				dispatch({ type: 'CHANGE', name, value });
 			}
 		},

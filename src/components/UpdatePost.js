@@ -105,7 +105,14 @@ function UpdatePost({ match, history }) {
 			<div className={classNames('write', 'input-form', 'update')}>
 				<div className={classNames('write', 'input-area', 'small')}>
 					<span className={classNames('text', 'bold', 'title')}>{Words.TITLE}</span>
-					<input type="text" className={classNames('write', 'input', 'small')} name="title" placeholder={Words.ENTER_TITLE + Words.MAX_TITLE_LENGTH} value={title} onChange={onChange} />
+					<div className={classNames('write', 'input', 'small')}>
+						<input type="text" className={classNames('write', 'input-title')} name="title" placeholder={Words.ENTER_TITLE} value={title} onChange={onChange} />
+						<div className={classNames('write', 'title', 'count')}>
+							<span className={classNames('text', 'gray', 'description')}>
+								({title.length}자/{Words.MAX_TITLE_LENGTH})
+							</span>
+						</div>
+					</div>
 				</div>
 				<div className={classNames('write', 'input-area', 'small')}>
 					<span className={classNames('text', 'bold', 'title')}>{Words.CATEGORY}</span>

@@ -15,20 +15,6 @@ export async function getContents(contentsId, userToken) {
 	return response.data[0];
 }
 
-export async function postContents(contents, userToken) {
-	const contentsData = new FormData();
-	for (let elem in contents) {
-		contentsData.append(elem, contents[elem]);
-	}
-	const response = await axios.post('http://52.78.77.73:8080/contents', contentsData, {
-		headers: {
-			memberId: userToken,
-			'Content-Type': 'multipart/form-data',
-		},
-	});
-	return response.data;
-}
-
 export async function updateContentsFile(contentsId, updateContents, userToken) {
 	const contentsData = new FormData();
 	for (let elem in updateContents) {
@@ -38,16 +24,6 @@ export async function updateContentsFile(contentsId, updateContents, userToken) 
 		headers: {
 			memberId: userToken,
 			'Content-Type': 'multipart/form-data',
-		},
-	});
-	return response.data;
-}
-
-export async function updateContents(contentsId, contents, userToken) {
-	const response = await axios.put(`http://52.78.77.73:8080/contents/${contentsId}`, contents, {
-		headers: {
-			memberId: userToken,
-			'Content-Type': 'application/json',
 		},
 	});
 	return response.data;
