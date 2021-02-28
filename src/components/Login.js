@@ -7,9 +7,6 @@ import { useComponentVisibilityDispatch } from '../contexts/ComponentVisibilityC
 import useInputs from '../hooks/useInputs';
 import useInputsCorrect from '../hooks/useInputsCorrect';
 import { isEmpty } from '../common/CheckValue';
-import GoogleLogo from '../icon/GoogleLogo.png';
-import NaverLogo from '../icon/NaverLogo.png';
-import KakaoLogo from '../icon/KakaoLogo.png';
 import '../styles/Auth.scss';
 import '../styles/Text.scss';
 import { useUserDispatch } from '../contexts/UserContext';
@@ -77,19 +74,6 @@ function LogIn({ history }) {
 			{getErrorText()}
 			<button className={classNames('button', 'auth', 'basic')} onClick={confirmInputs}>
 				<span className={classNames('text', 'white', 'auth')}>{Words.LOGIN}</span>
-			</button>
-
-			<button className={classNames('button', 'auth', 'social')}>
-				<img className="social-image" src={GoogleLogo} alt="GoogleLogo" />
-				<span className={classNames('text', 'auth', 'social')}>{Words.GOOGLE}</span>
-			</button>
-			<button className={classNames('button', 'auth', 'social')}>
-				<img className="social-image" src={NaverLogo} alt="NaverLogo" />
-				<span className={classNames('text', 'auth', 'social')}>{Words.NAVER}</span>
-			</button>
-			<button className={classNames('button', 'auth', 'social')}>
-				<img className="social-image" src={KakaoLogo} alt="KakaoLogo" />
-				<span className={classNames('text', 'auth', 'social')}>{Words.KAKAO}</span>
 			</button>
 			<span className={classNames('text', 'auth', 'go-signup')}>
 				{Words.ASK_MEMBER}

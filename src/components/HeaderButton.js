@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import axios from 'axios';
 import { useUserState, useUserDispatch } from '../contexts/UserContext';
-import { getLogout } from '../api/MemberAPI';
-import useAsync from '../hooks/useAsync';
 import Words from '../common/Words';
 import '../styles/Header.scss';
 import '../styles/Button.scss';
@@ -12,23 +10,24 @@ import '../styles/Button.scss';
 function HeaderButton() {
 	const { userToken, userName } = useUserState();
 	const userDispatch = useUserDispatch();
-	const [getLogoutState, getLogoutRefetch, getLogoutChangeFetchEnd] = useAsync(() => getLogout(userToken), [], true);
-	const { loading, data, error, fetchEnd } = getLogoutState;
 
-	const handleLogout = () => {
-		axios
-			.get('http://52.78.77.73:8080/user/logout', {
-				header: {
-					'X-AUTH-TOKEN': userToken,
-				},
-			})
-			.then((response) => {
-				localStorage.clear();
-				userDispatch({ type: 'LOGOUT' });
-			})
-			.catch((error) => {
-				alert(`${error}${Words.REPORT_ERROR}`);
-			});
+	const handleLogout = async (e) => {
+		localStorage.clear();
+		userDispatch({ type: 'LOGOUT' });
+		try {
+			await axios
+				.get('http://52.78.77.73:8080/user/logout', {
+					header: {
+						'X-AUTH-TOKEN': userToken,
+					},
+				})
+				.then((response) => {
+					alert(Words.SUCCESS_LOGOUT);
+				});
+		} catch (error) {
+			alert(`${error}${Words.REPORT_ERROR}`);
+			e.preventDefault();
+		}
 	};
 
 	return (

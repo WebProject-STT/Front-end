@@ -9,10 +9,9 @@ export function getPageArray(pageMaxIndex) {
 }
 
 export function getObjectTags(tags) {
-	let objectTags = [];
 	const noTags = tags.replaceAll('#', '');
-	noTags.split(' ').map((tag) => {
-		objectTags.push({ name: tag });
+	const objectTags = noTags.split(' ').map((tag) => {
+		return { name: tag };
 	});
 	return objectTags;
 }

@@ -1,17 +1,16 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import classNames from 'classnames';
-import { Link } from 'react-router-dom';
 import { useComponentVisibilityDispatch } from '../contexts/ComponentVisibilityContext';
 import { useCheckStatusDispatch } from '../contexts/CheckStatusContext';
 import { useCheckedItemsDispatch } from '../contexts/CheckedItemContext';
 import { useUserState } from '../contexts/UserContext';
 import { useCategoryState, useCategoryDispatch } from '../contexts/CategoryContext';
-import Words from '../common/Words';
 import usePagination from '../hooks/usePagination';
 import useAsync from '../hooks/useAsync';
-import { getContents, getContentsList, deleteContents } from '../api/ContentsAPI';
+import { getContents, getContentsList } from '../api/ContentsAPI';
 import { getPageArray } from '../common/getInformation';
 import ChangeFileModal from './ChangeFileModal';
+import ViewPostButton from './ViewPostButton';
 import Contents from './Contents';
 import Post from './Post';
 import LeftArrow from '../icon/LeftArrow.png';
@@ -19,33 +18,28 @@ import RightArrow from '../icon/RightArrow.png';
 import LoadingImage from '../icon/LoadingImage.gif';
 import '../styles/ViewPost.scss';
 import '../styles/Text.scss';
+import '../styles/Button.scss';
 
-function scrollToUp(event) {
-	// 수정 스크롤 위로 올라가지 않음, 고쳐야됨
-	document.getElementById('root').scrollTo(0, 0);
-}
-
-function ViewPost({ match }) {
+function ViewPost({ match, history }) {
 	const { postId, categoryId } = match.params;
 	const postIdNum = parseInt(postId);
 	const categoryIdNum = parseInt(categoryId);
 	const pageCount = 4;
 	const { userToken } = useUserState();
+	const { currentCategoryId } = useCategoryState();
 	const checkStatusDispatch = useCheckStatusDispatch();
 	const checkedItemsDispatch = useCheckedItemsDispatch();
 	const categoryDispatch = useCategoryDispatch();
 	const componentVisibilityDispatch = useComponentVisibilityDispatch();
-	const { currentCategoryId } = useCategoryState();
 	const [isChangeFileModalOn, setIsChangeFileModalOn] = useState(false);
-	const [getContentsState, getContentsRefetch, getContentsChangeFetchEnd] = useAsync(() => getContents(postIdNum, userToken), [postIdNum], false);
-	const { loading: getContentsLoading, data: contents, error: getContentsError, fetchEnd: getContentsFetchEnd } = getContentsState;
+	const [getContentsState, getContentsRefetch, getContentsChangeFetchEnd] = useAsync(() => getContents(postIdNum, userToken), postIdNum, false);
+	const { loading: getContentsLoading, data: contents, fetchEnd: getContentsFetchEnd } = getContentsState;
 	const [getContentsListState, getContentsListRefetch, getContentsListchangeFetchEnd] = useAsync(
 		() => getContentsList(contents.category.id, userToken),
-		[contents.length !== 0 && contents.category.id],
+		contents.length !== 0 && contents.category.id,
 		true
 	);
-	const { loading: getContentsListLoading, data: postList, error: getContentsListError, fetchEnd: getContentsListFetchEnd } = getContentsListState;
-	const [deleteContentsState, deleteContentsRefetch] = useAsync(() => deleteContents([postIdNum], userToken), [postIdNum], true);
+	const { loading: getContentsListLoading, data: postList, fetchEnd: getContentsListFetchEnd } = getContentsListState;
 	const initialPage = useMemo(() => Math.floor(postList.findIndex((post) => post.id === postIdNum) / pageCount) + 1, [postList, postIdNum, pageCount]);
 	const [pagination, updateCurrentPage, updateStartEndPage] = usePagination(initialPage);
 	const { currentPage, start, end } = pagination;
@@ -57,6 +51,7 @@ function ViewPost({ match }) {
 	const blue = '#1a3270';
 
 	useEffect(() => {
+		window.scroll({ top: 0 });
 		checkStatusDispatch({ type: 'RESET' });
 		checkedItemsDispatch({ type: 'RESET_ITEM' });
 		componentVisibilityDispatch({ type: 'VISIBLE', name: 'categoryVisibility' });
@@ -66,7 +61,7 @@ function ViewPost({ match }) {
 		return () => {
 			componentVisibilityDispatch({ type: 'INVISIBLE', name: 'categoryVisibility' });
 		};
-	}, [componentVisibilityDispatch]);
+	}, [componentVisibilityDispatch, categoryDispatch, checkStatusDispatch, checkedItemsDispatch, categoryIdNum, currentCategoryId]);
 
 	if (getContentsFetchEnd) {
 		getContentsChangeFetchEnd();
@@ -82,34 +77,9 @@ function ViewPost({ match }) {
 		setIsChangeFileModalOn(!isChangeFileModalOn);
 	};
 
-	const deletePost = (e) => {
-		const isConfirm = window.confirm(Words.ASK_DELETE_POST);
-		if (isConfirm) {
-			deleteContentsRefetch();
-		} else {
-			e.preventDefault();
-		}
-	};
-
 	return (
 		<div className="view-area">
-			<div className="view-header">
-				<div className={classNames('view-header', 'button-area', 'big')}>
-					<button className={classNames('button', 'view', 'white', 'detail')}>
-						<span className={classNames('text', 'blue', 'post-list', 'small')} onClick={handleChangeFileModal}>
-							{Words.CHANGE_FILE}
-						</span>
-					</button>
-					<Link to={`/updatePost/${postIdNum}`} className={classNames('button', 'view', 'white', 'detail')} id="update">
-						<span className={classNames('text', 'blue', 'post-list', 'small')}>{Words.UPDATE}</span>
-					</Link>
-					<Link to={contents.length === 0 ? `/postList/0` : `/postList/${contents.category.id}`} className={classNames('button', 'view', 'blue', 'detail')} onClick={deletePost}>
-						<span className={classNames('text', 'white', 'post-list', 'small')} id="delete">
-							{Words.DELETE}
-						</span>
-					</Link>
-				</div>
-			</div>
+			<ViewPostButton userToken={userToken} postId={postIdNum} categoryId={currentCategoryId} handleChangeFileModal={handleChangeFileModal} history={history} />
 			{getContentsLoading || getContentsListLoading ? (
 				<div className="loading-div">
 					<img src={LoadingImage} alt="LoadingImage" />

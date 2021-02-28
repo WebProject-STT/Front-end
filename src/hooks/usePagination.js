@@ -1,4 +1,4 @@
-import { useReducer, useCallback } from 'react';
+import { useReducer } from 'react';
 
 function paginationReducer(state, action) {
 	switch (action.type) {

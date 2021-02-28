@@ -35,7 +35,7 @@ function reducer(state, action) {
 	}
 }
 
-function useAsync(callback, deps = [], skip = false, isGetPostList = false) {
+function useAsync(callback, deps = null, skip = false, isGetPostList = false) {
 	dataInitialState = isGetPostList ? null : [];
 	const [state, dispatch] = useReducer(reducer, {
 		loading: false,
@@ -61,7 +61,7 @@ function useAsync(callback, deps = [], skip = false, isGetPostList = false) {
 	useEffect(() => {
 		if (skip) return;
 		fetchData();
-	}, deps);
+	}, [skip, deps]);
 
 	return [state, fetchData, changeFetchEnd];
 }

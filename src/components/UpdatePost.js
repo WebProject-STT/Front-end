@@ -28,7 +28,7 @@ function UpdatePost({ match, history }) {
 	});
 	const { title, description, tags, summaries } = form;
 	const [getContentsState, getContentsRefetch, getContentsChangeFetchEnd] = useAsync(() => getContents(postIdNum, userToken));
-	const { loading: getContentsLoading, data: contents, error: getContentsError, fetchEnd: getContentsFetchEnd } = getContentsState;
+	const { loading: getContentsLoading, data: contents, fetchEnd: getContentsFetchEnd } = getContentsState;
 	const updateContentsParameter = { category: currentCategory, desc: description, origin: contents.origin, summaryList: summaries, tagList: getObjectTags(tags), title: title };
 
 	if (getContentsLoading) {
@@ -204,16 +204,12 @@ function UpdatePost({ match, history }) {
 				</div>
 				<div className={classNames('write', 'input-area', 'small', 'update')}>
 					<div className={classNames('write', 'button-area')}>
-						{/* <Link to={`/viewPost/${postIdNum}`} className={classNames('write', 'write-link')} onClick={postData}> */}
 						<button className={classNames('button', 'white', 'write-post', 'big')} onClick={updateContents}>
 							<span className={classNames('text', 'blue', 'write-post')}>{Words.UPDATE}</span>
 						</button>
-						{/* </Link> */}
-						{/* <Link to={`/viewPost/${postIdNum}/${contents.category.id}`} className={classNames('write', 'write-link')} onClick={confirmCancel}> */}
 						<button className={classNames('button', 'blue', 'write-post', 'big')} onClick={confirmCancel}>
 							<span className={classNames('text', 'white', 'write-post')}>{Words.CANCEL}</span>
 						</button>
-						{/* </Link> */}
 					</div>
 				</div>
 			</div>

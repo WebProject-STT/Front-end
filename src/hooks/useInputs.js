@@ -1,5 +1,4 @@
 import { useReducer, useCallback } from 'react';
-import { isCorrectLength } from '../common/CheckValue';
 
 function inputsReducer(state, action) {
 	switch (action.type) {

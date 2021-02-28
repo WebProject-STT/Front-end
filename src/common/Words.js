@@ -52,6 +52,7 @@ const Words = {
 	SELECT_POST: '삭제할 게시글을 선택해주세요',
 	SELECT_FILE: '파일을 선택해주세요',
 	SUCCESS_SIGNUP: '회원가입이 완료되었습니다.\n로그인을 진행해주세요',
+	SUCCESS_LOGOUT: '로그아웃 되었습니다.',
 	LIMIT_TITLE_LENGTH: '제목은 20자 이내로 입력해주세요',
 	LIMIT_DESCRIPTION_LENGTH: '설명은 100자 이내로 입력해주세요',
 	LIMIT_TAGS_NUMBER: '태그는 30개 이내로 입력해주세요',
@@ -63,6 +64,7 @@ const Words = {
 	WAIT: '잠시만 기다려주세요😊',
 	MAX_DESCRIPTION_LENGTH: '100자',
 	MAX_TITLE_LENGTH: '20자',
+	FAIL_UPLOAD_POST: '게시글을 업로드하는데 실패했습니다.\n관리자에게 문의해주세요',
 };
 
 export default Words;

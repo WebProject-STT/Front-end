@@ -35,10 +35,10 @@ function PostList() {
 	const [callGetPostList, setCallGetPostList] = useState(true);
 	const [pagination, updateCurrentPage, updateStartEndPage] = usePagination();
 	const { currentPage, start, end } = pagination;
-	const [getPostState, getPostRefetch, getPostChangeFetchEnd] = useAsync(() => getContentsList(currentCategoryId, userToken), [currentCategoryId], userToken ? false : true, true);
-	const { loading: getPostLoading, data: postList, error: getPostError, fetchEnd: getPostFetchEnd } = getPostState;
-	const [deletePostState, deleteRefetch, deletePostChangeFetchEnd] = useAsync(() => deleteContents(checkedItems, userToken), [], true);
-	const { loading: deletePostLoading, data: isDeletePost, error: deletePostError, fetchEnd: deletePostFetchEnd } = deletePostState;
+	const [getPostState, getPostRefetch] = useAsync(() => getContentsList(currentCategoryId, userToken), currentCategoryId, userToken ? false : true, true);
+	const { loading: getPostLoading, data: postList, fetchEnd: getPostFetchEnd } = getPostState;
+	const [deletePostState, deleteRefetch, deletePostChangeFetchEnd] = useAsync(() => deleteContents(checkedItems, userToken), null, true);
+	const { fetchEnd: deletePostFetchEnd } = deletePostState;
 	const postCount = useMemo(() => (!postList ? 0 : postList.length), [postList]);
 	const pageMaxIndex = useMemo(() => Math.ceil(postCount / pageCount), [postCount, pageCount]);
 	const pageArray = useMemo(() => getPageArray(pageMaxIndex).slice(start, end), [pageMaxIndex, start, end]);
@@ -115,9 +115,6 @@ function PostList() {
 						<img className="search-icon" src={SearchIcon} alt="SearchIcon" />
 						<input className="search-input" name="search" placeholder={Words.SEARCH} value={search} onChange={onChange} />
 					</div>
-					{/* <button className={classNames('button', 'view', 'blue', 'small')}>
-						<span className={classNames('text', 'white', 'post-list', 'small')}>{Words.SEARCH}</span>
-					</button> */}
 				</div>
 				<div className={classNames('view-header', 'button-area', 'small')}>
 					{checkBoxVisibility ? (

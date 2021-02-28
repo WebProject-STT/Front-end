@@ -37,9 +37,8 @@ function Post({ post, isDetail, currentPostId }) {
 				</label>
 			)}
 			<Link to={`/viewPost/${id}/${category.id}`} className={isDetail ? 'post' : classNames('post', 'list')} style={{ backgroundColor: currentPostId === id && blueGray }}>
-				{/* <div className="title-area"> */}
 				<span className={isDetail ? classNames('text', 'title', 'detail') : classNames('text', 'bold', 'title')}>{title}</span>
-				{/* </div> */}
+
 				<div className="date-area">
 					<span className={isDetail ? classNames('text', 'date', 'detail') : classNames('text', 'gray', 'date')}>{date.slice(0, 10)}</span>
 				</div>

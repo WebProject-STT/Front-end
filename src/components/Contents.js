@@ -9,15 +9,12 @@ function Contents({ contents }) {
 	return (
 		<>
 			<div className={classNames('contents-area', 'title')}>
-				{/* <div className={classNames('title-area')}> */}
 				<span className={classNames('text', 'bold', 'post-detail', 'title')}>{title}</span>
-				{/* </div> */}
 				<div className={classNames('date-area')}>
 					<span className={classNames('text', 'post-detail', 'date')}>{date.slice(0, 10)}</span>
 				</div>
 			</div>
 			<div className={classNames('contents-area')}>
-				{/* keyword 인덱스 span태그에 넣어야됨 */}
 				{tagList.map((tag) => {
 					return (
 						<span className={classNames('text', 'gray', 'post-detail', 'keyword')} key={tag.id}>
@@ -29,7 +26,6 @@ function Contents({ contents }) {
 			<div className={classNames('contents-area')}>
 				<span className={classNames('text', 'post-detail')}>{desc}</span>
 			</div>
-			{/* subjects 인덱스 div와 span태그에 넣어야됨 */}
 			{summaryList.map((summary) => {
 				return (
 					<div className={classNames('contents-area', 'big')} key={`div_${summary.id}`}>

@@ -48,7 +48,11 @@ function AddPost({ history }) {
 				})
 				.then((response) => {
 					setIsLoadingModalOn(false);
-					history.push(`/viewPost/${response.data}/${category}`);
+					if (response.data === 'change') {
+						alert(Words.FAIL_UPLOAD_POST);
+					} else {
+						history.push(`/viewPost/${response.data}/${category}`);
+					}
 				});
 		} catch (error) {
 			setIsLoadingModalOn(false);
@@ -167,16 +171,12 @@ function AddPost({ history }) {
 				</div>
 				<div className={classNames('write', 'input-area', 'small')}>
 					<div className={classNames('write', 'button-area')}>
-						{/* <Link to="/postList" className={classNames('write', 'write-link')} onClick={postData}> */}
 						<button type="submit" className={classNames('button', 'white', 'write-post', 'big')} onClick={postData}>
 							<span className={classNames('text', 'blue', 'write-post')}>{Words.SAVE}</span>
 						</button>
-						{/* </Link> */}
-						{/* <Link to="/postList" className={classNames('write', 'write-link')} onClick={confirmCancel}> */}
 						<button className={classNames('button', 'blue', 'write-post', 'big')} onClick={confirmCancel}>
 							<span className={classNames('text', 'white', 'write-post')}>{Words.CANCEL}</span>
 						</button>
-						{/* </Link> */}
 					</div>
 				</div>
 			</div>

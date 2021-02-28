@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
+import axios from 'axios';
 import Words from '../common/Words';
-import { updateContentsFile } from '../api/ContentsAPI';
 import { useUserState } from '../contexts/UserContext';
-import useAsync from '../hooks/useAsync';
 import LogoBlue from '../icon/LogoBlue.png';
 import LoadingImage from '../icon/LoadingImage.gif';
 import '../styles/Modal.scss';
@@ -17,8 +16,14 @@ function ChangeFileModal({ contentsId, getContentsRefetch, handleChangeFileModal
 		fileInformation: null,
 	});
 	const { fileName, fileInformation } = uploadFile;
-	const [updateFileState, updateFileRefetch, updateFileChangeFetchEnd] = useAsync(() => updateContentsFile(contentsId, { file: fileInformation, subject_nums: 2 }, userToken), [], true);
-	const { loading, fetchEnd } = updateFileState;
+	const [loading, setLoading] = useState(false);
+	const updateContents = { file: fileInformation, subject_nums: 2 };
+
+	useEffect(() => {
+		return () => {
+			getContentsRefetch();
+		};
+	}, [getContentsRefetch]);
 
 	if (loading) {
 		return (
@@ -32,11 +37,33 @@ function ChangeFileModal({ contentsId, getContentsRefetch, handleChangeFileModal
 		);
 	}
 
-	if (fetchEnd) {
-		updateFileChangeFetchEnd();
-		getContentsRefetch();
-		handleChangeFileModal();
-	}
+	const updateFile = async () => {
+		const contentsData = new FormData();
+		for (let elem in updateContents) {
+			contentsData.append(elem, updateContents[elem]);
+		}
+		try {
+			setLoading(true);
+			await axios
+				.post(`http://52.78.77.73:8080/contents/${contentsId}`, contentsData, {
+					headers: {
+						memberId: userToken,
+						'Content-Type': 'multipart/form-data',
+					},
+				})
+				.then((response) => {
+					setLoading(false);
+					if (response.data === 'change') {
+						alert(Words.FAIL_UPLOAD_POST);
+					} else {
+						handleChangeFileModal();
+					}
+				});
+		} catch (error) {
+			setLoading(false);
+			alert(`${error}${Words.REPORT_ERROR}`);
+		}
+	};
 
 	const fileHandler = (selectFile) => {
 		const _fileName = selectFile.name;
@@ -50,7 +77,7 @@ function ChangeFileModal({ contentsId, getContentsRefetch, handleChangeFileModal
 		if (fileName === Words.SELECT_FILE) {
 			alert(Words.SELECT_FILE);
 		} else {
-			updateFileRefetch();
+			updateFile();
 		}
 	};
 

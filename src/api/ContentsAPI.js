@@ -15,20 +15,6 @@ export async function getContents(contentsId, userToken) {
 	return response.data[0];
 }
 
-export async function updateContentsFile(contentsId, updateContents, userToken) {
-	const contentsData = new FormData();
-	for (let elem in updateContents) {
-		contentsData.append(elem, updateContents[elem]);
-	}
-	const response = await axios.post(`http://52.78.77.73:8080/contents/${contentsId}`, contentsData, {
-		headers: {
-			memberId: userToken,
-			'Content-Type': 'multipart/form-data',
-		},
-	});
-	return response.data;
-}
-
 export async function deleteContents(postList, userToken) {
 	const response =
 		postList.length === 1
