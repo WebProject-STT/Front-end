@@ -18,7 +18,7 @@ function Contents({ contents }) {
 				{tagList.map((tag) => {
 					return (
 						<span className={classNames('text', 'gray', 'post-detail', 'keyword')} key={tag.id}>
-							{tag.name}
+							{`#${tag.name}`}
 						</span>
 					);
 				})}
