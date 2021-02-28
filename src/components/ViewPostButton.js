@@ -17,7 +17,7 @@ function ViewPostButton({ categoryId, userToken, postId, handleChangeFileModal, 
 					},
 				})
 				.then((response) => {
-					history.goBack(`/postList/${categoryId}`);
+					history.push(`/postList/${categoryId}`);
 				});
 		} catch (error) {
 			alert(`${error}${Words.REPORT_ERROR}`);
