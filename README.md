@@ -1,9 +1,46 @@
+<div>
+   <h1><img src="/src/icon/LogoBlue.png" height="38" alt="logo" /> S-STT</h1>
+</div>
+
+S-STT는 음성파일의 요약본과 원본을 텍스트로 변환해주는 웹페이지입니다.
+
+## 💻 실행 방법
+cmd 창을 열어 해당 명령어들을 순차적으로 입력합니다.
+<pre><code>git clone https://github.com/WebProject-STT/Front-end.git</code></pre>
+<pre><code>cd Front-end</code></pre>
+<pre><code>npm install
+또는
+yarn add
+</code></pre>
+<pre><code>npm start
+또는
+yarn start
+</code></pre>
+
+## 💡 사용 기술
+- React
+- HTML
+- CSS
+- Sass
+
+## ⚙️ 개발 환경
+- React 17.0.1
+- npm 6.14.9
+- node 14.15.3
+- yarn 1.22.5
+
+## 📝 개발 과정
+➡️ https://www.notion.so/STT-ea054dc6cd0a431fa4d43ba60c50b889
+
+## 📽 데모 영상
+➡️ https://www.youtube.com/watch?v=7ngRGio0SCM&t=32s
+
 ## 🚀 구현 기능 목록
 
 ### **서비스 설명 기능**
 
 1. 사용자의 로그인 정보가 없다면 메인 페이지를 보여줌. ✅
-2. 메인 페이지에는 해당 서비스에 대한 간략한 설명이 나와있도록 한다.
+2. 메인 페이지에는 해당 서비스에 대한 간략한 설명이 나와있도록 한다. ✅
 
 ### 기본 로그인 기능
 
