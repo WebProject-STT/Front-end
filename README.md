@@ -4,6 +4,10 @@
 
 S-STT는 음성파일의 요약본과 원본을 텍스트로 변환해주는 웹페이지입니다.
 
+## 🚫 공지 사항
+현재 AWS 서버 요금 문제로 인해 서버는 닫혀있는 상황입니다.  
+프로젝트 실행 결과는 아래 유투브 링크에서 확인해주세요☺️
+
 ## 💻 실행 방법
 cmd 창을 열어 해당 명령어들을 순차적으로 입력합니다.
 <pre><code>git clone https://github.com/WebProject-STT/Front-end.git</code></pre>
@@ -20,8 +24,8 @@ yarn start
 ## 💡 사용 기술
 - React
 - HTML
-- CSS
-- Sass
+- CSS(Sass)
+- Javascript
 
 ## ⚙️ 개발 환경
 - React 17.0.1
